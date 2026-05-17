@@ -353,38 +353,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
   <div id="pg-cot" class="pg">
     <div class="card">
-      <div class="ct"><i class="ti ti-search"></i> Pesquisar Preço de Medicamento</div>
+      <div class="ct"><i class="ti ti-building-store"></i> Registrar Preços por Farmácia</div>
       <div class="f">
-        <label>Nome do Medicamento *</label>
-        <input class="fi" id="cot-name" type="text" placeholder="Ex.: Losartana 50mg">
+        <label>Nome da Farmácia *</label>
+        <input class="fi" id="cot-pharmacy-name" type="text" placeholder="Ex.: Drogaria São Paulo, Pacheco...">
+      </div>
+      <div class="f">
+        <label>Data e Hora da Cotação *</label>
+        <input class="fi" id="cot-dt" type="datetime-local">
       </div>
       
-      <div id="cot-pharmacies-inputs">
-        <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Valores por Farmácia</label>
+      <div id="cot-meds-container">
+        <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>
         <div class="fr f" style="margin-bottom: 8px;">
-          <input class="fi ph-name" type="text" placeholder="Farmácia 1">
-          <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+          <input class="fi med-search-name" type="text" placeholder="Medicamento 1">
+          <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
         </div>
         <div class="fr f" style="margin-bottom: 8px;">
-          <input class="fi ph-name" type="text" placeholder="Farmácia 2">
-          <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
-        </div>
-        <div class="fr f" style="margin-bottom: 8px;">
-          <input class="fi ph-name" type="text" placeholder="Farmácia 3">
-          <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+          <input class="fi med-search-name" type="text" placeholder="Medicamento 2">
+          <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
         </div>
       </div>
       
-      <button class="btn ghost" onclick="window.addPharmacyInputRow()" style="margin-bottom:12px; padding:8px;"><i class="ti ti-plus"></i> Adicionar Mais Farmácias</button>
-      <button class="btn amber" onclick="window.saveCotation()"><i class="ti ti-calculator"></i> Calcular Melhor Preço</button>
+      <button class="btn ghost" onclick="window.addMedInputRow()" style="margin-bottom:12px; padding:8px;"><i class="ti ti-plus"></i> Adicionar Mais Medicamentos</button>
+      <button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação desta Farmácia</button>
     </div>
 
-    <div class="card" id="cot-result-card" style="display:none; background: var(--green-bg); border: 1px solid var(--green);">
-      <div class="ct" style="color: var(--green-t); font-weight:800;"><i class="ti ti-check"></i> Recomendação de Compra</div>
-      <p id="cot-result-text" style="font-size:15px; color: var(--green-t); line-height:1.4;"></p>
+    <div class="card" id="cot-decision-card" style="display:none;">
+      <div class="ct" style="color:var(--blue-t); font-weight:800;"><i class="ti ti-bulb"></i> Painel Comparativo e Decisão</div>
+      <div id="cot-decision-content" style="font-size:14px; line-height:1.5;"></div>
     </div>
 
-    <div id="cot-history-list"></div>
+    <div id="pharmacy-history-list"></div>
   </div>
 
   <div id="pg-hist" class="pg">
@@ -607,63 +607,6 @@ function closeConfirm() {
   confirmCallback = null;
 }
 
-function classifyBP(s, d) {
-  if (s < 120 && d < 80) return ['Normal', 'b-normal'];
-  if (s < 130 && d < 80) return ['Elevada', 'b-alerta'];
-  if (s < 140 || d < 90) return ['Hipert. 1', 'b-alto'];
-  return ['Hipert. 2', 'b-alto'];
-}
-function classifyGL(v, m) {
-  if (v < 70) return ['Hipoglicemia', 'b-baixo'];
-  if (m === 'Jejum') {
-    if (v < 100) return ['Normal', 'b-normal'];
-    if (v < 126) return ['Pré-diabetes', 'b-alerta'];
-    return ['Diabetes', 'b-alto'];
-  }
-  if (v < 140) return ['Normal', 'b-normal'];
-  if (v < 200) return ['Atenção', 'b-alerta'];
-  return ['Alta', 'b-alto'];
-}
-function calcIMC(peso, altura) {
-  if (!altura || altura < 100) return null;
-  return +(peso / ((altura / 100) ** 2)).toFixed(1);
-}
-function classifyIMC(imc) {
-  if (imc < 18.5) return ['Abaixo do peso', 'b-baixo'];
-  if (imc < 25)   return ['Peso normal', 'b-normal'];
-  if (imc < 30)   return ['Sobrepeso', 'b-alerta'];
-  if (imc < 35)   return ['Obesidade 1', 'b-alto'];
-  if (imc < 40)   return ['Obesidade 2', 'b-alto'];
-  return ['Obesidade 3', 'b-alto'];
-}
-
-/* ════════════════════════════════
-   NAVEGAÇÃO
-════════════════════════════════ */
-function goPage(name, btn) {
-  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-  document.getElementById('pg-' + name).classList.add('on');
-  if (btn) btn.classList.add('on');
-  if (name === 'home') updateDash();
-  if (name === 'hist') renderHist();
-  if (name === 'med') renderMeds();
-  if (name === 'cot') renderCotations();
-}
-
-/* ════════════════════════════════
-   CHIPS
-════════════════════════════════ */
-function setupChips(selector, setter) {
-  document.querySelectorAll(selector).forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll(selector).forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      setter(btn.dataset[Object.keys(btn.dataset)[0]]);
-    });
-  });
-}
-
 /* ════════════════════════════════
    AÇÕES DE INTERFACE
 ════════════════════════════════ */
@@ -717,124 +660,175 @@ async function saveWT() {
 }
 
 /* ════════════════════════════════
-   LÓGICA DO MÓDULO DE COTAÇÃO (NOVO)
+   NOVA LÓGICA: COTAÇÃO POR FARMÁCIA
 ════════════════════════════════ */
-function addPharmacyInputRow() {
-  const container = document.getElementById('cot-pharmacies-inputs');
+function addMedInputRow() {
+  const container = document.getElementById('cot-meds-container');
   const index = container.querySelectorAll('.fr').length + 1;
   const row = document.createElement('div');
   row.className = 'fr f';
   row.style.marginBottom = '8px';
   row.innerHTML = `
-    <input class="fi ph-name" type="text" placeholder="Farmácia ${index}">
-    <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+    <input class="fi med-search-name" type="text" placeholder="Medicamento ${index}">
+    <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
   `;
   container.appendChild(row);
 }
 
-async function saveCotation() {
-  const medName = document.getElementById('cot-name').value.trim();
-  if (!medName) { toast('⚠️ Informe o nome do medicamento', true); return; }
+async function savePharmacyCotation() {
+  const pharmacyName = document.getElementById('cot-pharmacy-name').value.trim();
+  const rawDt = document.getElementById('cot-dt').value || getNow();
+  
+  if (!pharmacyName) { toast('⚠️ Informe o nome da farmácia', true); return; }
 
-  const rows = document.getElementById('cot-pharmacies-inputs').querySelectorAll('.fr');
-  const farmacias = [];
+  const rows = document.getElementById('cot-meds-container').querySelectorAll('.fr');
+  const medicamentos = [];
 
   rows.forEach(row => {
-    const name = row.querySelector('.ph-name').value.trim();
-    const price = parseFloat(row.querySelector('.ph-price').value);
-    if (name && !isNaN(price)) {
-      farmacias.push({ nome: name, preco: price });
+    const medName = row.querySelector('.med-search-name').value.trim();
+    const medPrice = parseFloat(row.querySelector('.med-search-price').value);
+    if (medName && !isNaN(medPrice)) {
+      medicamentos.push({ nome: medName.toLowerCase(), nomeExibicao: medName, preco: medPrice });
     }
   });
 
-  if (farmacias.length < 2) {
-    toast('⚠️ Insira valores de pelo menos 2 farmácias', true);
+  if (medicamentos.length === 0) {
+    toast('⚠️ Insira pelo menos 1 medicamento com preço', true);
     return;
   }
 
-  // Identificação algorítmica do menor preço
-  let melhorFarmacia = farmacias[0];
-  farmacias.forEach(f => {
-    if (f.preco < melhorFarmacia.preco) {
-      melhorFarmacia = f;
-    }
-  });
-
   const payload = {
-    medicamento: medName,
-    farmacias: farmacias,
-    dt: getNow()
+    farmacia: pharmacyName,
+    dt: rawDt,
+    items: medicamentos
   };
 
   try {
-    await dbAdd('pesquisas_preco', payload);
-    toast('✓ Cotação processada e salva!');
+    await dbAdd('cotacoes_farmacia', payload);
+    toast('✓ Dados da farmácia salvos com sucesso!');
     
-    // Exibe o painel de recomendação imediata
-    document.getElementById('cot-result-text').innerHTML = `
-      Compre o medicamento <b>${medName}</b> na <b>${melhorFarmacia.nome}</b>.<br>
-      É a opção mais barata custando <b>R$ ${melhorFarmacia.preco.toFixed(2)}</b>.
-    `;
-    document.getElementById('cot-result-card').style.display = 'block';
-    
-    // Limpa campos de input
-    document.getElementById('cot-name').value = '';
+    // Limpeza de campos
+    document.getElementById('cot-pharmacy-name').value = '';
+    document.getElementById('cot-dt').value = getNow();
     rows.forEach((row, i) => {
-      row.querySelector('.ph-name').value = '';
-      row.querySelector('.ph-price').value = '';
+      row.querySelector('.med-search-name').value = '';
+      row.querySelector('.med-search-price').value = '';
     });
 
-    renderCotations();
+    await renderCotations();
   } catch(e) { toast('Erro ao salvar cotação: ' + e.message, true); }
 }
 
 async function deleteCot(id) {
-  confirm2('Excluir cotação', 'Deseja remover permanentemente este histórico de preço?', async () => {
+  confirm2('Excluir cotação', 'Deseja remover este registro de farmácia do histórico?', async () => {
     try {
-      await dbDelete('pesquisas_preco', id);
-      toast('✓ Cotação excluída');
-      renderCotations();
+      await dbDelete('cotacoes_farmacia', id);
+      toast('✓ Registro removido');
+      await renderCotations();
     } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
   });
 }
 
 async function renderCotations() {
-  const cots = await dbGetAll('pesquisas_preco');
-  const el = document.getElementById('cot-history-list');
-  if (!cots.length) {
-    el.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-search-off"></i><p>Nenhuma cotação de preço realizada.</p></div></div>';
+  const records = await dbGetAll('cotacoes_farmacia');
+  const historyEl = document.getElementById('pharmacy-history-list');
+  const decisionCard = document.getElementById('cot-decision-card');
+  const decisionContent = document.getElementById('cot-decision-content');
+
+  if (!records.length) {
+    historyEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-search-off"></i><p>Nenhuma farmácia registrada nesta rodada de cotações.</p></div></div>';
+    decisionCard.style.display = 'none';
     return;
   }
 
-  el.innerHTML = '<h3>Histórico de Pesquisas</h3>' + cots.map(c => {
-    // Acha o menor preço do array histórico para aplicar a classe css highlight
-    const minPrice = Math.min(...c.farmacias.map(f => f.preco));
+  // --- MOTOR ANALÍTICO DE CRUZAMENTO DE DADOS ---
+  // Mapeia os menores valores de cada medicamento individual e calcula o total por farmácia
+  const medMelhoresPrecos = {}; // remédio -> { preco, farmacia }
+  const totaisPorFarmacia = {};  // farmacia -> total_acumulado
+
+  records.forEach(rec => {
+    let totalFarmacia = 0;
+    rec.items.forEach(item => {
+      totalFarmacia += item.preco;
+      
+      if (!medMelhoresPrecos[item.nome] || item.preco < medMelhoresPrecos[item.nome].preco) {
+        medMelhoresPrecos[item.nome] = {
+          preco: item.preco,
+          farmacia: rec.farmacia,
+          exibicao: item.nomeExibicao
+        };
+      }
+    });
     
+    // Armazena o total da farmácia se for a cotação mais recente dela
+    if (!totaisPorFarmacia[rec.farmacia]) {
+      totaisPorFarmacia[rec.farmacia] = totalFarmacia;
+    }
+  });
+
+  // Determina a farmácia com o menor custo total
+  let melhorCompraTotalFarmacia = '';
+  let menorCustoTotal = Infinity;
+  for (const [farmacia, total] of Object.entries(totaisPorFarmacia)) {
+    if (total < menorCustoTotal) {
+      menorCustoTotal = total;
+      melhorCompraTotalFarmacia = farmacia;
+    }
+  }
+
+  // Renderiza o Painel Decisório Inteligente
+  let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">
+    🛒 <b>Melhor opção para compra unificada:</b> Se quiser comprar tudo no mesmo lugar para economizar tempo, vá à <b>${melhorCompraTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>).
+  </p>`;
+
+  htmlDecisao += `<div style="margin-top: 12px;"><b>Onde comprar cada medicamento (Economia Máxima):</b></div><ul style="margin-left: 18px; margin-top: 4px;">`;
+  for (const key in medMelhoresPrecos) {
+    htmlDecisao += `<li style="margin-bottom:3px;">${medMelhoresPrecos[key].exibicao}: <b>R$ ${medMelhoresPrecos[key].preco.toFixed(2)}</b> na <i>${medMelhoresPrecos[key].farmacia}</i></li>`;
+  }
+  htmlDecisao += `</ul>`;
+
+  decisionContent.innerHTML = htmlDecisao;
+  decisionCard.style.display = 'block';
+
+  // Renderiza a lista de histórico por farmácia na tela
+  historyEl.innerHTML = '<h3 style="margin: 14px 0 8px 4px; font-size:15px;">Farmácias Pesquisadas</h3>' + records.map(rec => {
+    const somaItens = rec.items.reduce((acc, cur) => acc + cur.preco, 0);
+    const isTotalCampeao = rec.farmacia === melhorCompraTotalFarmacia;
+
     return `
-      <div class="card">
-        <div class="med-header" style="justify-content: space-between; display:flex;">
+      <div class="card" style="${isTotalCampeao ? 'border: 1px solid var(--green);' : ''}">
+        <div class="med-header" style="justify-content: space-between; display:flex; margin-bottom: 6px;">
           <div>
-            <div class="med-name"><i class="ti ti-pill" style="color:var(--amber)"></i> ${c.medicamento}</div>
-            <div class="lm">${fdt(c.dt)}</div>
+            <div class="med-name">🏪 ${rec.farmacia} ${isTotalCampeao ? '🏆' : ''}</div>
+            <div class="lm"><i class="ti ti-clock"></i> Pesquisado em: ${fdt(rec.dt)}</div>
           </div>
-          <button class="ibtn" onclick="window.deleteCot('${c.id}')"><i class="ti ti-trash" style="color:var(--red)"></i></button>
+          <button class="ibtn" onclick="window.deleteCot('${rec.id}')"><i class="ti ti-trash" style="color:var(--red)"></i></button>
         </div>
-        <div style="margin-top:10px;">
-          ${c.farmacias.map(f => {
-            const isWinner = f.preco === minPrice;
+        <div style="margin-top:8px;">
+          ${rec.items.map(item => {
+            const ehOMaisBarato = medMelhoresPrecos[item.nome].preco === item.preco && medMelhoresPrecos[item.nome].farmacia === rec.farmacia;
             return `
-              <div class="cot-item ${isWinner ? 'cot-win' : ''}">
-                <div style="display:flex; justify-content:space-between; font-size:14px;">
-                  <span>${isWinner ? '⭐ <b>' + f.nome + '</b>' : f.nome}</span>
-                  <b>R$ ${f.preco.toFixed(2)}</b>
-                </div>
+              <div style="display:flex; justify-content:space-between; font-size:13px; padding: 4px 0; border-bottom: .5px solid var(--bd);">
+                <span style="${ehOMaisBarato ? 'color: var(--green); font-weight: bold;' : ''}">${item.nomeExibicao} ${ehOMaisBarato ? '⭐' : ''}</span>
+                <span>R$ ${item.preco.toFixed(2)}</span>
               </div>
             `;
           }).join('')}
+          <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:800; margin-top:8px; padding-top:4px; color: var(--t1);">
+            <span>VALOR TOTAL DA LISTA:</span>
+            <span>R$ ${somaItens.toFixed(2)}</span>
+          </div>
         </div>
       </div>
     `;
   }).join('');
+}
+
+function classifyBP(s, d) {
+  if (s < 120 && d < 80) return ['Normal', 'b-normal'];
+  if (s < 130 && d < 80) return ['Elevada', 'b-alerta'];
+  if (s < 140 || d < 90) return ['Hipert. 1', 'b-alto'];
+  return ['Hipert. 2', 'b-alto'];
 }
 
 function deleteWT(id) {
@@ -1163,7 +1157,7 @@ async function saveMed() {
     if (editId) {
       rec.id = editId;
       await dbPut('remedios', rec);
-      toast('✓ Remédio updated!');
+      toast('✓ Remédio atualizado!');
     } else {
       await dbAdd('remedios', rec);
       toast('✓ Remédio cadastrado!');
@@ -1231,7 +1225,7 @@ function closeImgModal() {
 }
 
 /* ════════════════════════════════
-   MAPEAMENTO DO ESCOPO GLOBAL WINDOW
+   MAPEAR MÉTODOS AO ESCOPO WINDOW
 ════════════════════════════════ */
 window.goPage = goPage;
 window.switchHist = switchHist;
@@ -1252,8 +1246,8 @@ window.deleteMed = deleteMed;
 window.openImgModal = openImgModal;
 window.closeImgModal = closeImgModal;
 window.closeConfirm = closeConfirm;
-window.addPharmacyInputRow = addPharmacyInputRow;
-window.saveCotation = saveCotation;
+window.addMedInputRow = addMedInputRow;
+window.savePharmacyCotation = savePharmacyCotation;
 window.deleteCot = deleteCot;
 
 document.getElementById('confirm-ok').onclick = () => {
@@ -1268,6 +1262,7 @@ document.getElementById('confirm-ok').onclick = () => {
   document.getElementById('bp-dt').value = getNow();
   document.getElementById('gl-dt').value = getNow();
   document.getElementById('wt-dt').value = getNow();
+  document.getElementById('cot-dt').value = getNow();
   
   setupChips('[data-bpm]', v => bpMoment = v);
   setupChips('[data-bpp]', v => bpPos = v);
@@ -1298,6 +1293,7 @@ document.getElementById('confirm-ok').onclick = () => {
     document.getElementById('db-txt').textContent = 'Conectado à Nuvem do Firebase ✓';
     document.getElementById('hdr-sub').textContent = 'Pressão, glicemia, peso e remédios';
     await updateDash();
+    await renderCotations();
   } catch(e) {
     document.getElementById('db-dot').style.background = '#b02020';
     document.getElementById('db-txt').textContent = 'Erro de sincronização: ' + e.message;
