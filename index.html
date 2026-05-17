@@ -211,7 +211,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <h1>❤️ Monitor de Saúde</h1>
       <span class="hbadge" id="db-badge">BD</span>
     </div>
-    <div class="hdr-sub" id="hdr-sub">Carregando banco de dados...</div>
+    <div class="hdr-sub" id="hdr-sub">Desenvolvido por Rafael Medeiros</div>
   </div>
 
   <div id="pg-home" class="pg on">
@@ -607,6 +607,63 @@ function closeConfirm() {
   confirmCallback = null;
 }
 
+function classifyBP(s, d) {
+  if (s < 120 && d < 80) return ['Normal', 'b-normal'];
+  if (s < 130 && d < 80) return ['Elevada', 'b-alerta'];
+  if (s < 140 || d < 90) return ['Hipert. 1', 'b-alto'];
+  return ['Hipert. 2', 'b-alto'];
+}
+function classifyGL(v, m) {
+  if (v < 70) return ['Hipoglicemia', 'b-baixo'];
+  if (m === 'Jejum') {
+    if (v < 100) return ['Normal', 'b-normal'];
+    if (v < 126) return ['Pré-diabetes', 'b-alerta'];
+    return ['Diabetes', 'b-alto'];
+  }
+  if (v < 140) return ['Normal', 'b-normal'];
+  if (v < 200) return ['Atenção', 'b-alerta'];
+  return ['Alta', 'b-alto'];
+}
+function calcIMC(peso, altura) {
+  if (!altura || altura < 100) return null;
+  return +(peso / ((altura / 100) ** 2)).toFixed(1);
+}
+function classifyIMC(imc) {
+  if (imc < 18.5) return ['Abaixo do peso', 'b-baixo'];
+  if (imc < 25)   return ['Peso normal', 'b-normal'];
+  if (imc < 30)   return ['Sobrepeso', 'b-alerta'];
+  if (imc < 35)   return ['Obesidade 1', 'b-alto'];
+  if (imc < 40)   return ['Obesidade 2', 'b-alto'];
+  return ['Obesidade 3', 'b-alto'];
+}
+
+/* ════════════════════════════════
+   NAVEGAÇÃO
+════════════════════════════════ */
+function goPage(name, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById('pg-' + name).classList.add('on');
+  if (btn) btn.classList.add('on');
+  if (name === 'home') updateDash();
+  if (name === 'hist') renderHist();
+  if (name === 'med') renderMeds();
+  if (name === 'cot') renderCotations();
+}
+
+/* ════════════════════════════════
+   CHIPS
+════════════════════════════════ */
+function setupChips(selector, setter) {
+  document.querySelectorAll(selector).forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll(selector).forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      setter(btn.dataset[Object.keys(btn.dataset)[0]]);
+    });
+  });
+}
+
 /* ════════════════════════════════
    AÇÕES DE INTERFACE
 ════════════════════════════════ */
@@ -660,7 +717,7 @@ async function saveWT() {
 }
 
 /* ════════════════════════════════
-   NOVA LÓGICA: COTAÇÃO POR FARMÁCIA
+   COTAÇÃO POR FARMÁCIA
 ════════════════════════════════ */
 function addMedInputRow() {
   const container = document.getElementById('cot-meds-container');
@@ -707,7 +764,6 @@ async function savePharmacyCotation() {
     await dbAdd('cotacoes_farmacia', payload);
     toast('✓ Dados da farmácia salvos com sucesso!');
     
-    // Limpeza de campos
     document.getElementById('cot-pharmacy-name').value = '';
     document.getElementById('cot-dt').value = getNow();
     rows.forEach((row, i) => {
@@ -741,10 +797,8 @@ async function renderCotations() {
     return;
   }
 
-  // --- MOTOR ANALÍTICO DE CRUZAMENTO DE DADOS ---
-  // Mapeia os menores valores de cada medicamento individual e calcula o total por farmácia
-  const medMelhoresPrecos = {}; // remédio -> { preco, farmacia }
-  const totaisPorFarmacia = {};  // farmacia -> total_acumulado
+  const medMelhoresPrecos = {}; 
+  const totaisPorFarmacia = {};  
 
   records.forEach(rec => {
     let totalFarmacia = 0;
@@ -760,13 +814,11 @@ async function renderCotations() {
       }
     });
     
-    // Armazena o total da farmácia se for a cotação mais recente dela
     if (!totaisPorFarmacia[rec.farmacia]) {
       totaisPorFarmacia[rec.farmacia] = totalFarmacia;
     }
   });
 
-  // Determina a farmácia com o menor custo total
   let melhorCompraTotalFarmacia = '';
   let menorCustoTotal = Infinity;
   for (const [farmacia, total] of Object.entries(totaisPorFarmacia)) {
@@ -776,7 +828,6 @@ async function renderCotations() {
     }
   }
 
-  // Renderiza o Painel Decisório Inteligente
   let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">
     🛒 <b>Melhor opção para compra unificada:</b> Se quiser comprar tudo no mesmo lugar para economizar tempo, vá à <b>${melhorCompraTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>).
   </p>`;
@@ -790,7 +841,6 @@ async function renderCotations() {
   decisionContent.innerHTML = htmlDecisao;
   decisionCard.style.display = 'block';
 
-  // Renderiza a lista de histórico por farmácia na tela
   historyEl.innerHTML = '<h3 style="margin: 14px 0 8px 4px; font-size:15px;">Farmácias Pesquisadas</h3>' + records.map(rec => {
     const somaItens = rec.items.reduce((acc, cur) => acc + cur.preco, 0);
     const isTotalCampeao = rec.farmacia === melhorCompraTotalFarmacia;
@@ -822,13 +872,6 @@ async function renderCotations() {
       </div>
     `;
   }).join('');
-}
-
-function classifyBP(s, d) {
-  if (s < 120 && d < 80) return ['Normal', 'b-normal'];
-  if (s < 130 && d < 80) return ['Elevada', 'b-alerta'];
-  if (s < 140 || d < 90) return ['Hipert. 1', 'b-alto'];
-  return ['Hipert. 2', 'b-alto'];
 }
 
 function deleteWT(id) {
@@ -1047,7 +1090,7 @@ async function renderHist() {
 }
 
 /* ════════════════════════════════
-   REMÉDIOS — MODAL E GESTÃO
+   REMÉDIOS — GESTÃO
 ════════════════════════════════ */
 function openMedModal(id) {
   medTimes = [];
@@ -1291,7 +1334,6 @@ document.getElementById('confirm-ok').onclick = () => {
     await openDB();
     document.getElementById('db-dot').style.background = '#1a7a3c';
     document.getElementById('db-txt').textContent = 'Conectado à Nuvem do Firebase ✓';
-    document.getElementById('hdr-sub').textContent = 'Pressão, glicemia, peso e remédios';
     await updateDash();
     await renderCotations();
   } catch(e) {
