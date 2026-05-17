@@ -9,7 +9,6 @@
 <title>Monitor de Saúde</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
-/* Variáveis de design universais (CSS Custom Properties) */
 :root{
   --bg0:#f0f2f5;--bg1:#fff;--bg2:#f4f6f8;--bg3:#e8ecf0;
   --t1:#0d1117;--t2:#5a6375;--t3:#9aa0ad;
@@ -22,7 +21,6 @@
   --teal:#0e7a6e;--teal-bg:#d0f2ee;--teal-t:#074d45;
   --sh:0 2px 12px rgba(0,0,0,.07);
 }
-/* Suporte automático ao Modo Escuro (Dark Mode) do sistema operacional */
 @media(prefers-color-scheme:dark){:root{
   --bg0:#0e1117;--bg1:#161b22;--bg2:#1e2530;--bg3:#252d3a;
   --t1:#e6eaf0;--t2:#8b96a8;--t3:#555f6e;
@@ -35,13 +33,11 @@
   --teal:#2bbdae;--teal-bg:#04302c;--teal-t:#5de0d4;
   --sh:0 2px 16px rgba(0,0,0,.4);
 }}
-/* CSS Reset para normalização cross-browser */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg0);color:var(--t1);min-height:100vh;overscroll-behavior:none}
 #app{max-width:430px;margin:0 auto;min-height:100vh}
 
-/* HEADER */
 .hdr{background:linear-gradient(150deg,#0d3a7a,#1a56a0 55%,#1e6fc4);color:#fff;padding:52px 20px 22px;position:relative;overflow:hidden}
 .hdr::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.05)}
 .hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
@@ -49,22 +45,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .hdr-sub{font-size:13px;opacity:.72}
 .hbadge{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600}
 
-/* NAV */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg1);border-top:.5px solid var(--bd2);display:flex;z-index:200;padding-bottom:max(env(safe-area-inset-bottom),4px)}
 .nb{flex:1;border:none;background:transparent;cursor:pointer;padding:9px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9.5px;font-weight:500;color:var(--t3);font-family:inherit;transition:color .15s}
 .nb i{font-size:22px}
 .nb.on{color:var(--blue)}
 
-/* PAGES */
 .pg{display:none;padding:14px 13px 90px}
 .pg.on{display:block}
 
-/* CARD */
 .card{background:var(--bg1);border-radius:18px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:15px 17px;margin-bottom:13px}
 .ct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:13px;display:flex;align-items:center;gap:6px}
 .ct i{font-size:14px}
 
-/* STATS GRID */
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .sg.one{grid-template-columns:1fr}
 .sb{background:var(--bg2);border-radius:13px;padding:13px 10px;text-align:center}
@@ -73,7 +65,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .su{font-size:11px;color:var(--t2);margin-top:3px}
 .ss{font-size:12px;color:var(--t3);text-align:center;margin-top:7px}
 
-/* FORMULÁRIOS */
 .f{margin-bottom:12px}
 .f label{display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px}
 .fi,.fs{
@@ -83,12 +74,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .fi:focus,.fs:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,160,.15)}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 
-/* CHIPS */
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
 .chip{padding:7px 13px;border-radius:30px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* BOTÕES */
 .btn{width:100%;padding:13px;border-radius:14px;border:none;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .15s}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn.green{background:var(--green)}
@@ -99,14 +88,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .btn.teal{background:var(--teal)}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 
-/* BADGES */
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap}
 .b-normal{background:var(--green-bg);color:var(--green-t)}
 .b-alerta{background:var(--amber-bg);color:var(--amber-t)}
 .b-alto{background:var(--red-bg);color:var(--red-t)}
 .b-baixo{background:var(--blue-bg);color:var(--blue)}
 
-/* LISTAS */
 .li{display:flex;align-items:flex-start;padding:11px 0;border-bottom:.5px solid var(--bd)}
 .li:last-child{border-bottom:none;padding-bottom:0}
 .li:first-child{padding-top:0}
@@ -125,26 +112,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:17px;display:flex;align-items:center;justify-content:center}
 .ibtn:active{background:var(--red-bg);color:var(--red)}
 
-/* GRÁFICOS */
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
 .blbl{font-size:9px;color:var(--t3)}
 
-/* ALERTAS TOAST */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* HISTÓRICO FILTROS */
 .frow{display:flex;gap:7px;margin-bottom:13px}
 .fb{flex:1;padding:9px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
 .fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* STATUS CONEXÃO */
 .dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
 .dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0}
 
-/* OVERLAYS / MODAIS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.on{display:flex}
 .modal{background:var(--bg1);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),20px)}
@@ -522,7 +504,7 @@ import {
   getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query, where 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-// Credenciais extraídas do painel console oficial do usuário
+// Credenciais oficiais do projeto do usuário
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B1OhXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
@@ -548,9 +530,7 @@ onAuthStateChanged(auth, user => {
     document.getElementById('main-content').style.display = 'block';
     document.getElementById('db-dot').style.background = '#1a7a3c';
     document.getElementById('db-txt').textContent = 'Conectado: ' + user.email;
-    updateDash();
-    sincronizarRemediosDropdowns().then(() => renderCotations());
-    renderRxList();
+    goPage('home', document.querySelectorAll('.nb')[0]);
   } else {
     currentUser = null;
     document.getElementById('main-content').style.display = 'none';
@@ -585,7 +565,7 @@ async function handleLogout() {
   try { await signOut(auth); toast('Sessão encerrada'); } catch(e) { console.error(e); }
 }
 
-/* CRUD FIRESTORE COM FILTRO DE USUÁRIO VINCULADO */
+/* CRUD FIRESTORE COM FILTRO DE USUÁRIO */
 async function dbAdd(store, rec) {
   if(!currentUser) return;
   rec.userId = currentUser.uid; 
@@ -807,7 +787,7 @@ async function renderCotations() {
     for (const [farmacia, total] of Object.entries(totaisPorFarmacia)) {
       if (total < menorCustoTotal) { menorCustoTotal = total; melhorCompraTotalFarmacia = farmacia; }
     }
-    let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">🛒 <b>Compra Unificada:</b> <b>${melhorCompraTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>)</p>`;
+    let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">🛒 <b>Compra Unificada:</b> <b>${melhorCompraTotalTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>)</p>`;
     htmlDecisao += `<ul>` + Object.values(medMelhoresPrecos).map(i => `<li>${i.exibicao}: R$ ${i.preco.toFixed(2)} na ${i.farmacia}</li>`).join('') + `</ul>`;
     decisionContent.innerHTML = htmlDecisao; decisionCard.style.display = 'block';
   }
