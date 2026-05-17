@@ -38,7 +38,6 @@ html{font-size:16px;-webkit-text-size-adjust:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg0);color:var(--t1);min-height:100vh;overscroll-behavior:none}
 #app{max-width:430px;margin:0 auto;min-height:100vh}
 
-/* HEADER */
 .hdr{background:linear-gradient(150deg,#0d3a7a,#1a56a0 55%,#1e6fc4);color:#fff;padding:52px 20px 22px;position:relative;overflow:hidden}
 .hdr::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.05)}
 .hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
@@ -46,22 +45,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .hdr-sub{font-size:13px;opacity:.72}
 .hbadge{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600}
 
-/* NAV */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg1);border-top:.5px solid var(--bd2);display:flex;z-index:200;padding-bottom:max(env(safe-area-inset-bottom),4px)}
 .nb{flex:1;border:none;background:transparent;cursor:pointer;padding:9px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9.5px;font-weight:500;color:var(--t3);font-family:inherit;transition:color .15s}
 .nb i{font-size:22px}
 .nb.on{color:var(--blue)}
 
-/* PAGES */
 .pg{display:none;padding:14px 13px 90px}
 .pg.on{display:block}
 
-/* CARD */
 .card{background:var(--bg1);border-radius:18px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:15px 17px;margin-bottom:13px}
 .ct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:13px;display:flex;align-items:center;gap:6px}
 .ct i{font-size:14px}
 
-/* STATS GRID */
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .sg.one{grid-template-columns:1fr}
 .sb{background:var(--bg2);border-radius:13px;padding:13px 10px;text-align:center}
@@ -70,7 +65,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .su{font-size:11px;color:var(--t2);margin-top:3px}
 .ss{font-size:12px;color:var(--t3);text-align:center;margin-top:7px}
 
-/* FORMULÁRIOS */
 .f{margin-bottom:12px}
 .f label{display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px}
 .fi,.fs{
@@ -80,12 +74,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .fi:focus,.fs:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,160,.15)}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 
-/* CHIPS */
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
 .chip{padding:7px 13px;border-radius:30px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* BOTÕES */
 .btn{width:100%;padding:13px;border-radius:14px;border:none;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .15s}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn.green{background:var(--green)}
@@ -96,14 +88,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .btn.teal{background:var(--teal)}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 
-/* BADGES */
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap}
 .b-normal{background:var(--green-bg);color:var(--green-t)}
 .b-alerta{background:var(--amber-bg);color:var(--amber-t)}
 .b-alto{background:var(--red-bg);color:var(--red-t)}
 .b-baixo{background:var(--blue-bg);color:var(--blue)}
 
-/* LISTAS */
 .li{display:flex;align-items:flex-start;padding:11px 0;border-bottom:.5px solid var(--bd)}
 .li:last-child{border-bottom:none;padding-bottom:0}
 .li:first-child{padding-top:0}
@@ -122,31 +112,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:17px;display:flex;align-items:center;justify-content:center}
 .ibtn:active{background:var(--red-bg);color:var(--red)}
 
-/* GRÁFICOS */
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
 .blbl{font-size:9px;color:var(--t3)}
 
-/* ALERTAS TOAST */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* HISTÓRICO FILTROS */
 .frow{display:flex;gap:7px;margin-bottom:13px}
 .fb{flex:1;padding:9px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
 .fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* STATUS CONEXÃO */
 .dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
 .dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0}
 
-/* OVERLAYS / MODAIS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.on{display:flex}
 .modal{background:var(--bg1);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),20px)}
 .modal-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
 .modal-close{background:var(--bg2);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--t2)}
+
+.med-card{background:var(--bg1);border-radius:16px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:14px 16px;margin-bottom:12px}
+.med-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.med-ico{width:44px;height:44px;border-radius:12px;background:var(--purple-bg);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.med-name{font-size:16px;font-weight:700;color:var(--t1)}
+.med-dose{font-size:13px;color:var(--t2);margin-top:1px}
+.med-times{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.med-time{background:var(--purple-bg);color:var(--purple-t);border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px}
+.med-imgs{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.med-img{width:64px;height:64px;border-radius:9px;object-fit:cover;cursor:pointer;border:.5px solid var(--bd2)}
+.med-actions{display:flex;gap:7px;margin-top:10px}
+.med-btn{flex:1;padding:8px;border-radius:9px;border:none;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit}
+.med-btn.edit{background:var(--blue-bg);color:var(--blue-t)}
+.med-btn.del{background:var(--red-bg);color:var(--red-t)}
 
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-overlay.on{display:flex}
@@ -496,3 +495,468 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <div class="toast" id="toast"></div>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { 
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+import { 
+  getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query, where 
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+// Credenciais oficiais do projeto do usuário
+const firebaseConfig = {
+  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B1OhXyPV4",
+  authDomain: "monitordesaudedf.firebaseapp.com",
+  projectId: "monitordesaudedf",
+  storageBucket: "monitordesaudedf.firebasestorage.app",
+  messagingSenderId: "116851967587",
+  appId: "1:116851967587:web:871b7323325963f5391a56"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const dbFirestore = getFirestore(app);
+
+let currentUser = null;
+let listagemRemediosCache = [];
+let rxPhotosCache = []; 
+
+/* MONITOR DE SESSÃO DO USUÁRIO */
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('pg-login').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+    document.getElementById('db-dot').style.background = '#1a7a3c';
+    document.getElementById('db-txt').textContent = 'Conectado: ' + user.email;
+    goPage('home', document.querySelectorAll('.nb')[0]);
+  } else {
+    currentUser = null;
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('pg-login').style.display = 'block';
+    document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+    document.getElementById('pg-login').classList.add('on');
+  }
+});
+
+/* OPERAÇÕES AUTH */
+async function handleLogin() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass = document.getElementById('auth-password').value;
+  if(!email || !pass) { toast('⚠️ Preencha e-mail e senha', true); return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    toast('✓ Acesso autorizado');
+  } catch(e) { toast('Falha no login: ' + e.message, true); }
+}
+
+async function handleSignUp() {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass = document.getElementById('auth-password').value;
+  if(!email || pass.length < 6) { toast('⚠️ Insira um e-mail válido e senha mínima de 6 dígitos', true); return; }
+  try {
+    await createUserWithEmailAndPassword(auth, email, pass);
+    toast('✓ Conta criada com sucesso!');
+  } catch(e) { toast('Erro ao criar conta: ' + e.message, true); }
+}
+
+async function handleLogout() {
+  try { await signOut(auth); toast('Sessão encerrada'); } catch(e) { console.error(e); }
+}
+
+/* CRUD FIRESTORE COM FILTRO DE USUÁRIO */
+async function dbAdd(store, rec) {
+  if(!currentUser) return;
+  rec.userId = currentUser.uid; 
+  const colRef = collection(dbFirestore, store);
+  const docRef = await addDoc(colRef, rec);
+  return docRef.id;
+}
+
+async function dbPut(store, rec) {
+  if(!currentUser) return;
+  const { id, ...updateData } = rec;
+  updateData.userId = currentUser.uid;
+  const docRef = doc(dbFirestore, store, String(id));
+  await setDoc(docRef, updateData, { merge: true });
+  return id;
+}
+
+async function dbGetAll(store) {
+  if(!currentUser) return [];
+  const colRef = collection(dbFirestore, store);
+  const q = query(colRef, where('userId', '==', currentUser.uid)); 
+  const querySnapshot = await getDocs(q);
+  const registros = [];
+  querySnapshot.forEach((doc) => {
+    registros.push({ id: doc.id, ...doc.data() });
+  });
+  return registros.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
+}
+
+async function dbGet(store, id) {
+  const docRef = doc(dbFirestore, store, String(id));
+  const docSnap = await getDoc(docRef);
+  return docSnap.exists() && docSnap.data().userId === currentUser.uid ? { id: docSnap.id, ...docSnap.data() } : null;
+}
+
+async function dbDelete(store, id) {
+  const docRef = doc(dbFirestore, store, String(id));
+  await deleteDoc(docRef);
+  return true;
+}
+
+/* ════════════════════════════════
+   AÇÕES DE INTERFACE DO MONITOR
+════════════════════════════════ */
+async function saveBP() {
+  const s = parseInt(document.getElementById('bp-sis').value);
+  const d = parseInt(document.getElementById('bp-dia').value);
+  const pulse = document.getElementById('bp-pulse').value;
+  const note = document.getElementById('bp-note').value.trim();
+  const dt = document.getElementById('bp-dt').value || getNow();
+  if (!s || !d || s < 60 || d < 40 || s > 260 || d > 160) { toast('⚠️ Valores inválidos', true); return; }
+  try {
+    await dbAdd('pressao', { sis: s, dia: d, pulse: pulse ? parseInt(pulse) : null, moment: bpMoment, pos: bpPos, note, dt });
+    ['bp-sis','bp-dia','bp-pulse','bp-note'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('bp-dt').value = getNow();
+    toast('✓ Pressão salva!');
+    updateDash();
+  } catch(e) { toast('Erro: ' + e.message, true); }
+}
+
+async function saveGL() {
+  const v = parseInt(document.getElementById('gl-val').value);
+  const note = document.getElementById('gl-note').value.trim();
+  const dt = document.getElementById('gl-dt').value || getNow();
+  if (!v || v < 20 || v > 700) { toast('⚠️ Valor inválido', true); return; }
+  try {
+    await dbAdd('glicemia', { val: v, moment: glMoment, type: glType, note, dt });
+    ['gl-val','gl-note'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('gl-dt').value = getNow();
+    toast('✓ Glicemia salva!');
+    updateDash();
+  } catch(e) { toast('Erro: ' + e.message, true); }
+}
+
+async function saveWT() {
+  const val = parseFloat(document.getElementById('wt-val').value);
+  const alt = parseFloat(document.getElementById('wt-alt').value);
+  const note = document.getElementById('wt-note').value.trim();
+  const dt = document.getElementById('wt-dt').value || getNow();
+  if (!val || val < 20 || val > 300) { toast('⚠️ Peso inválido', true); return; }
+  const imc = alt >= 100 ? calcIMC(val, alt) : null;
+  try {
+    await dbAdd('peso', { val, alt: alt || null, imc, moment: wtMoment, note, dt });
+    ['wt-val','wt-note'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('wt-dt').value = getNow();
+    document.getElementById('wt-imc-preview').style.display = 'none';
+    toast('✓ Peso salvo!');
+    updateDash();
+  } catch(e) { toast('Erro: ' + e.message, true); }
+}
+
+function deleteWT(id) {
+  confirm2('Excluir registro', 'Tem certeza?', async () => {
+    try { await dbDelete('peso', id); toast('✓ Peso excluído'); await renderHist(); await updateDash(); } catch(e) { toast('Erro: ' + e.message, true); }
+  });
+}
+function deleteBP(id) {
+  confirm2('Excluir registro', 'Tem certeza?', async () => {
+    try { await dbDelete('pressao', id); toast('✓ Pressão excluída'); await renderHist(); await updateDash(); } catch(e) { toast('Erro: ' + e.message, true); }
+  });
+}
+function deleteGL(id) {
+  confirm2('Excluir registro', 'Tem certeza?', async () => {
+    try { await dbDelete('glicemia', id); toast('✓ Glicemia excluída'); await renderHist(); await updateDash(); } catch(e) { toast('Erro: ' + e.message, true); }
+  });
+}
+
+/* DROPDOWNS AUTOMÁTICOS DA ABA COTAR */
+async function sincronizarRemediosDropdowns() {
+  try {
+    listagemRemediosCache = await dbGetAll('remedios');
+    const dropdowns = document.querySelectorAll('.med-search-dropdown');
+    dropdowns.forEach(select => {
+      const valorSelecionado = select.value; 
+      select.innerHTML = '<option value="">-- Selecione o Remédio --</option>' + 
+        listagemRemediosCache.map(m => `<option value="${m.name}">${m.name} ${m.dose ? `(${m.dose})` : ''}</option>`).join('');
+      if(valorSelecionado) select.value = valorSelecionado;
+    });
+  } catch(e) { console.error(e); }
+}
+
+function addMedInputRow(medName = '', medPrice = '') {
+  const container = document.getElementById('cot-meds-container');
+  const row = document.createElement('div');
+  row.className = 'fr f';
+  row.style.marginBottom = '8px';
+  row.style.alignItems = 'center';
+  row.innerHTML = `
+    <select class="fs med-search-dropdown">
+      <option value="">-- Selecione o Remédio --</option>
+      ${listagemRemediosCache.map(m => `<option value="${m.name}" ${m.name.toLowerCase() === medName.toLowerCase() ? 'selected' : ''}>${m.name} ${m.dose ? `(${m.dose})` : ''}</option>`).join('')}
+    </select>
+    <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01" value="${medPrice}">
+  `;
+  container.appendChild(row);
+}
+
+function resetCotForm() {
+  document.getElementById('cot-edit-id').value = '';
+  document.getElementById('cot-pharmacy-name').value = '';
+  document.getElementById('cot-dt').value = getNow();
+  document.getElementById('cot-form-title').textContent = 'Registrar Preços por Farmácia';
+  document.getElementById('cot-btn-container').innerHTML = `<button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>`;
+  document.getElementById('cot-meds-container').innerHTML = `
+    <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>
+    <div class="fr f" style="margin-bottom: 8px; align-items: center;"><select class="fs med-search-dropdown"><option value="">Carregando...</option></select><input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço" step="0.01"></div>
+    <div class="fr f" style="margin-bottom: 8px; align-items: center;"><select class="fs med-search-dropdown"><option value="">Carregando...</option></select><input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço" step="0.01"></div>
+  `;
+}
+
+window.openEditCotation = function(id) {
+  dbGet('cotacoes_farmacia', id).then(rec => {
+    if (!rec) return;
+    document.getElementById('cot-edit-id').value = rec.id;
+    document.getElementById('cot-pharmacy-name').value = rec.farmacia || '';
+    document.getElementById('cot-dt').value = rec.dt || getNow();
+    document.getElementById('cot-form-title').textContent = '✏️ Alterar Cotação';
+    document.getElementById('cot-btn-container').innerHTML = `<button class="btn purple" onclick="window.savePharmacyCotation()"><i class="ti ti-edit"></i> Confirmar Alteração</button><button class="btn ghost" onclick="window.resetCotForm(); window.renderCotations();">Cancelar</button>`;
+    const container = document.getElementById('cot-meds-container');
+    container.innerHTML = `<label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>`;
+    rec.items.forEach(item => addMedInputRow(item.nomeExibicao, item.preco));
+    sincronizarRemediosDropdowns();
+  });
+};
+
+async function savePharmacyCotation() {
+  const pharmacyName = document.getElementById('cot-pharmacy-name').value.trim();
+  const rawDt = document.getElementById('cot-dt').value || getNow();
+  const editId = document.getElementById('cot-edit-id').value;
+  if (!pharmacyName) { toast('⚠️ Informe a farmácia', true); return; }
+  const rows = document.getElementById('cot-meds-container').querySelectorAll('.fr');
+  const medicamentos = [];
+  rows.forEach(row => {
+    const dropdown = row.querySelector('.med-search-dropdown');
+    const medName = dropdown.value;
+    const medPrice = parseFloat(row.querySelector('.med-search-price').value);
+    if (medName && !isNaN(medPrice)) medicamentos.push({ nome: medName.toLowerCase(), nomeExibicao: medName, preco: medPrice });
+  });
+  if (!medicamentos.length) { toast('⚠️ Selecione medicamentos', true); return; }
+  const payload = { farmacia: pharmacyName, dt: rawDt, items: medicamentos };
+  try {
+    if (editId) { payload.id = editId; await dbPut('cotacoes_farmacia', payload); } 
+    else { await dbAdd('cotacoes_farmacia', payload); }
+    resetCotForm(); await sincronizarRemediosDropdowns(); await renderCotations();
+  } catch(e) { toast('Erro: ' + e.message, true); }
+}
+
+async function deleteCot(id) {
+  confirm2('Excluir cotação?', 'Tem certeza?', async () => {
+    try { await dbDelete('cotacoes_farmacia', id); toast('✓ Removido'); await renderCotations(); } catch(e) { toast('Erro: ' + e.message, true); }
+  });
+}
+
+async function renderCotations() {
+  const records = await dbGetAll('cotacoes_farmacia');
+  const historyEl = document.getElementById('pharmacy-history-list');
+  const decisionCard = document.getElementById('cot-decision-card');
+  const decisionContent = document.getElementById('cot-decision-content');
+  const inputDtVal = document.getElementById('cot-dt').value;
+  const dataFiltroAlvo = inputDtVal ? inputDtVal.split('T')[0] : new Date().toISOString().split('T')[0];
+
+  if (!records.length) { historyEl.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma cotação.</p></div></div>'; decisionCard.style.display = 'none'; return; }
+  const cotaçoesDoDia = records.filter(rec => rec.dt && rec.dt.split('T')[0] === dataFiltroAlvo);
+
+  if (!cotaçoesDoDia.length) { decisionCard.style.display = 'none'; } 
+  else {
+    const medMelhoresPrecos = {}; const totaisPorFarmacia = {};  
+    cotaçoesDoDia.forEach(rec => {
+      let totalFarmacia = 0;
+      rec.items.forEach(item => {
+        totalFarmacia += item.preco;
+        if (!medMelhoresPrecos[item.nome] || item.preco < medMelhoresPrecos[item.nome].preco) {
+          medMelhoresPrecos[item.nome] = { preco: item.preco, farmacia: rec.farmacia, exibicao: item.nomeExibicao, dt: rec.dt };
+        }
+      });
+      if (!totaisPorFarmacia[rec.farmacia]) totaisPorFarmacia[rec.farmacia] = totalFarmacia;
+    });
+    let melhorCompraTotalFarmacia = ''; let menorCustoTotal = Infinity;
+    for (const [farmacia, total] of Object.entries(totaisPorFarmacia)) {
+      if (total < menorCustoTotal) { menorCustoTotal = total; melhorCompraTotalFarmacia = farmacia; }
+    }
+    let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">🛒 <b>Compra Unificada:</b> <b>${melhorCompraTotalTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>)</p>`;
+    htmlDecisao += `<ul>` + Object.values(medMelhoresPrecos).map(i => `<li>${i.exibicao}: R$ ${i.preco.toFixed(2)} na ${i.farmacia}</li>`).join('') + `</ul>`;
+    decisionContent.innerHTML = htmlDecisao; decisionCard.style.display = 'block';
+  }
+
+  historyEl.innerHTML = records.map(rec => {
+    const soma = rec.items.reduce((acc, cur) => acc + cur.preco, 0);
+    const ativa = rec.dt && rec.dt.split('T')[0] === dataFiltroAlvo;
+    return `<div class="card" style="${ativa ? 'border-left:4px solid var(--blue);':''}">
+      <div style="display:flex; justify-content:space-between;">
+        <div><b>🏪 ${rec.farmacia}</b><div class="lm">${fdt(rec.dt)}</div></div>
+        <div><button class="ibtn" onclick="window.openEditCotation('${rec.id}')"><i class="ti ti-edit"></i></button><button class="ibtn" onclick="window.deleteCot('${rec.id}')"><i class="ti ti-trash"></i></button></div>
+      </div>
+      <div style="margin-top:6px;">${rec.items.map(i => `<div style="display:flex; justify-content:space-between; font-size:13px;"><span>${i.nomeExibicao}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('')}<b>Total: R$ ${soma.toFixed(2)}</b></div>
+    </div>`;
+  }).join('');
+}
+
+/* RECEITAS DE USO CONTÍNUO */
+function openRxModal(id) {
+  rxPhotosCache = []; document.getElementById('rx-edit-id').value = id || '';
+  ['rx-doctor','rx-crm','rx-meds-covered','rx-obs'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('rx-date-issued').value = new Date().toISOString().split('T')[0];
+  if (id) {
+    dbGet('receitas_uso_continuo', id).then(rx => {
+      if (!rx) return;
+      document.getElementById('rx-doctor').value = rx.medico; document.getElementById('rx-crm').value = rx.crm;
+      document.getElementById('rx-date-issued').value = rx.dataEmissao; document.getElementById('rx-duration').value = rx.validadeMeses;
+      document.getElementById('rx-meds-covered').value = rx.medicamentos; document.getElementById('rx-obs').value = rx.obs;
+      rxPhotosCache = [...(rx.fotos || [])]; renderRxPhotos();
+    });
+  }
+  document.getElementById('rx-modal').classList.add('on');
+}
+function closeRxModal(evt) { if (evt && evt.target !== document.getElementById('rx-modal')) return; document.getElementById('rx-modal').classList.remove('on'); }
+function addRxPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { rxPhotosCache.push(e.target.result); renderRxPhotos(); }; r.readAsDataURL(f); }); input.value = ''; }
+function removeRxPhoto(idx) { rxPhotosCache.splice(idx,1); renderRxPhotos(); }
+function renderRxPhotos() { document.getElementById('rx-photos-preview').innerHTML = rxPhotosCache.map((s, i) => `<div style="position:relative;display:inline-block"><img class="med-img" src="${s}" onclick="window.openImgModal('${s}')"><button onclick="window.removeRxPhoto(${i})" style="position:absolute;top:-5px;right:-5px;background:var(--red);border:none;color:#fff;border-radius:50%;width:20px;height:20px;">×</button></div>`).join(''); }
+
+async function saveRx() {
+  const m = document.getElementById('rx-doctor').value.trim();
+  const meds = document.getElementById('rx-meds-covered').value.trim();
+  const dE = document.getElementById('rx-date-issued').value;
+  const vM = parseInt(document.getElementById('rx-duration').value);
+  if(!m || !meds || !dE) { toast('⚠️ Campos obrigatórios vazios', true); return; }
+  const dV = new Date(dE + 'T12:00:00'); dV.setMonth(dV.getMonth() + vM);
+  const editId = document.getElementById('rx-edit-id').value;
+  const payload = { medico: m, crm: document.getElementById('rx-crm').value.trim(), dataEmissao: dE, validadeMeses: vM, dataVencimento: dV.toISOString().split('T')[0], medicamentos: meds, obs: document.getElementById('rx-obs').value.trim(), fotos: [...rxPhotosCache], dt: getNow() };
+  try {
+    if(editId) { payload.id = editId; await dbPut('receitas_uso_continuo', payload); } else { await dbAdd('receitas_uso_continuo', payload); }
+    document.getElementById('rx-modal').classList.remove('on'); await renderRxList();
+  } catch(e) { toast('Erro: ' + e.message, true); }
+}
+
+function deleteRx(id) {
+  confirm2('Excluir?', 'Tem certeza?', async () => { try { await dbDelete('receitas_uso_continuo', id); toast('Excluído'); await renderRxList(); } catch(e) { toast('Erro: ' + e.message, true); } });
+}
+
+async function renderRxList() {
+  const rxs = await dbGetAll('receitas_uso_continuo'); const container = document.getElementById('rx-list-container'); const hojeStr = new Date().toISOString().split('T')[0];
+  if (!rxs.length) { container.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma receita.</p></div></div>'; return; }
+  container.innerHTML = rxs.map(r => {
+    const exp = hojeStr > r.dataVencimento;
+    return `<div class="med-card" style="${exp ? 'border:1px solid var(--red); background:var(--red-bg);':''}">
+      <div><b>🩺 Dr(a). ${r.medico}</b></div><div style="color:var(--teal-t);">💊 ${r.medicamentos}</div>
+      <div style="font-size:12px;">Emissão: ${fdt(r.dataEmissao)} | <span style="${exp?'color:var(--red); font-weight:bold;':''}">Vence: ${fdt(r.dataVencimento)}</span></div>
+      <div class="med-imgs">${(r.fotos||[]).map(s => `<img class="med-img" src="${s}" onclick="window.openImgModal('${s}')">`).join('')}</div>
+      <div class="med-actions"><button class="med-btn edit" onclick="window.openRxModal('${r.id}')">Editar</button><button class="med-btn del" onclick="window.deleteRx('${r.id}')">Excluir</button></div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════
+   HISTÓRICO E GRÁFICOS
+════════════════════════════════ */
+function switchHist(type) { histTab = type; ['bp','gl','wt','cot'].forEach(t => { document.getElementById('hf-' + t).classList.toggle('on', t === type); document.getElementById('hist-' + t).style.display = t === type ? 'block' : 'none'; }); renderHist(); }
+
+async function renderHist() {
+  const [bps, gls, wts, cots] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('cotacoes_farmacia')]);
+  document.getElementById('hist-bp').innerHTML = bps.map(r => `<div class="li"><div class="lb"><b>${r.sis}/${r.dia} mmHg</b><div class="lm">${fdt(r.dt)}</div></div><button class="ibtn" onclick="window.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div>`).join('');
+  document.getElementById('hist-gl').innerHTML = gls.map(r => `<div class="li"><div class="lb"><b>${r.val} mg/dL</b><div class="lm">${r.moment} · ${fdt(r.dt)}</div></div><button class="ibtn" onclick="window.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div>`).join('');
+  document.getElementById('hist-wt').innerHTML = wts.map(r => `<div class="li"><div class="lb"><b>${r.val} kg</b><div class="lm">IMC: ${r.imc || '—'} · ${fdt(r.dt)}</div></div><button class="ibtn" onclick="window.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div>`).join('');
+  
+  const mP = {}; cots.forEach(r => r.items.forEach(i => { if(!mP[i.nome] || i.preco < mP[i.nome].preco) mP[i.nome]={preco:i.preco, farmacia:r.farmacia, exibicao:i.nomeExibicao, dt:r.dt}; }));
+  document.getElementById('hist-cot').innerHTML = Object.values(mP).map(i => `<div class="li"><div class="lb"><b>${i.exibicao}</b><div>📍 ${i.farmacia} - <b>R$ ${i.preco.toFixed(2)}</b></div></div></div>`).join('');
+}
+
+/* ════════════════════════════════
+   CADASTRO DE REMÉDIOS
+════════════════════════════════ */
+function openMedModal(id) {
+  medTimes = []; medPhotos = []; document.getElementById('med-edit-id').value = id || '';
+  ['med-name','med-dose','med-instr','med-obs'].forEach(i => document.getElementById(i).value = '');
+  if(id) {
+    dbGet('remedios', id).then(m => {
+      document.getElementById('med-name').value = m.name; document.getElementById('med-dose').value = m.dose;
+      document.getElementById('med-instr').value = m.instr; document.getElementById('med-obs').value = m.obs;
+      medTimes = [...(m.times||[])]; medPhotos = [...(m.photos||[])]; renderMedTimes(); renderMedPhotos();
+    });
+  }
+  document.getElementById('med-modal').classList.add('on');
+}
+function closeMedModal() { document.getElementById('med-modal').classList.remove('on'); }
+function addTime() { const t = document.getElementById('new-time').value; if(t && !medTimes.includes(t)) { medTimes.push(t); medTimes.sort(); renderMedTimes(); } }
+function removeTime(t) { medTimes = medTimes.filter(x => x !== t); renderMedTimes(); }
+function renderMedTimes() { document.getElementById('times-list').innerHTML = medTimes.map(t => `<span>⏱️ ${t} <button onclick="window.removeTime('${t}')">×</button></span>`).join(' '); }
+function addPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { medPhotos.push(e.target.result); renderMedPhotos(); }; r.readAsDataURL(f); }); }
+function removePhoto(i) { medPhotos.splice(i,1); renderMedPhotos(); }
+function renderMedPhotos() { document.getElementById('med-photos-preview').innerHTML = medPhotos.map((s,i) => `<div><img class="med-img" src="${s}"><button onclick="window.removePhoto(${i})">×</button></div>`).join(''); }
+
+async function saveMed() {
+  const n = document.getElementById('med-name').value.trim(); if(!n) return;
+  const editId = document.getElementById('med-edit-id').value;
+  const payload = { name: n, dose: document.getElementById('med-dose').value.trim(), instr: document.getElementById('med-instr').value.trim(), obs: document.getElementById('med-obs').value.trim(), times: [...medTimes], photos: [...medPhotos], dt: getNow() };
+  try { if(editId) { payload.id = editId; await dbPut('remedios', payload); } else { await dbAdd('remedios', payload); } closeMedModal(); await renderMeds(); } catch(e) { console.error(e); }
+}
+
+async function renderMeds() {
+  const meds = await dbGetAll('remedios');
+  document.getElementById('med-list').innerHTML = meds.map(m => `<div class="med-card"><b>💊 ${m.name}</b> (${m.dose})<div>⏱️ ${(m.times||[]).join(', ')}</div><div class="med-actions"><button onclick="window.openMedModal('${m.id}')">Editar</button><button onclick="window.deleteMed('${m.id}')">Excluir</button></div></div>`).join('');
+}
+
+/* DASHBOARD SOMA */
+async function updateDash() {
+  const [bps, gls, meds, wts] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('remedios'), dbGetAll('peso')]);
+  if(bps.length) { document.getElementById('d-sis').textContent = bps[0].sis; document.getElementById('d-dia').textContent = bps[0].dia; }
+  if(gls.length) document.getElementById('d-gl').textContent = gls[0].val;
+  if(wts.length) { document.getElementById('d-wt').textContent = wts[0].val; document.getElementById('d-imc').textContent = wts[0].imc || '—'; }
+  document.getElementById('sum-bp').textContent = bps.length; document.getElementById('sum-gl').textContent = gls.length;
+  document.getElementById('sum-wt').textContent = wts.length; document.getElementById('sum-med').textContent = meds.length;
+}
+
+function openImgModal(src) { document.getElementById('img-modal-src').src = src; document.getElementById('img-modal').classList.add('on'); }
+function closeImgModal() { document.getElementById('img-modal').classList.remove('on'); }
+
+/* MAPEAMENTO DOS GANCHOS DE INTERFACE DO NAVEGADOR */
+window.handleLogin = handleLogin;
+window.handleSignUp = handleSignUp;
+window.handleLogout = handleLogout;
+window.goPage = goPage;
+window.switchHist = switchHist;
+window.saveBP = saveBP;
+window.saveGL = saveGL;
+window.saveWT = saveWT;
+window.deleteBP = deleteBP;
+window.deleteGL = deleteGL;
+window.deleteWT = deleteWT;
+window.openMedModal = openMedModal;
+window.closeMedModal = closeMedModal;
+window.addTime = addTime;
+window.removeTime = removeTime;
+window.addPhoto = addPhoto;
+window.removePhoto = removePhoto;
+window.saveMed = saveMed;
+window.deleteMed = deleteMed;
+window.openRxModal = openRxModal;
+window.closeRxModal = closeRxModal;
+window.addRxPhoto = addRxPhoto;
+window.removeRxPhoto = removeRxPhoto;
+window.saveRx = saveRx;
+window.deleteRx = deleteRx;
+window.resetCotForm = resetCotForm;
+window.renderCotations = renderCotations;
+window.openEditCotation = openEditCotation;
+window.savePharmacyCotation = savePharmacyCotation;
+window.addMedInputRow = addMedInputRow;
+window.deleteCot = deleteCot;
+window.openImgModal = openImgModal;
+
+document.getElementById('confirm-ok').onclick = () => { if (confirmCallback) confirmCallback(); closeConfirm(); };
+</script>
+</body>
+</html>
