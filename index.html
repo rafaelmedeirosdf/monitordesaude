@@ -63,7 +63,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:13px;display:flex;align-items:center;gap:6px}
 .ct i{font-size:14px}
 
-/* STATS */
+/* STATS GRID */
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .sg.one{grid-template-columns:1fr}
 .sb{background:var(--bg2);border-radius:13px;padding:13px 10px;text-align:center}
@@ -72,7 +72,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .su{font-size:11px;color:var(--t2);margin-top:3px}
 .ss{font-size:12px;color:var(--t3);text-align:center;margin-top:7px}
 
-/* FORMS */
+/* FORMULÁRIOS */
 .f{margin-bottom:12px}
 .f label{display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px}
 .fi,.fs{
@@ -88,7 +88,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .chip{padding:7px 13px;border-radius:30px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* BUTTONS */
+/* BOTÕES */
 .btn{width:100%;padding:13px;border-radius:14px;border:none;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .15s}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn.green{background:var(--green)}
@@ -106,7 +106,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .b-alto{background:var(--red-bg);color:var(--red-t)}
 .b-baixo{background:var(--blue-bg);color:var(--blue)}
 
-/* LIST */
+/* LISTAS */
 .li{display:flex;align-items:flex-start;padding:11px 0;border-bottom:.5px solid var(--bd)}
 .li:last-child{border-bottom:none;padding-bottom:0}
 .li:first-child{padding-top:0}
@@ -125,26 +125,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:17px;display:flex;align-items:center;justify-content:center}
 .ibtn:active{background:var(--red-bg);color:var(--red)}
 
-/* CHART */
+/* GRÁFICOS */
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
 .blbl{font-size:9px;color:var(--t3)}
 
-/* TOASTS */
+/* ALERTAS TOAST */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* FILTROS DE HISTÓRICO */
+/* HISTÓRICO FILTROS */
 .frow{display:flex;gap:7px;margin-bottom:13px}
 .fb{flex:1;padding:9px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
 .fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* MONITOR DE BASE DE DADOS */
+/* STATUS CONEXÃO */
 .dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
 .dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0}
 
-/* MODAIS */
+/* OVERLAYS / MODAIS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.on{display:flex}
 .modal{background:var(--bg1);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),20px)}
@@ -505,7 +505,7 @@ import {
   getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-// Credenciais oficiais corrigidas com a apiKey do seu console
+// Credenciais oficiais corrigidas com a apiKey do seu console do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B1OhXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
@@ -895,7 +895,6 @@ window.goPage = goPage;
 window.switchHist = switchHist;
 window.saveBP = saveBP;
 window.saveGL = saveGL;
-window.saveWT = wtMoment; // Alinhamento dinâmico
 window.saveWT = saveWT;
 window.deleteBP = deleteBP;
 window.deleteGL = deleteGL;
