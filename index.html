@@ -108,7 +108,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ico.gl{background:var(--green-bg);color:var(--green)}
 .ico.med{background:var(--purple-bg);color:var(--purple)}
 .ico.wt{background:var(--teal-bg);color:var(--teal)}
+.ico.cot{background:var(--amber-bg);color:var(--amber)}
 .btn.teal{background:var(--teal)}
+.btn.amber{background:var(--amber);color:#fff}
 .lb{flex:1;min-width:0}
 .lv{font-size:15px;font-weight:700;color:var(--t1)}
 .lm{font-size:12px;color:var(--t3);margin-top:1px}
@@ -173,6 +175,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .med-btn{flex:1;padding:8px;border-radius:9px;border:none;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit}
 .med-btn.edit{background:var(--blue-bg);color:var(--blue-t)}
 .med-btn.del{background:var(--red-bg);color:var(--red-t)}
+
+/* COTAÇÃO STYLES */
+.cot-item{background:var(--bg2);border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid var(--bd2)}
+.cot-win{background:var(--green-bg) !important;border-color:var(--green) !important}
 
 /* IMG PREVIEW MODAL */
 .img-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:700;display:none;align-items:center;justify-content:center}
@@ -243,19 +249,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
 
     <div class="card">
-      <div class="ct"><i class="ti ti-chart-bar"></i> Pressão sistólica</div>
-      <div class="mchart" id="chart-bp"></div>
-    </div>
-    <div class="card">
-      <div class="ct"><i class="ti ti-chart-bar"></i> Glicemia</div>
-      <div class="mchart" id="chart-gl"></div>
-    </div>
-    <div class="card">
-      <div class="ct"><i class="ti ti-chart-bar"></i> Evolução do peso</div>
-      <div class="mchart" id="chart-wt"></div>
-    </div>
-
-    <div class="card">
       <div class="ct"><i class="ti ti-database"></i> Banco de dados</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
         <div class="smb"><div class="smv" id="sum-bp">0</div><div class="sml">Pressões</div></div>
@@ -294,14 +287,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       </div>
       <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso, após exercício..."></div>
       <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
-      <button class="btn" onclick="window.saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-    <div class="card">
-      <div class="ct"><i class="ti ti-info-circle"></i> Classificação (OMS)</div>
-      <div class="ri"><div class="rdot" style="background:#1a7a3c"></div><span><b>Normal:</b> abaixo de 120/80 mmHg</span></div>
-      <div class="ri"><div class="rdot" style="background:#e8a020"></div><span><b>Elevada:</b> 120–129 / &lt;80 mmHg</span></div>
-      <div class="ri"><div class="rdot" style="background:#e05555"></div><span><b>Hipert. grau 1:</b> 130–139 / 80–89 mmHg</span></div>
-      <div class="ri"><div class="rdot" style="background:#b02020"></div><span><b>Hipert. grau 2:</b> ≥140 / ≥90 mmHg</span></div>
+      <button class="btn" onclick="saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
     </div>
   </div>
 
@@ -329,15 +315,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       </div>
       <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: antes da insulina, após caminhada..."></div>
       <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
-      <button class="btn green" onclick="window.saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-    <div class="card">
-      <div class="ct"><i class="ti ti-info-circle"></i> Classificação</div>
-      <div class="ri"><div class="rdot" style="background:#1a56a0"></div><span><b>Hipoglicemia:</b> abaixo de 70 mg/dL</span></div>
-      <div class="ri"><div class="rdot" style="background:#1a7a3c"></div><span><b>Jejum normal:</b> 70–99 mg/dL</span></div>
-      <div class="ri"><div class="rdot" style="background:#e8a020"></div><span><b>Pré-diabetes (jejum):</b> 100–125 mg/dL</span></div>
-      <div class="ri"><div class="rdot" style="background:#b02020"></div><span><b>Diabetes (jejum):</b> ≥126 mg/dL</span></div>
-      <div class="ri"><div class="rdot" style="background:#1a7a3c"></div><span><b>Pós-refeição normal:</b> abaixo de 140 mg/dL</span></div>
+      <button class="btn green" onclick="saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
     </div>
   </div>
 
@@ -364,29 +342,56 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       </div>
       <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: após academia, em jejum..."></div>
       <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
-      <button class="btn teal" onclick="window.saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
-    </div>
-    <div class="card">
-      <div class="ct"><i class="ti ti-info-circle"></i> Classificação do IMC (OMS)</div>
-      <div class="ri"><div class="rdot" style="background:#1a56a0"></div><span><b>Abaixo do peso:</b> IMC &lt; 18,5</span></div>
-      <div class="ri"><div class="rdot" style="background:#1a7a3c"></div><span><b>Peso normal:</b> IMC 18,5–24,9</span></div>
-      <div class="ri"><div class="rdot" style="background:#e8a020"></div><span><b>Sobrepeso:</b> IMC 25–29,9</span></div>
-      <div class="ri"><div class="rdot" style="background:#e05555"></div><span><b>Obesidade grau 1:</b> IMC 30–34,9</span></div>
-      <div class="ri"><div class="rdot" style="background:#b02020"></div><span><b>Obesidade grau 2:</b> IMC 35–39,9</span></div>
-      <div class="ri"><div class="rdot" style="background:#700f0f"></div><span><b>Obesidade grau 3:</b> IMC ≥ 40</span></div>
+      <button class="btn teal" onclick="saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
     </div>
   </div>
 
   <div id="pg-med" class="pg">
-    <button class="btn purple" onclick="window.openMedModal(null)" style="margin-bottom:14px"><i class="ti ti-plus"></i> Cadastrar novo remédio</button>
+    <button class="btn purple" onclick="openMedModal(null)" style="margin-bottom:14px"><i class="ti ti-plus"></i> Cadastrar novo remédio</button>
     <div id="med-list"></div>
+  </div>
+
+  <div id="pg-cot" class="pg">
+    <div class="card">
+      <div class="ct"><i class="ti ti-search"></i> Pesquisar Preço de Medicamento</div>
+      <div class="f">
+        <label>Nome do Medicamento *</label>
+        <input class="fi" id="cot-name" type="text" placeholder="Ex.: Losartana 50mg">
+      </div>
+      
+      <div id="cot-pharmacies-inputs">
+        <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Valores por Farmácia</label>
+        <div class="fr f" style="margin-bottom: 8px;">
+          <input class="fi ph-name" type="text" placeholder="Farmácia 1">
+          <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+        </div>
+        <div class="fr f" style="margin-bottom: 8px;">
+          <input class="fi ph-name" type="text" placeholder="Farmácia 2">
+          <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+        </div>
+        <div class="fr f" style="margin-bottom: 8px;">
+          <input class="fi ph-name" type="text" placeholder="Farmácia 3">
+          <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+        </div>
+      </div>
+      
+      <button class="btn ghost" onclick="window.addPharmacyInputRow()" style="margin-bottom:12px; padding:8px;"><i class="ti ti-plus"></i> Adicionar Mais Farmácias</button>
+      <button class="btn amber" onclick="window.saveCotation()"><i class="ti ti-calculator"></i> Calcular Melhor Preço</button>
+    </div>
+
+    <div class="card" id="cot-result-card" style="display:none; background: var(--green-bg); border: 1px solid var(--green);">
+      <div class="ct" style="color: var(--green-t); font-weight:800;"><i class="ti ti-check"></i> Recomendação de Compra</div>
+      <p id="cot-result-text" style="font-size:15px; color: var(--green-t); line-height:1.4;"></p>
+    </div>
+
+    <div id="cot-history-list"></div>
   </div>
 
   <div id="pg-hist" class="pg">
     <div class="frow">
-      <button class="fb on" id="hf-bp" onclick="window.switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
-      <button class="fb" id="hf-gl" onclick="window.switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
-      <button class="fb" id="hf-wt" onclick="window.switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
+      <button class="fb on" id="hf-bp" onclick="switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
+      <button class="fb" id="hf-gl" onclick="switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
+      <button class="fb" id="hf-wt" onclick="switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
     </div>
     <div id="hist-bp"></div>
     <div id="hist-gl" style="display:none"></div>
@@ -394,20 +399,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 
   <nav class="bnav">
-    <button class="nb on" onclick="window.goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
-    <button class="nb" onclick="window.goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
-    <button class="nb" onclick="window.goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
-    <button class="nb" onclick="window.goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
-    <button class="nb" onclick="window.goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
-    <button class="nb" onclick="window.goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
+    <button class="nb on" onclick="goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
+    <button class="nb" onclick="goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
+    <button class="nb" onclick="goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
+    <button class="nb" onclick="goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
+    <button class="nb" onclick="goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
+    <button class="nb" onclick="goPage('cot',this)"><i class="ti ti-search"></i>Cotar</button>
+    <button class="nb" onclick="goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
   </nav>
 </div>
 
-<div class="overlay" id="med-modal" onclick="window.closeMedModal(event)">
+<div class="overlay" id="med-modal" onclick="closeMedModal(event)">
   <div class="modal">
     <div class="modal-title">
       <span id="med-modal-title">Novo remédio</span>
-      <button class="modal-close" onclick="window.closeMedModal()"><i class="ti ti-x"></i></button>
+      <button class="modal-close" onclick="closeMedModal()"><i class="ti ti-x"></i></button>
     </div>
     <input type="hidden" id="med-edit-id">
 
@@ -427,7 +433,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div id="times-list" style="margin-bottom:8px"></div>
       <div style="display:flex;gap:8px">
         <input class="fi" id="new-time" type="time" style="flex:1">
-        <button class="btn" style="width:auto;padding:11px 16px" onclick="window.addTime()"><i class="ti ti-plus"></i></button>
+        <button class="btn" style="width:auto;padding:11px 16px" onclick="addTime()"><i class="ti ti-plus"></i></button>
       </div>
     </div>
 
@@ -438,12 +444,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <button class="btn ghost" onclick="document.getElementById('photo-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
         <button class="btn ghost" onclick="document.getElementById('photo-file').click()"><i class="ti ti-photo"></i> Galeria</button>
       </div>
-      <input type="file" id="photo-cam" accept="image/*" capture="environment" style="display:none" onchange="window.addPhoto(this)">
-      <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="window.addPhoto(this)">
+      <input type="file" id="photo-cam" accept="image/*" capture="environment" style="display:none" onchange="addPhoto(this)">
+      <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="addPhoto(this)">
     </div>
 
     <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Ex.: armazenar na geladeira, uso contínuo..."></div>
-    <button class="btn purple" onclick="window.saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
+    <button class="btn purple" onclick="saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
   </div>
 </div>
 
@@ -452,15 +458,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <h3 id="confirm-title">Confirmar exclusão</h3>
     <p id="confirm-msg">Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.</p>
     <div class="confirm-btns">
-      <button class="cbtn cancel" onclick="window.closeConfirm()">Cancelar</button>
+      <button class="cbtn cancel" onclick="closeConfirm()">Cancelar</button>
       <button class="cbtn confirm" id="confirm-ok">Excluir</button>
     </div>
   </div>
 </div>
 
-<div class="img-modal" id="img-modal" onclick="window.closeImgModal()">
+<div class="img-modal" id="img-modal" onclick="closeImgModal()">
   <img id="img-modal-src" src="" alt="">
-  <button class="img-close" onclick="window.closeImgModal()"><i class="ti ti-x"></i></button>
+  <button class="img-close" onclick="closeImgModal()"><i class="ti ti-x"></i></button>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -471,7 +477,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 ════════════════════════════════ */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import { 
-  getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query
+  getFirestore, 
+  collection, 
+  addDoc, 
+  setDoc,
+  doc, 
+  getDocs, 
+  getDoc,
+  deleteDoc, 
+  query 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -489,43 +503,68 @@ const dbFirestore = getFirestore(app);
 async function openDB() { return true; }
 
 async function dbAdd(store, rec) {
-  const colRef = collection(dbFirestore, store);
-  const docRef = await addDoc(colRef, rec);
-  return docRef.id;
+  try {
+    const colRef = collection(dbFirestore, store);
+    const docRef = await addDoc(colRef, rec);
+    return docRef.id;
+  } catch (error) {
+    console.error("Erro ao adicionar documento: ", error);
+    throw error;
+  }
 }
 
 async function dbPut(store, rec) {
-  const { id, ...updateData } = rec;
-  const docRef = doc(dbFirestore, store, String(id));
-  await setDoc(docRef, updateData, { merge: true });
-  return id;
+  try {
+    const { id, ...updateData } = rec;
+    const docRef = doc(dbFirestore, store, String(id));
+    await setDoc(docRef, updateData, { merge: true });
+    return id;
+  } catch (error) {
+    console.error("Erro ao atualizar documento: ", error);
+    throw error;
+  }
 }
 
 async function dbGetAll(store) {
-  const colRef = collection(dbFirestore, store);
-  const querySnapshot = await getDocs(query(colRef));
-  const registros = [];
-  querySnapshot.forEach((doc) => {
-    registros.push({ id: doc.id, ...doc.data() });
-  });
-  // Ordenação manual por data/hora para garantir consistência visual estável
-  return registros.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
+  try {
+    const colRef = collection(dbFirestore, store);
+    const q = query(colRef); 
+    const querySnapshot = await getDocs(q);
+    const registros = [];
+    querySnapshot.forEach((doc) => {
+      registros.push({ id: doc.id, ...doc.data() });
+    });
+    return registros.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
+  } catch (error) {
+    console.error("Erro ao buscar documentos: ", error);
+    throw error;
+  }
 }
 
 async function dbGet(store, id) {
-  const docRef = doc(dbFirestore, store, String(id));
-  const docSnap = await getDoc(docRef);
-  return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
+  try {
+    const docRef = doc(dbFirestore, store, String(id));
+    const docSnap = await getDoc(docRef);
+    return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
+  } catch (error) {
+    console.error("Erro ao obter documento: ", error);
+    throw error;
+  }
 }
 
 async function dbDelete(store, id) {
-  const docRef = doc(dbFirestore, store, String(id));
-  await deleteDoc(docRef);
-  return true;
+  try {
+    const docRef = doc(dbFirestore, store, String(id));
+    await deleteDoc(docRef);
+    return true;
+  } catch (error) {
+    console.error("Erro ao deletar documento: ", error);
+    throw error;
+  }
 }
 
 /* ════════════════════════════════
-   ESTADO E ESCOPO GLOBAL
+   ESTADO
 ════════════════════════════════ */
 let bpMoment = 'Antes do café', bpPos = 'Sentado';
 let glMoment = 'Jejum', glType = 'Glicosímetro';
@@ -543,7 +582,7 @@ function getNow() {
   return `${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`;
 }
 function fdt(dt) {
-  if(!dt) return '—';
+  if (!dt) return '—';
   const d = new Date(dt);
   return d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'}) +
     ' às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
@@ -605,10 +644,11 @@ function goPage(name, btn) {
   document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
   document.getElementById('pg-' + name).classList.add('on');
-  if(btn) btn.classList.add('on');
+  if (btn) btn.classList.add('on');
   if (name === 'home') updateDash();
   if (name === 'hist') renderHist();
   if (name === 'med') renderMeds();
+  if (name === 'cot') renderCotations();
 }
 
 /* ════════════════════════════════
@@ -625,7 +665,7 @@ function setupChips(selector, setter) {
 }
 
 /* ════════════════════════════════
-   AÇÕES DE SALVAMENTO / EXCLUSÃO
+   AÇÕES DE INTERFACE
 ════════════════════════════════ */
 async function saveBP() {
   const s = parseInt(document.getElementById('bp-sis').value);
@@ -676,6 +716,127 @@ async function saveWT() {
   } catch(e) { toast('Erro ao salvar: ' + e.message, true); }
 }
 
+/* ════════════════════════════════
+   LÓGICA DO MÓDULO DE COTAÇÃO (NOVO)
+════════════════════════════════ */
+function addPharmacyInputRow() {
+  const container = document.getElementById('cot-pharmacies-inputs');
+  const index = container.querySelectorAll('.fr').length + 1;
+  const row = document.createElement('div');
+  row.className = 'fr f';
+  row.style.marginBottom = '8px';
+  row.innerHTML = `
+    <input class="fi ph-name" type="text" placeholder="Farmácia ${index}">
+    <input class="fi ph-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+  `;
+  container.appendChild(row);
+}
+
+async function saveCotation() {
+  const medName = document.getElementById('cot-name').value.trim();
+  if (!medName) { toast('⚠️ Informe o nome do medicamento', true); return; }
+
+  const rows = document.getElementById('cot-pharmacies-inputs').querySelectorAll('.fr');
+  const farmacias = [];
+
+  rows.forEach(row => {
+    const name = row.querySelector('.ph-name').value.trim();
+    const price = parseFloat(row.querySelector('.ph-price').value);
+    if (name && !isNaN(price)) {
+      farmacias.push({ nome: name, preco: price });
+    }
+  });
+
+  if (farmacias.length < 2) {
+    toast('⚠️ Insira valores de pelo menos 2 farmácias', true);
+    return;
+  }
+
+  // Identificação algorítmica do menor preço
+  let melhorFarmacia = farmacias[0];
+  farmacias.forEach(f => {
+    if (f.preco < melhorFarmacia.preco) {
+      melhorFarmacia = f;
+    }
+  });
+
+  const payload = {
+    medicamento: medName,
+    farmacias: farmacias,
+    dt: getNow()
+  };
+
+  try {
+    await dbAdd('pesquisas_preco', payload);
+    toast('✓ Cotação processada e salva!');
+    
+    // Exibe o painel de recomendação imediata
+    document.getElementById('cot-result-text').innerHTML = `
+      Compre o medicamento <b>${medName}</b> na <b>${melhorFarmacia.nome}</b>.<br>
+      É a opção mais barata custando <b>R$ ${melhorFarmacia.preco.toFixed(2)}</b>.
+    `;
+    document.getElementById('cot-result-card').style.display = 'block';
+    
+    // Limpa campos de input
+    document.getElementById('cot-name').value = '';
+    rows.forEach((row, i) => {
+      row.querySelector('.ph-name').value = '';
+      row.querySelector('.ph-price').value = '';
+    });
+
+    renderCotations();
+  } catch(e) { toast('Erro ao salvar cotação: ' + e.message, true); }
+}
+
+async function deleteCot(id) {
+  confirm2('Excluir cotação', 'Deseja remover permanentemente este histórico de preço?', async () => {
+    try {
+      await dbDelete('pesquisas_preco', id);
+      toast('✓ Cotação excluída');
+      renderCotations();
+    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
+  });
+}
+
+async function renderCotations() {
+  const cots = await dbGetAll('pesquisas_preco');
+  const el = document.getElementById('cot-history-list');
+  if (!cots.length) {
+    el.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-search-off"></i><p>Nenhuma cotação de preço realizada.</p></div></div>';
+    return;
+  }
+
+  el.innerHTML = '<h3>Histórico de Pesquisas</h3>' + cots.map(c => {
+    // Acha o menor preço do array histórico para aplicar a classe css highlight
+    const minPrice = Math.min(...c.farmacias.map(f => f.preco));
+    
+    return `
+      <div class="card">
+        <div class="med-header" style="justify-content: space-between; display:flex;">
+          <div>
+            <div class="med-name"><i class="ti ti-pill" style="color:var(--amber)"></i> ${c.medicamento}</div>
+            <div class="lm">${fdt(c.dt)}</div>
+          </div>
+          <button class="ibtn" onclick="window.deleteCot('${c.id}')"><i class="ti ti-trash" style="color:var(--red)"></i></button>
+        </div>
+        <div style="margin-top:10px;">
+          ${c.farmacias.map(f => {
+            const isWinner = f.preco === minPrice;
+            return `
+              <div class="cot-item ${isWinner ? 'cot-win' : ''}">
+                <div style="display:flex; justify-content:space-between; font-size:14px;">
+                  <span>${isWinner ? '⭐ <b>' + f.nome + '</b>' : f.nome}</span>
+                  <b>R$ ${f.preco.toFixed(2)}</b>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 function deleteWT(id) {
   confirm2('Excluir registro de peso', 'Tem certeza? Este registro será removido permanentemente.', async () => {
     try {
@@ -686,6 +847,7 @@ function deleteWT(id) {
     } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
   });
 }
+
 function deleteBP(id) {
   confirm2('Excluir medição de pressão', 'Tem certeza? Este registro será removido permanentemente.', async () => {
     try {
@@ -696,6 +858,7 @@ function deleteBP(id) {
     } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
   });
 }
+
 function deleteGL(id) {
   confirm2('Excluir medição de glicemia', 'Tem certeza? Este registro será removido permanentemente.', async () => {
     try {
@@ -720,7 +883,7 @@ async function updateDash() {
       const l = bps[0];
       document.getElementById('d-sis').textContent = l.sis;
       document.getElementById('d-dia').textContent = l.dia;
-      document.getElementById('d-bp-i').textContent = l.moment + (l.pos ? ' · ' + l.pos : '') + ' · ' + fdt(l.dt);
+      document.getElementById('d-bp-i').textContent = (l.moment || '') + (l.pos ? ' · ' + l.pos : '') + ' · ' + fdt(l.dt);
     } else {
       document.getElementById('d-sis').textContent = '—';
       document.getElementById('d-dia').textContent = '—';
@@ -730,7 +893,7 @@ async function updateDash() {
     if (gls.length) {
       const l = gls[0];
       document.getElementById('d-gl').textContent = l.val;
-      document.getElementById('d-gl-i').textContent = l.moment + ' · ' + fdt(l.dt);
+      document.getElementById('d-gl-i').textContent = (l.moment || '') + ' · ' + fdt(l.dt);
     } else {
       document.getElementById('d-gl').textContent = '—';
       document.getElementById('d-gl-i').textContent = 'Nenhuma medição registrada';
@@ -744,7 +907,7 @@ async function updateDash() {
     if (wts.length) {
       const l = wts[0];
       document.getElementById('d-wt').textContent = l.val;
-      document.getElementById('d-wt-i').textContent = l.moment + ' · ' + fdt(l.dt);
+      document.getElementById('d-wt-i').textContent = (l.moment || '') + ' · ' + fdt(l.dt);
       if (l.imc) {
         const [lbl] = classifyIMC(l.imc);
         document.getElementById('d-imc').textContent = l.imc;
@@ -787,7 +950,9 @@ async function updateDash() {
     renderChart('chart-bp', [...bps].slice(0,10).reverse(), r => r.sis, '#1a56a0', 80, 200);
     renderChart('chart-gl', [...gls].slice(0,10).reverse(), r => r.val, '#1a7a3c', 50, 350);
     renderChart('chart-wt', [...wts].slice(0,10).reverse(), r => r.val, '#0e7a6e', 40, 150);
-  } catch(e) { console.error(e); }
+  } catch (error) {
+    console.error("Erro ao atualizar painel: ", error);
+  }
 }
 
 function renderChart(id, data, getter, color, mn, mx) {
@@ -888,7 +1053,7 @@ async function renderHist() {
 }
 
 /* ════════════════════════════════
-   REMÉDIOS — LÓGICA E MODAL
+   REMÉDIOS — MODAL E GESTÃO
 ════════════════════════════════ */
 function openMedModal(id) {
   medTimes = [];
@@ -998,7 +1163,7 @@ async function saveMed() {
     if (editId) {
       rec.id = editId;
       await dbPut('remedios', rec);
-      toast('✓ Remédio atualizado!');
+      toast('✓ Remédio updated!');
     } else {
       await dbAdd('remedios', rec);
       toast('✓ Remédio cadastrado!');
@@ -1066,7 +1231,7 @@ function closeImgModal() {
 }
 
 /* ════════════════════════════════
-   ATRIBUIÇÃO AO ESCOPO WINDOW (Conserta os gatilhos onclick do HTML)
+   MAPEAMENTO DO ESCOPO GLOBAL WINDOW
 ════════════════════════════════ */
 window.goPage = goPage;
 window.switchHist = switchHist;
@@ -1087,6 +1252,9 @@ window.deleteMed = deleteMed;
 window.openImgModal = openImgModal;
 window.closeImgModal = closeImgModal;
 window.closeConfirm = closeConfirm;
+window.addPharmacyInputRow = addPharmacyInputRow;
+window.saveCotation = saveCotation;
+window.deleteCot = deleteCot;
 
 document.getElementById('confirm-ok').onclick = () => {
   if (confirmCallback) confirmCallback();
@@ -1128,7 +1296,7 @@ document.getElementById('confirm-ok').onclick = () => {
     await openDB();
     document.getElementById('db-dot').style.background = '#1a7a3c';
     document.getElementById('db-txt').textContent = 'Conectado à Nuvem do Firebase ✓';
-    document.getElementById('hdr-sub').textContent = 'Desenvolvido por Rafael Medeiros';
+    document.getElementById('hdr-sub').textContent = 'Pressão, glicemia, peso e remédios';
     await updateDash();
   } catch(e) {
     document.getElementById('db-dot').style.background = '#b02020';
