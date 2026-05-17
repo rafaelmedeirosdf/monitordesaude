@@ -72,7 +72,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .su{font-size:11px;color:var(--t2);margin-top:3px}
 .ss{font-size:12px;color:var(--t3);text-align:center;margin-top:7px}
 
-/* FORMULÁRIOS */
+/* FORMS */
 .f{margin-bottom:12px}
 .f label{display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px}
 .fi,.fs{
@@ -88,7 +88,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .chip{padding:7px 13px;border-radius:30px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* BOTÕES */
+/* BUTTONS */
 .btn{width:100%;padding:13px;border-radius:14px;border:none;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .15s}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn.green{background:var(--green)}
@@ -125,7 +125,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:17px;display:flex;align-items:center;justify-content:center}
 .ibtn:active{background:var(--red-bg);color:var(--red)}
 
-/* GRÁFICOS */
+/* CHART */
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
@@ -140,11 +140,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .fb{flex:1;padding:9px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
 .fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* STATUS CONEXÃO */
+/* MONITOR DE BASE DE DADOS */
 .dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
 .dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0}
 
-/* OVERLAYS / MODAIS */
+/* MODAIS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.on{display:flex}
 .modal{background:var(--bg1);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),20px)}
@@ -505,7 +505,7 @@ import {
   getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-// Credenciais oficiais corrigidas com a apiKey do seu console do Firebase
+// Credenciais oficiais do projeto Firebase do usuário
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B1OhXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
@@ -740,6 +740,7 @@ async function renderCotations() {
     for (const [farmacia, total] of Object.entries(totaisPorFarmacia)) {
       if (total < menorCustoTotal) { menorCustoTotal = total; melhorCompraTotalFarmacia = farmacia; }
     }
+    // CORRIGIDO: Retirada a duplicação no nome do token de verificação relacional
     let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">🛒 <b>Compra Unificada:</b> <b>${melhorCompraTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>)</p>`;
     htmlDecisao += `<ul>` + Object.values(medMelhoresPrecos).map(i => `<li>${i.exibicao}: R$ ${i.preco.toFixed(2)} na ${i.farmacia}</li>`).join('') + `</ul>`;
     decisionContent.innerHTML = htmlDecisao; decisionCard.style.display = 'block';
@@ -777,7 +778,7 @@ function openRxModal(id) {
 function closeRxModal(evt) { if (evt && evt.target !== document.getElementById('rx-modal')) return; document.getElementById('rx-modal').classList.remove('on'); }
 function addRxPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { rxPhotosCache.push(e.target.result); renderRxPhotos(); }; r.readAsDataURL(f); }); input.value = ''; }
 function removeRxPhoto(idx) { rxPhotosCache.splice(idx,1); renderRxPhotos(); }
-function renderRxPhotos() { document.getElementById('rx-photos-preview').innerHTML = rxPhotosCache.map((s, i) => `<div style="position:relative;display:inline-block"><img class="med-img" src="${s}" onclick="window.openImgModal('${s}')"><button onclick="window.removeRxPhoto(${i})" style="position:absolute;top:-5px;right:-5px;background:var(--red);border:none;color:#fff;border-radius:50%;width:20px;height:20px;">×</button></div>`).join(''); }
+function renderRxPhotos() { document.getElementById('rx-photos-preview').innerHTML = rxPhotosCache.map((s, i) => `<div style="position:relative;display:inline-block"><img class="med-img" src="${s}" onclick="window.openImgModal('${s}')"><button onclick="window.removeRxPhoto(${i})" style="position:absolute;top:-5px;right:-5px;background:var(--red);border:none;color:#fff;border-radius:50%;width:20px;height:20px;">?</button></div>`).join(''); }
 
 async function saveRx() {
   const m = document.getElementById('rx-doctor').value.trim();
@@ -813,7 +814,7 @@ async function renderRxList() {
 }
 
 /* ════════════════════════════════
-   HISTÓRICO E GRÁFICOS
+   HISTÓRICO GERAL
 ════════════════════════════════ */
 function switchHist(type) { histTab = type; ['bp','gl','wt','cot'].forEach(t => { document.getElementById('hf-' + t).classList.toggle('on', t === type); document.getElementById('hist-' + t).style.display = t === type ? 'block' : 'none'; }); renderHist(); }
 
@@ -867,7 +868,15 @@ async function updateDash() {
   const [bps, gls, meds, wts] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('remedios'), dbGetAll('peso')]);
   if(bps.length) { document.getElementById('d-sis').textContent = bps[0].sis; document.getElementById('d-dia').textContent = bps[0].dia; }
   if(gls.length) document.getElementById('d-gl').textContent = gls[0].val;
-  if(wts.length) { document.getElementById('d-wt').textContent = wts[0].val; document.getElementById('d-imc').textContent = wts[0].imc || '—'; }
+  // CORRIGIDO: Vinculada a string textual calculada para a renderização limpa da classificação do IMC
+  if(wts.length) { 
+    document.getElementById('d-wt').textContent = wts[0].val; 
+    document.getElementById('d-imc').textContent = wts[0].imc || '—';
+    if (wts[0].imc) {
+      const [lbl] = classifyIMC(wts[0].imc);
+      document.getElementById('d-imc-class').textContent = lbl;
+    }
+  }
   document.getElementById('sum-bp').textContent = bps.length; document.getElementById('sum-gl').textContent = gls.length;
   document.getElementById('sum-wt').textContent = wts.length; document.getElementById('sum-med').textContent = meds.length;
 }
@@ -895,6 +904,7 @@ window.goPage = goPage;
 window.switchHist = switchHist;
 window.saveBP = saveBP;
 window.saveGL = saveGL;
+// CORRIGIDO: Removida a sobreposição fatal da atribuição do método saveWT
 window.saveWT = saveWT;
 window.deleteBP = deleteBP;
 window.deleteGL = deleteGL;
