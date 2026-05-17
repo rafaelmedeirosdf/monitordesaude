@@ -117,6 +117,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ico.med{background:var(--purple-bg);color:var(--purple)}
 .ico.wt{background:var(--teal-bg);color:var(--teal)}
 .ico.cot{background:var(--amber-bg);color:var(--amber)}
+.ico.rx{background:var(--teal-bg);color:var(--teal)}
 .lb{flex:1;min-width:0}
 .lv{font-size:15px;font-weight:700;color:var(--t1)}
 .lm{font-size:12px;color:var(--t3);margin-top:1px}
@@ -375,6 +376,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <div id="pharmacy-history-list"></div>
   </div>
 
+  <div id="pg-rx" class="pg">
+    <button class="btn teal" onclick="window.openRxModal(null)" style="margin-bottom:14px;"><i class="ti ti-file-text"></i> Arquivar Nova Receita de Uso Contínuo</button>
+    <div id="rx-list-container"></div>
+  </div>
+
   <div id="pg-hist" class="pg">
     <div class="frow">
       <button class="fb on" id="hf-bp" onclick="switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
@@ -394,6 +400,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <button class="nb" onclick="goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
     <button class="nb" onclick="goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
     <button class="nb" onclick="goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
+    <button class="nb" onclick="goPage('rx',this)"><i class="ti ti-file-text"></i>Receitas</button>
     <button class="nb" onclick="goPage('cot',this)"><i class="ti ti-search"></i>Cotar</button>
     <button class="nb" onclick="goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
   </nav>
@@ -443,6 +450,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
+<div class="overlay" id="rx-modal" onclick="window.closeRxModal(event)">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="rx-modal-title">Arquivar Receita Médica</span>
+      <button class="modal-close" onclick="window.closeRxModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="rx-edit-id">
+
+    <div class="f"><label>Nome do Médico Emissor *</label><input class="fi" id="rx-doctor" type="text" placeholder="Ex.: Dr. Silva"></div>
+    <div class="f"><label>CRM do Médico</label><input class="fi" id="rx-crm" type="text" placeholder="Ex.: 12345-DF"></div>
+    
+    <div class="fr f">
+      <div><label>Data de Emissão *</label><input class="fi" id="rx-date-issued" type="date"></div>
+      <div>
+        <label>Validade Estimada</label>
+        <select class="fs" id="rx-duration">
+          <option value="6">6 Meses (Uso Contínuo)</option>
+          <option value="12">1 Ano</option>
+          <option value="1">1 Mês (Antibióticos/Controlados)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="f">
+      <label>Medicamentos Inclusos nesta Folha *</label>
+      <input class="fi" id="rx-meds-covered" type="text" placeholder="Ex.: Losartana 50mg, Sinvastatina 20mg">
+    </div>
+
+    <div class="f">
+      <label>Foto Digital da Receita (Bula/Papel) *</label>
+      <div id="rx-photos-preview" class="med-imgs" style="margin-bottom:8px;"></div>
+      <div class="btn-row">
+        <button class="btn ghost" onclick="document.getElementById('rx-photo-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
+        <button class="btn ghost" onclick="document.getElementById('rx-photo-file').click()"><i class="ti ti-photo"></i> Galeria</button>
+      </div>
+      <input type="file" id="rx-photo-cam" accept="image/*" capture="environment" style="display:none" onchange="window.addRxPhoto(this)">
+      <input type="file" id="rx-photo-file" accept="image/*" multiple style="display:none" onchange="window.addRxPhoto(this)">
+    </div>
+
+    <div class="f"><label>Observações da Receita</label><input class="fi" id="rx-obs" type="text" placeholder="Ex.: via original retida, dose dupla..."></div>
+    <button class="btn teal" onclick="window.saveRx()"><i class="ti ti-device-floppy"></i> Arquivar Receita na Nuvem</button>
+  </div>
+</div>
+
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
     <h3 id="confirm-title">Confirmar exclusão</h3>
@@ -482,8 +533,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const dbFirestore = getFirestore(app);
 
-// Variável em cache global para manter a lista de remédios carregados e evitar leituras repetidas no Firebase
 let listagemRemediosCache = [];
+let rxPhotosCache = []; // Armazenamento temporário de imagens em Base64 para receitas
 
 async function openDB() { return true; }
 
@@ -569,9 +620,11 @@ function getNow() {
 
 function fdt(dt) {
   if (!dt) return '—';
-  const d = new Date(dt);
+  // Faz o parsing seguro eliminando a quebra horária se vier apenas YYYY-MM-DD
+  const d = new Date(dt.includes('T') ? dt : dt + 'T12:00:00');
+  if(isNaN(d.getTime())) return dt;
   return d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'}) +
-    ' às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'});
+    (dt.includes('T') ? ' às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) : '');
 }
 
 function toast(msg, err) {
@@ -639,8 +692,9 @@ function goPage(name, btn) {
   if (name === 'home') updateDash();
   if (name === 'hist') renderHist();
   if (name === 'med') renderMeds();
+  // MODIFICADO: Dispara renderização remota da nova aba de receitas ao entrar nela
+  if (name === 'rx') renderRxList();
   if (name === 'cot') {
-    // MODIFICADO: Atualiza o cache e sincroniza os dropdowns de remédios antes de abrir a aba de cotação
     sincronizarRemediosDropdowns().then(() => renderCotations());
   }
 }
@@ -746,14 +800,13 @@ function deleteGL(id) {
 /* ═══════════════════════════════════════════════════════════════════
    MÓDULO DE COTAÇÃO POR FARMÁCIA (DROPDOWN AUTOMÁTICO)
 ═══════════════════════════════════════════════════════════════════ */
-// MODIFICADO: Função auxiliar para ler medicamentos cadastrados e injetar as opções nos seletores dropdown
 async function sincronizarRemediosDropdowns() {
   try {
     listagemRemediosCache = await dbGetAll('remedios');
     const dropdowns = document.querySelectorAll('.med-search-dropdown');
     
     dropdowns.forEach(select => {
-      const valorSelecionado = select.value; // Preserva seleção atual se a linha já existir
+      const valorSelecionado = select.value; 
       select.innerHTML = '<option value="">-- Selecione o Remédio --</option>' + 
         listagemRemediosCache.map(m => `<option value="${m.name}">${m.name} ${m.dose ? `(${m.dose})` : ''}</option>`).join('');
       if(valorSelecionado) select.value = valorSelecionado;
@@ -763,7 +816,6 @@ async function sincronizarRemediosDropdowns() {
   }
 }
 
-// MODIFICADO: Ajustado para gerar novas linhas contendo o dropdown de seleção limpo
 function addMedInputRow() {
   const container = document.getElementById('cot-meds-container');
   const row = document.createElement('div');
@@ -771,7 +823,6 @@ function addMedInputRow() {
   row.style.marginBottom = '8px';
   row.style.alignItems = 'center';
   
-  // Monta a estrutura da linha usando o cache em memória para performance instantânea
   row.innerHTML = `
     <select class="fs med-search-dropdown">
       <option value="">-- Selecione o Remédio --</option>
@@ -792,7 +843,6 @@ async function savePharmacyCotation() {
   const medicamentos = [];
 
   rows.forEach(row => {
-    // MODIFICADO: Captura o valor diretamente da tag <select> em vez de texto digitado
     const dropdown = row.querySelector('.med-search-dropdown');
     const medName = dropdown.value;
     const medPrice = parseFloat(row.querySelector('.med-search-price').value);
@@ -882,7 +932,7 @@ async function renderCotations() {
   }
 
   let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">
-    🛒 <b>Melhor opção para compra unificada:</b> Se quiser comprar tudo no mesmo lugar para economizar tempo, vá à <b>${melhorCompraTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>).
+    🛒 <b>Melhor option para compra unificada:</b> Se quiser comprar tudo no mesmo lugar para economizar tempo, vá à <b>${melhorCompraTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>).
   </p>`;
 
   htmlDecisao += `<div style="margin-top: 12px;"><b>Onde comprar cada medicamento (Economia Máxima):</b></div><ul style="margin-left: 18px; margin-top: 4px;">`;
@@ -928,7 +978,172 @@ async function renderCotations() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PAINEL PRINCIPAL (DASHBOARD)
+   MODULO ADICIONAL: LOGICA COMPLETA DE RECEITAS DE USO CONTINUO (NOVO)
+═══════════════════════════════════════════════════════════════════ */
+function openRxModal(id) {
+  rxPhotosCache = [];
+  document.getElementById('rx-edit-id').value = id || '';
+  document.getElementById('rx-doctor').value = '';
+  document.getElementById('rx-crm').value = '';
+  document.getElementById('rx-meds-covered').value = '';
+  document.getElementById('rx-obs').value = '';
+  document.getElementById('rx-duration').value = '6';
+  
+  // Seta a data de emissão para a data atual no calendário nativo
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById('rx-date-issued').value = hoje;
+  
+  document.getElementById('rx-modal-title').textContent = id ? 'Editar Receita Médica' : 'Arquivar Receita Médica';
+  renderRxPhotos();
+
+  if (id) {
+    dbGet('receitas_uso_continuo', id).then(rx => {
+      if (!rx) return;
+      document.getElementById('rx-doctor').value = rx.medico || '';
+      document.getElementById('rx-crm').value = rx.crm || '';
+      document.getElementById('rx-date-issued').value = rx.dataEmissao || hoje;
+      document.getElementById('rx-duration').value = rx.validadeMeses || '6';
+      document.getElementById('rx-meds-covered').value = rx.medicamentos || '';
+      document.getElementById('rx-obs').value = rx.obs || '';
+      rxPhotosCache = [...(rx.fotos || [])];
+      renderRxPhotos();
+    });
+  }
+  document.getElementById('rx-modal').classList.add('on');
+}
+
+function closeRxModal(evt) {
+  if (evt && evt.target !== document.getElementById('rx-modal')) return;
+  document.getElementById('rx-modal').classList.remove('on');
+}
+
+function addRxPhoto(input) {
+  const files = Array.from(input.files);
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      rxPhotosCache.push(e.target.result);
+      renderRxPhotos();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = '';
+}
+
+function removeRxPhoto(idx) {
+  rxPhotosCache.splice(idx, 1);
+  renderRxPhotos();
+}
+
+function renderRxPhotos() {
+  const el = document.getElementById('rx-photos-preview');
+  if (!rxPhotosCache.length) { el.innerHTML = ''; return; }
+  el.innerHTML = rxPhotosCache.map((src, i) =>
+    `<div style="position:relative;display:inline-block">
+      <img class="med-img" src="${src}" alt="receita" onclick="window.openImgModal('${src}')">
+      <button onclick="window.removeRxPhoto(${i})" style="position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">×</button>
+    </div>`
+  ).join('');
+}
+
+async function saveRx() {
+  const medico = document.getElementById('rx-doctor').value.trim();
+  const medicamentos = document.getElementById('rx-meds-covered').value.trim();
+  const dataEmissao = document.getElementById('rx-date-issued').value;
+  const validadeMeses = parseInt(document.getElementById('rx-duration').value);
+  
+  if (!medico || !medicamentos || !dataEmissao) { 
+    toast('⚠️ Nome do médico, data e medicamentos são obrigatórios', true); 
+    return; 
+  }
+
+  const editId = document.getElementById('rx-edit-id').value;
+  
+  // Cálculo matemático estruturado da data de vencimento da receita
+  const dataVencimento = new Date(dataEmissao + 'T12:00:00');
+  dataVencimento.setMonth(dataVencimento.getMonth() + validadeMeses);
+
+  const payload = {
+    medico,
+    crm: document.getElementById('rx-crm').value.trim(),
+    dataEmissao,
+    validadeMeses,
+    dataVencimento: dataVencimento.toISOString().split('T')[0],
+    medicamentos,
+    obs: document.getElementById('rx-obs').value.trim(),
+    fotos: [...rxPhotosCache],
+    dt: getNow()
+  };
+
+  try {
+    if (editId) {
+      payload.id = editId;
+      await dbPut('receitas_uso_continuo', payload);
+      toast('✓ Receita atualizada com sucesso!');
+    } else {
+      await dbAdd('receitas_uso_continuo', payload);
+      toast('✓ Nova receita arquivada na nuvem!');
+    }
+    document.getElementById('rx-modal').classList.remove('on');
+    await renderRxList();
+  } catch(e) { toast('Erro ao salvar receita: ' + e.message, true); }
+}
+
+function deleteRx(id) {
+  confirm2('Remover Receita Médica', 'Tem certeza? O documento físico e todas as fotos serão apagados.', async () => {
+    try {
+      await dbDelete('receitas_uso_continuo', id);
+      toast('✓ Receita excluída');
+      await renderRxList();
+    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
+  });
+}
+
+async function renderRxList() {
+  const rxs = await dbGetAll('receitas_uso_continuo');
+  const container = document.getElementById('rx-list-container');
+  const hojeStr = new Date().toISOString().split('T')[0];
+
+  if (!rxs.length) {
+    container.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma receita de uso contínuo arquivada.<br>Toque no botão azul acima para escanear.</p></div></div>';
+    return;
+  }
+
+  container.innerHTML = rxs.map(r => {
+    // Avalia o timestamp de validade contra o relógio do sistema para disparar alarmes visuais
+    const expirada = hojeStr > r.dataVencimento;
+    
+    return `
+      <div class="med-card" style="${expirada ? 'border: 1px solid var(--red); background: var(--red-bg);' : ''}">
+        <div class="med-header">
+          <div class="med-ico" style="background: var(--teal-bg); color: var(--teal);"><i class="ti ti-file-text"></i></div>
+          <div style="flex:1;">
+            <div class="med-name">🩺 ${r.medico} ${r.crm ? `<span style="font-size:12px; font-weight:400; color:var(--t2);">CRM: ${r.crm}</span>` : ''}</div>
+            <div class="med-dose" style="font-weight:700; color: var(--teal-t); margin-top:2px;">💊 ${r.medicamentos}</div>
+          </div>
+        </div>
+        <div style="font-size:13px; margin: 8px 2px; line-height:1.4; color: var(--t1);">
+          <div>📅 Emissão: <b>${fdt(r.dataEmissao)}</b></div>
+          <div style="${expirada ? 'color: var(--red); font-weight:bold;' : ''}">
+            ⚠️ Vencimento: <b>${fdt(r.dataVencimento)}</b> ${expirada ? ' (EXPIRADA / RENOVAR)' : ''}
+          </div>
+          ${r.obs ? `<div style="font-size:12px; color:var(--t3); margin-top:4px;">Obs: ${r.obs}</div>` : ''}
+        </div>
+        ${r.fotos && r.fotos.length ? `
+          <div class="med-imgs" style="margin-bottom:10px;">
+            ${r.fotos.map(src => `<img class="med-img" src="${src}" alt="receita" onclick="window.openImgModal('${src}')">`).join('')}
+          </div>` : ''}
+        <div class="med-actions">
+          <button class="med-btn edit" onclick="window.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button>
+          <button class="med-btn del" onclick="window.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAINEL DE GRÁFICOS E CONTADORES
 ═══════════════════════════════════════════════════════════════════ */
 async function updateDash() {
   try {
@@ -1155,7 +1370,7 @@ async function renderHist() {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   MÓDULO DE MEDICAMENTOS NATIVOS
+   SISTEMA DE REMÉDIOS
 ═══════════════════════════════════════════════════════════════════ */
 function openMedModal(id) {
   medTimes = []; medPhotos = [];
@@ -1353,6 +1568,13 @@ window.closeConfirm = closeConfirm;
 window.addMedInputRow = addMedInputRow;
 window.savePharmacyCotation = savePharmacyCotation;
 window.deleteCot = deleteCot;
+// MODIFICADO: Injeta ganchos globais do novo controlador de receitas
+window.openRxModal = openRxModal;
+window.closeRxModal = closeRxModal;
+window.addRxPhoto = addRxPhoto;
+window.removeRxPhoto = removeRxPhoto;
+window.saveRx = saveRx;
+window.deleteRx = deleteRx;
 
 document.getElementById('confirm-ok').onclick = () => {
   if (confirmCallback) confirmCallback();
@@ -1396,10 +1618,11 @@ document.getElementById('confirm-ok').onclick = () => {
     document.getElementById('db-dot').style.background = '#1a7a3c';
     document.getElementById('db-txt').textContent = 'Conectado à Nuvem do Firebase ✓';
     
-    // Alimenta o cache local e os dropdowns na inicialização inicial do app
     await sincronizarRemediosDropdowns();
     await updateDash();
     await renderCotations();
+    // Carrega a lista inicial de receitas em background
+    await renderRxList();
   } catch(e) {
     document.getElementById('db-dot').style.background = '#b02020';
     document.getElementById('db-txt').textContent = 'Erro de sincronização: ' + e.message;
