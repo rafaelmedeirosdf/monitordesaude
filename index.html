@@ -82,7 +82,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 }
 .fi:focus,.fs:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,160,.15)}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
 
 /* CHIPS */
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
@@ -506,7 +505,7 @@ import {
   getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-// Credenciais oficiais corrigidas com a apiKey do seu console do Firebase
+// Credenciais oficiais corrigidas com a apiKey correta do console do seu Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B1OhXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
@@ -814,7 +813,7 @@ async function renderRxList() {
 }
 
 /* ════════════════════════════════
-   HISTÓRICO GERAL
+   HISTÓRICO E GRÁFICOS
 ════════════════════════════════ */
 function switchHist(type) { histTab = type; ['bp','gl','wt','cot'].forEach(t => { document.getElementById('hf-' + t).classList.toggle('on', t === type); document.getElementById('hist-' + t).style.display = t === type ? 'block' : 'none'; }); renderHist(); }
 
