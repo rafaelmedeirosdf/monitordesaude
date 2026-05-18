@@ -105,21 +105,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .lm{font-size:12px;color:var(--t3);margin-top:1px}
 .ln{font-size:11px;color:var(--t2);background:var(--bg2);border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
 .la{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:8px}
-.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:18px;display:flex;align-items:center;justify-content:center}
-.ibtn:active{background:var(--red-bg)}
+.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t2);font-size:18px;display:flex;align-items:center;justify-content:center}
+.ibtn:active{background:var(--bd2)}
 
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
 .blbl{font-size:9px;color:var(--t3)}
 
-.ri{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px;border-bottom:.5px solid var(--bd)}
-.ri:last-child{border-bottom:none}
-.rdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-
-.empty{text-align:center;padding:28px 16px;color:var(--t3)}
-.empty i{font-size:42px;display:block;margin-bottom:9px;opacity:.3}
-.empty p{font-size:14px}
+.sched-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:.5px solid var(--bd)}
+.sched-row:last-child{border-bottom:none}
+.btn-take{background:var(--blue-bg);color:var(--blue-t);border:none;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px}
+.btn-take:active{transform:scale(.95)}
 
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -128,7 +125,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .fb{flex:1;min-width:70px;padding:9px 4px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:12px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
 .fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-.dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
+.dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border Ramédio:.5px solid var(--bd)}
 .dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;transition:background .4s}
 
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
@@ -166,12 +163,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .img-modal img{max-width:95vw;max-height:90vh;border-radius:10px;object-fit:contain}
 .img-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-.sched-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:.5px solid var(--bd)}
-.sched-row:last-child{border-bottom:none}
-
 .smb{background:var(--bg2);border-radius:9px;padding:10px 8px;text-align:center}
 .smv{font-size:20px;font-weight:700;color:var(--t1)}
 .sml{font-size:10px;color:var(--t3);margin-top:2px}
+.empty{text-align:center;padding:20px;color:var(--t3)}
 </style>
 </head>
 <body>
@@ -187,6 +182,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div id="main-content">
      <div id="pg-home" class="pg on">
        <div class="dbs"><div class="dbd" id="db-dot"></div><span id="db-txt">Iniciando conexão...</span></div>
+       
        <div class="card">
          <div class="ct"><i class="ti ti-heart"></i> Última pressão</div>
          <div class="sg">
@@ -195,6 +191,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
          </div>
          <div class="ss" id="d-bp-i">Nenhuma medição registrada</div>
        </div>
+
        <div class="card">
          <div class="ct"><i class="ti ti-droplet"></i> Última glicemia</div>
          <div class="sg one">
@@ -202,6 +199,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
          </div>
          <div class="ss" id="d-gl-i">Nenhuma medição registrada</div>
        </div>
+
        <div class="card">
          <div class="ct"><i class="ti ti-scale"></i> Último peso</div>
          <div class="sg">
@@ -210,13 +208,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
          </div>
          <div class="ss" id="d-wt-i">Nenhuma medição registrada</div>
        </div>
+
        <div class="card">
-         <div class="ct"><i class="ti ti-pill"></i> Remédios de hoje</div>
-         <div id="d-meds-today"><div class="empty" style="padding:8px"><p>Nenhum remédio cadastrado</p></div></div>
+         <div class="ct"><i class="ti ti-checkbox"></i> Tomar Remédios de Hoje</div>
+         <div id="d-meds-today"><div class="empty"><p>Nenhum remédio cadastrado</p></div></div>
        </div>
+
        <div class="card"><div class="ct"><i class="ti ti-chart-bar"></i> Pressão sistólica</div><div class="mchart" id="chart-bp"></div></div>
        <div class="card"><div class="ct"><i class="ti ti-chart-bar"></i> Glicemia</div><div class="mchart" id="chart-gl"></div></div>
        <div class="card"><div class="ct"><i class="ti ti-chart-bar"></i> Peso</div><div class="mchart" id="chart-wt"></div></div>
+       
        <div class="card">
          <div class="ct"><i class="ti ti-database"></i> Totais no banco de dados</div>
          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -235,7 +236,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
            <div><label>Sistólica (mmHg) *</label><input class="fi" id="bp-sis" type="number" inputmode="numeric" placeholder="120"></div>
            <div><label>Diastólica (mmHg) *</label><input class="fi" id="bp-dia" type="number" inputmode="numeric" placeholder="80"></div>
          </div>
-         <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-pulse" type="number" inputmode="numeric" placeholder="70 — opcional"></div>
+         <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-pulse" type="number" inputmode="numeric" placeholder="70"></div>
          <div class="f"><label>Momento</label>
            <div class="chips">
              <button class="chip on" data-bpm="Antes do café">Antes café</button>
@@ -252,7 +253,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
              <button class="chip" data-bpp="Em pé">Em pé</button>
            </div>
          </div>
-         <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso, após exercício..."></div>
+         <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso..."></div>
          <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
          <button class="btn" onclick="W.saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
        </div>
@@ -268,17 +269,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
              <button class="chip" data-glm="Pré-refeição">Pré-refeição</button>
              <button class="chip" data-glm="Pós-refeição">Pós-refeição</button>
              <button class="chip" data-glm="Antes dormir">Antes dormir</button>
-             <button class="chip" data-glm="Madrugada">Madrugada</button>
            </div>
          </div>
          <div class="f"><label>Tipo de medição</label>
            <div class="chips">
              <button class="chip on" data-glt="Glicosímetro">Glicosímetro</button>
              <button class="chip" data-glt="Laboratório">Laboratório</button>
-             <button class="chip" data-glt="Sensor CGM">Sensor CGM</button>
            </div>
          </div>
-         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: antes da insulina, após caminhada..."></div>
+         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: em repouso..."></div>
          <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
          <button class="btn green" onclick="W.saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
        </div>
@@ -301,10 +300,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
              <button class="chip on" data-wtm="Manhã em jejum">Jejum manhã</button>
              <button class="chip" data-wtm="Antes do almoço">Antes almoço</button>
              <button class="chip" data-wtm="À noite">À noite</button>
-             <button class="chip" data-wtm="Outro">Outro</button>
            </div>
          </div>
-         <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: após academia, em jejum..."></div>
+         <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: em jejum..."></div>
          <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
          <button class="btn teal" onclick="W.saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
        </div>
@@ -326,7 +324,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
          <input type="hidden" id="cot-edit-id">
          <div class="f">
            <label>Nome da Farmácia *</label>
-           <input class="fi" id="cot-pharmacy-name" type="text" placeholder="Ex.: Drogaria São Paulo, Pacheco...">
+           <input class="fi" id="cot-pharmacy-name" type="text" placeholder="Ex.: Drogaria São Paulo...">
          </div>
          <div class="f">
            <label>Data e Hora da Cotação *</label>
@@ -357,11 +355,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
          <button class="fb" id="hf-gl" onclick="W.switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
          <button class="fb" id="hf-wt" onclick="W.switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
          <button class="fb" id="hf-cot" onclick="W.switchHist('cot')"><i class="ti ti-search"></i> Cotações</button>
+         <button class="fb" id="hf-intake" onclick="W.switchHist('intake')"><i class="ti ti-checkbox"></i> Tomadas</button>
        </div>
        <div id="hist-bp"></div>
        <div id="hist-gl" style="display:none"></div>
        <div id="hist-wt" style="display:none"></div>
        <div id="hist-cot" style="display:none"></div>
+       <div id="hist-intake" style="display:none"></div>
      </div>
 
      <nav class="bnav">
@@ -389,7 +389,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div><label>Dosagem</label><input class="fi" id="med-dose" type="text" placeholder="Ex.: 50mg"></div>
       <div><label>Forma</label>
         <select class="fs" id="med-form">
-          <option>Comprimido</option><option>Cápsula</option><option>Líquido</option><option>Outro</option>
+          <option>Comprimido</option><option>Cápsula</option><option>Líquido</option>
         </select>
       </div>
     </div>
@@ -402,17 +402,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <button class="btn" style="width:auto;padding:11px 16px" onclick="W.addTime()"><i class="ti ti-plus"></i></button>
       </div>
     </div>
-    <div class="f">
-      <label>Fotos</label>
-      <div id="med-photos-preview" class="med-imgs" style="margin-bottom:8px"></div>
-      <div class="btn-row">
-        <button class="btn ghost" onclick="document.getElementById('photo-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
-        <button class="btn ghost" onclick="document.getElementById('photo-file').click()"><i class="ti ti-photo"></i> Galeria</button>
-      </div>
-      <input type="file" id="photo-cam" accept="image/*" capture="environment" style="display:none" onchange="W.addPhoto(this)">
-      <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="W.addPhoto(this)">
-    </div>
-    <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Observações..."></div>
+    <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Uso contínuo..."></div>
     <button class="btn purple" onclick="W.saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
   </div>
 </div>
@@ -430,21 +420,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <div><label>Data de Emissão *</label><input class="fi" id="rx-date" type="date"></div>
       <div><label>Validade</label>
         <select class="fs" id="rx-months">
-          <option value="6">6 meses</option><option value="12">1 ano</option><option value="1">1 mês</option>
+          <option value="6">6 meses</option><option value="12">1 ano</option>
         </select>
       </div>
     </div>
-    <div class="f"><label>Medicamentos inclusos *</label><input class="fi" id="rx-meds" type="text" placeholder="Ex.: Losartana, Metformina"></div>
-    <div class="f">
-      <label>Foto da Receita</label>
-      <div id="rx-photos-preview" class="med-imgs" style="margin-bottom:8px"></div>
-      <div class="btn-row">
-        <button class="btn ghost" onclick="document.getElementById('rx-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
-        <button class="btn ghost" onclick="document.getElementById('rx-file').click()"><i class="ti ti-photo"></i> Galeria</button>
-      </div>
-      <input type="file" id="rx-cam" accept="image/*" capture="environment" style="display:none" onchange="W.addRxPhoto(this)">
-      <input type="file" id="rx-file" accept="image/*" multiple style="display:none" onchange="W.addRxPhoto(this)">
-    </div>
+    <div class="f"><label>Medicamentos inclusos *</label><input class="fi" id="rx-meds" type="text" placeholder="Ex.: Losartana"></div>
     <div class="f"><label>Observações</label><input class="fi" id="rx-obs" type="text" placeholder="Ex.: via original retida..."></div>
     <button class="btn teal" onclick="W.saveRx()"><i class="ti ti-device-floppy"></i> Arquivar na Nuvem</button>
   </div>
@@ -453,7 +433,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
     <h3 id="confirm-title">Confirmar exclusão</h3>
-    <p id="confirm-msg">Tem certeza? Esta ação não pode ser desfeita.</p>
+    <p id="confirm-msg">Tem certeza?</p>
     <div class="confirm-btns">
       <button class="cbtn cancel" onclick="W.closeConfirm()">Cancelar</button>
       <button class="cbtn confirm" id="confirm-ok">Excluir</button>
@@ -461,16 +441,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
-<div class="img-modal" id="img-modal" onclick="W.closeImg()">
-  <img id="img-src" src="" alt="">
-  <button class="img-close" onclick="W.closeImg()"><i class="ti ti-x"></i></button>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B10hXyPV4",
@@ -493,16 +468,15 @@ let bpMoment = 'Antes do café', bpPos = 'Sentado';
 let glMoment = 'Jejum', glType = 'Glicosímetro';
 let wtMoment = 'Manhã em jejum';
 let medTimes = [], medPhotos = [];
-let rxPhotos = [];
 let confirmCb = null;
 
 function getNow() { const n = new Date(), p = x => String(x).padStart(2,'0'); return `${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`; }
 function fdt(dt) { if (!dt) return '—'; try { const d = new Date(dt.includes('T') ? dt : dt + 'T12:00:00'); return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}) + (dt.includes('T') ? ' às ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : ''); } catch(e) { return dt; } }
 function toast(msg, err) { const t = document.getElementById('toast'); t.textContent = msg; t.style.background = err ? '#6e0e0e' : '#1a1f2e'; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 3000); }
-function classifyBP(s, d) { if (s < 120 && d < 80) return ['Normal','b-normal']; if (s < 130 && d < 80) return ['Elevada','b-alerta']; if (s < 140 || d < 90) return ['Hipert. 1','b-alto']; return ['Hipert. 2','b-alto']; }
-function classifyGL(v, m) { if (v < 70) return ['Hipoglicemia','b-baixo']; if (m === 'Jejum') { if (v < 100) return ['Normal','b-normal']; if (v < 126) return ['Pré-diabetes','b-alerta']; return ['Diabetes','b-alto']; } if (v < 140) return ['Normal','b-normal']; if (v < 200) return ['Atenção','b-alerta']; return ['Alta','b-alto']; }
+function classifyBP(s, d) { if (s < 120 && d < 80) return ['Normal', 'b-normal']; if (s < 130 && d < 80) return ['Elevada', 'b-alerta']; if (s < 140 || d < 90) return ['Hipert. 1', 'b-alto']; return ['Hipert. 2', 'b-alto']; }
+function classifyGL(v, m) { if (v < 70) return ['Hipoglicemia', 'b-baixo']; if (m === 'Jejum') { if (v < 100) return ['Normal', 'b-normal']; if (v < 126) return ['Pré-diabetes', 'b-alerta']; return ['Diabetes', 'b-alto']; } if (v < 140) return ['Normal', 'b-normal']; if (v < 200) return ['Atenção', 'b-alerta']; return ['Alta', 'b-alto']; }
 function calcIMC(p, a) { return a >= 100 ? +(p / ((a/100)**2)).toFixed(1) : null; }
-function classifyIMC(imc) { if (imc < 18.5) return ['Abaixo do peso','b-baixo']; if (imc < 25) return ['Normal','b-normal']; if (imc < 30) return ['Sobrepeso','b-alerta']; if (imc < 35) return ['Obesidade 1','b-alto']; if (imc < 40) return ['Obesidade 2','b-alto']; return ['Obesidade 3','b-alto']; }
+function classifyIMC(imc) { if (imc < 18.5) return ['Abaixo do peso', 'b-baixo']; if (imc < 25) return ['Normal', 'b-normal']; if (imc < 30) return ['Sobrepeso', 'b-alerta']; if (imc < 35) return ['Obesidade 1', 'b-alto']; if (imc < 40) return ['Obesidade 2', 'b-alto']; return ['Obesidade 3', 'b-alto']; }
 
 function renderChart(id, data, getter, color, mn, mx) {
   const wrap = document.getElementById(id); if (!wrap) return;
@@ -519,21 +493,15 @@ function setupChips(sel, setter) { document.querySelectorAll(sel).forEach(btn =>
 
 function confirm2(title, msg, cb) { document.getElementById('confirm-title').textContent = title; document.getElementById('confirm-msg').textContent = msg; confirmCb = cb; document.getElementById('confirm-overlay').classList.add('on'); }
 function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('on'); confirmCb = null; }
-document.getElementById('confirm-ok').onclick = () => { if (confirmCb) confirmCb(); closeConfirm(); };
 
 function goPage(name, btn) {
   document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-  const target = document.getElementById('pg-' + name);
-  if (target) target.classList.add('on');
-  if (btn) btn.classList.add('on');
-  if (name === 'home') updateDash();
-  if (name === 'hist') renderHist();
-  if (name === 'med') renderMeds();
-  if (name === 'rx') renderRx();
+  const target = document.getElementById('pg-' + name); if (target) target.classList.add('on'); if (btn) btn.classList.add('on');
+  if (name === 'home') updateDash(); if (name === 'hist') renderHist(); if (name === 'med') renderMeds(); if (name === 'rx') renderRx();
   if (name === 'cot') { window.resetCotForm(); sincronizarRemediosDropdowns().then(() => renderCotations()); }
 }
-function switchHist(type) { ['bp','gl','wt','cot'].forEach(t => { const el = document.getElementById('hf-'+t); if(el) el.classList.toggle('on', t===type); const p = document.getElementById('hist-'+t); if(p) p.style.display = t===type ? 'block' : 'none'; }); renderHist(); }
+function switchHist(type) { ['bp','gl','wt','cot','intake'].forEach(t => { const el = document.getElementById('hf-'+t); if(el) el.classList.toggle('on', t===type); const p = document.getElementById('hist-'+t); if(p) p.style.display = t===type ? 'block' : 'none'; }); renderHist(); }
 
 async function saveBP() {
   const s = parseInt(document.getElementById('bp-sis').value); const d = parseInt(document.getElementById('bp-dia').value); const pulse = document.getElementById('bp-pulse').value; const note = document.getElementById('bp-note').value.trim(); const dt = document.getElementById('bp-dt').value || getNow();
@@ -557,40 +525,7 @@ async function saveWT() {
 }
 function deleteWT(id) { confirm2('Excluir peso','Remover permanentemente?', async () => { await dbDelete('peso', id); toast('✓ Excluído'); renderHist(); updateDash(); }); }
 
-/* ═══ MOTOR DE COTAÇÃO POR FARMÁCIA ═══ */
-async function sincronizarRemediosDropdowns() {
-  try {
-    listagemRemediosCache = await dbGetAll('remedios');
-    const dropdowns = document.querySelectorAll('.med-search-dropdown');
-    dropdowns.forEach(select => {
-      const val = select.value;
-      select.innerHTML = '<option value="">-- Selecione o Remédio --</option>' + listagemRemediosCache.map(m => `<option value="${m.name}">${m.name} ${m.dose ? `(${m.dose})` : ''}</option>`).join('');
-      if(val) select.value = val;
-    });
-  } catch(e) { console.error(e); }
-}
-function addMedInputRow(medName = '', medPrice = '') {
-  const container = document.getElementById('cot-meds-container'); const row = document.createElement('div'); row.className = 'fr f'; row.style.marginBottom = '8px'; row.style.alignItems = 'center';
-  row.innerHTML = `
-    <select class="fs med-search-dropdown"><option value="">-- Selecione o Remédio --</option>${listagemRemediosCache.map(m => `<option value="${m.name}" ${m.name.toLowerCase() === medName.toLowerCase() ? 'selected' : ''}>${m.name} ${m.dose ? `(${m.dose})` : ''}</option>`).join('')}</select>
-    <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço" step="0.01" value="${medPrice}">
-  `;
-  container.appendChild(row);
-}
-function resetCotForm() {
-  document.getElementById('cot-edit-id').value = ''; document.getElementById('cot-pharmacy-name').value = ''; document.getElementById('cot-dt').value = getNow(); document.getElementById('cot-form-title').textContent = 'Registrar Preços por Farmácia';
-  document.getElementById('cot-btn-container').innerHTML = `<button class="btn amber" onclick="W.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>`;
-  document.getElementById('cot-meds-container').innerHTML = `<label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label><div class="fr f" style="margin-bottom: 8px; align-items: center;"><select class="fs med-search-dropdown"><option value="">Carregando...</option></select><input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço" step="0.01"></div>`;
-}
-window.openEditCotation = function(id) {
-  dbGet('cotacoes_farmacia', id).then(rec => {
-    if (!rec) return;
-    document.getElementById('cot-edit-id').value = rec.id; document.getElementById('cot-pharmacy-name').value = rec.farmacia || ''; document.getElementById('cot-dt').value = rec.dt || getNow(); document.getElementById('cot-form-title').textContent = '✏️ Alterar Cotação';
-    document.getElementById('cot-btn-container').innerHTML = `<button class="btn purple" onclick="W.savePharmacyCotation()"><i class="ti ti-edit"></i> Confirmar Alteração</button><button class="btn ghost" onclick="W.resetCotForm(); W.renderCotations();">Cancelar</button>`;
-    const container = document.getElementById('cot-meds-container'); container.innerHTML = `<label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>`;
-    rec.items.forEach(item => addMedInputRow(item.nomeExibicao, item.preco)); sincronizarRemediosDropdowns();
-  });
-};
+/* ═══ MÓDULO COTAÇÃO ═══ */
 async function savePharmacyCotation() {
   const name = document.getElementById('cot-pharmacy-name').value.trim(); const dt = document.getElementById('cot-dt').value || getNow(); const editId = document.getElementById('cot-edit-id').value;
   if (!name) { toast('⚠️ Informe a farmácia', true); return; }
@@ -616,158 +551,121 @@ async function renderCotations() {
   historyEl.innerHTML = records.map(rec => { const soma = rec.items.reduce((a, c) => a + c.preco, 0); const ativa = rec.dt && rec.dt.split('T')[0] === targetDate; return `<div class="card" style="${ativa?'border-left:4px solid var(--blue);':''}"><div style="display:flex;justify-content:space-between;"><div><b>🏪 ${rec.farmacia}</b><div class="lm">${fdt(rec.dt)}</div></div><div><button class="ibtn" style="color:var(--blue)" onclick="window.openEditCotation('${rec.id}')"><i class="ti ti-edit"></i></button><button class="ibtn" onclick="W.deleteCot('${rec.id}')"><i class="ti ti-trash"></i></button></div></div><div style="margin-top:6px;">${rec.items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:13px;"><span>${i.nomeExibicao}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('')}<b>Total: R$ ${soma.toFixed(2)}</b></div></div>`; }).join('');
 }
 
-/* ═══ ARQUIVAMENTO DE RECEITAS MÉDICAS (SESSÃO FIXADA) ═══ */
-function openRxModal(id) {
-  rxPhotos = []; document.getElementById('rx-edit-id').value = id||''; document.getElementById('rx-modal-title').textContent = id ? 'Editar receita' : 'Arquivar Receita';
-  ['rx-doctor','rx-crm','rx-meds','rx-obs'].forEach(i => document.getElementById(i).value=''); document.getElementById('rx-date').value = new Date().toISOString().split('T')[0]; document.getElementById('rx-months').value = '6';
-  renderRxPhotosEl();
-  if (id) {
-    dbGet('receitas_uso_continuo', id).then(rx => {
-      if (!rx) return;
-      document.getElementById('rx-doctor').value = rx.medico||''; document.getElementById('rx-crm').value = rx.crm||''; document.getElementById('rx-date').value = rx.dataEmissao||''; document.getElementById('rx-months').value = rx.validadeMeses||'6'; document.getElementById('rx-meds').value = rx.medicamentos||''; document.getElementById('rx-obs').value = rx.obs||'';
-      rxPhotos = [...(rx.fotos||[])]; renderRxPhotosEl();
-    });
-  }
-  document.getElementById('rx-modal').classList.add('on');
+/* ═══ MÓDULO TOMADA REGISTRADA (NOVA SOLICITAÇÃO) ═══ */
+async function registrarTomada(nome, dose) {
+  const payload = { nome, dose, dt: getNow() };
+  try {
+    await dbAdd('historico_tomadas', payload);
+    toast(`✓ Ingestão de ${nome} registrada!`);
+    updateDash();
+  } catch(e) { toast('Erro ao registrar: ' + e.message, true); }
 }
-function closeRxModal() { document.getElementById('rx-modal').classList.remove('on'); }
-function addRxPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { rxPhotos.push(e.target.result); renderRxPhotosEl(); }; r.readAsDataURL(f); }); input.value=''; }
-function removeRxPhoto(i) { rxPhotos.splice(i,1); renderRxPhotosEl(); }
-function renderRxPhotosEl() { document.getElementById('rx-photos-preview').innerHTML = rxPhotos.map((s,i) => `<div style="position:relative;display:inline-block"><img class="med-img" src="${s}" onclick="W.openImg('${s}')"><button onclick="W.removeRxPhoto(${i})" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;line-height:1">×</button></div>`).join(''); }
+function deleteIntake(id) { confirm2('Excluir histórico de tomada?', 'O registro de horário será apagado.', async () => { await dbDelete('historico_tomadas', id); toast('✓ Removido'); renderHist(); }); }
+
+/* RECEITAS (VINCULADO À COLEÇÃO DE PRODUÇÃO) */
 async function saveRx() {
-  const doctor = document.getElementById('rx-doctor').value.trim(); const meds = document.getElementById('rx-meds').value.trim(); const dE = document.getElementById('rx-date').value; if (!doctor||!meds||!dE) { toast('⚠️ Preencha os campos obrigatórios',true); return; }
+  const doctor = document.getElementById('rx-doctor').value.trim(); const meds = document.getElementById('rx-meds').value.trim(); const dE = document.getElementById('rx-date').value; if (!doctor||!meds||!dE) { toast('⚠️ Preencha os campos obrigatórios', true); return; }
   const vM = parseInt(document.getElementById('rx-months').value); const dV = new Date(dE+'T12:00:00'); dV.setMonth(dV.getMonth()+vM); const editId = document.getElementById('rx-edit-id').value;
-  const rec = { medico: doctor, crm:document.getElementById('rx-crm').value.trim(), dataEmissao:dE, validadeMeses:vM, dataVencimento:dV.toISOString().split('T')[0], medicamentos:meds, obs:document.getElementById('rx-obs').value.trim(), fotos:[...rxPhotos], dt:getNow() };
-  try { if (editId) { rec.id=editId; await dbPut('receitas_uso_continuo',rec); toast('✓ Receita atualizada!'); } else { await dbAdd('receitas_uso_continuo',rec); toast('✓ Receita arquivada!'); } closeRxModal(); renderRx(); } catch(e) { toast('Erro: '+e.message,true); }
+  const rec = { medico: doctor, crm:document.getElementById('rx-crm').value.trim(), dataEmissao:dE, validadeMeses:vM, dataVencimento:dV.toISOString().split('T')[0], medicamentos: meds, obs:document.getElementById('rx-obs').value.trim(), dt:getNow() };
+  try { if (editId) { rec.id=editId; await dbPut('receitas_uso_continuo',rec); toast('✓ Receita alterada!'); } else { await dbAdd('receitas_uso_continuo',rec); toast('✓ Receita salva!'); } closeRxModal(); renderRx(); } catch(e) { toast('Erro: '+e.message, true); }
 }
-function deleteRx(id) { confirm2('Excluir receita','Remover permanentemente?', async () => { await dbDelete('receitas_uso_continuo',id); toast('✓ Receita excluída'); renderRx(); }); }
+function deleteRx(id) { confirm2('Excluir receita','Remover permanentemente?', async () => { await dbDelete('receitas_uso_continuo',id); toast('✓ Excluída'); renderRx(); }); }
 async function renderRx() {
   const rxs = await dbGetAll('receitas_uso_continuo'); const el = document.getElementById('rx-list'); const hoje = new Date().toISOString().split('T')[0];
-  if (!rxs.length) { el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-file-text"></i><p>Nenhuma receita arquivada na nuvem.</p></div></div>'; return; }
+  if (!rxs.length) { el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-file-text"></i><p>Nenhuma receita encontrada.</p></div></div>'; return; }
   el.innerHTML = rxs.map(r => {
     const exp = hoje > (r.dataVencimento||'');
     return `<div class="med-card" style="${exp?'border:1.5px solid var(--red); background:var(--red-bg);':''}">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div><div style="font-size:16px;font-weight:700">🩺 Dr(a). ${r.medico}</div>${r.crm?`<div style="font-size:12px;color:var(--t3)">CRM: ${r.crm}</div>`:''}</div>${exp?`<span class="badge b-alto">Vencida</span>`:`<span class="badge b-normal">Válida</span>`}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div><div style="font-size:16px;font-weight:700">🩺 Dr(a). ${r.medico}</div></div>${exp?`<span class="badge b-alto">Vencida</span>`:`<span class="badge b-normal">Válida</span>`}</div>
       <div style="font-size:13px;color:var(--teal);margin-bottom:4px;font-weight:700">💊 ${r.medicamentos}</div>
       <div style="font-size:12px;color:var(--t3)">Emissão: ${fdt(r.dataEmissao)} · Vence: <b style="${exp?'color:var(--red)':''}">${fdt(r.dataVencimento)}</b></div>
-      ${r.obs?`<div style="font-size:12px;color:var(--t3);margin-top:4px">${r.obs}</div>`:''}
-      ${r.fotos&&r.fotos.length?`<div class="med-imgs">${r.fotos.map(s=>`<img class="med-img" src="${s}" onclick="W.openImg('${s}')">`).join('')}</div>`:''}
       <div class="med-actions"><button class="med-btn edit" onclick="W.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button><button class="med-btn del" onclick="W.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button></div>
     </div>`;
   }).join('');
 }
 
-/* ═══════════════════════════════
-   REMÉDIOS DIÁRIOS
-═══════════════════════════════ */
-function openMedModal(id) {
-  medTimes = []; medPhotos = []; document.getElementById('med-edit-id').value = id || ''; document.getElementById('med-modal-title').textContent = id ? 'Editar remédio' : 'Novo remédio';
-  ['med-name','med-dose','med-instr','med-obs'].forEach(i => document.getElementById(i).value=''); document.getElementById('med-form').value = 'Comprimido'; renderMedTimes(); renderMedPhotosEl();
-  if (id) { dbGet('remedios', id).then(m => { if (!m) return; document.getElementById('med-name').value = m.name||''; document.getElementById('med-dose').value = m.dose||''; document.getElementById('med-instr').value = m.instr||''; document.getElementById('med-obs').value = m.obs||''; document.getElementById('med-form').value = m.form||'Comprimido'; medTimes = [...(m.times||[])]; medPhotos = [...(m.photos||[])]; renderMedTimes(); renderMedPhotosEl(); }); }
-  document.getElementById('med-modal').classList.add('on');
-}
-function closeMedModal() { document.getElementById('med-modal').classList.remove('on'); }
-function addTime() { const t = document.getElementById('new-time').value; if (!t || medTimes.includes(t)) return; medTimes.push(t); medTimes.sort(); renderMedTimes(); document.getElementById('new-time').value = ''; }
-function removeTime(t) { medTimes = medTimes.filter(x => x !== t); renderMedTimes(); }
-function renderMedTimes() { document.getElementById('times-list').innerHTML = medTimes.map(t => `<span class="med-time-tag"><i class="ti ti-clock" style="font-size:12px;margin-right:3px"></i>${t}<button onclick="W.removeTime('${t}')" style="background:none;border:none;cursor:pointer;color:inherit;font-size:14px;margin-left:4px;padding:0;line-height:1">×</button></span>`).join(''); }
-function addPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { medPhotos.push(e.target.result); renderMedPhotosEl(); }; r.readAsDataURL(f); }); input.value=''; }
-function removePhoto(i) { medPhotos.splice(i,1); renderMedPhotosEl(); }
-function renderMedPhotosEl() { document.getElementById('med-photos-preview').innerHTML = medPhotos.map((s,i) => `<div style="position:relative;display:inline-block"><img class="med-img" src="${s}" onclick="W.openImg('${s}')"><button onclick="W.removePhoto(${i})" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;line-height:1">×</button></div>`).join(''); }
+/* REMÉDIOS E CHECAGEM */
 async function saveMed() {
-  const name = document.getElementById('med-name').value.trim(); if (!name) { toast('⚠️ Informe o nome do remédio',true); return; }
-  const editId = document.getElementById('med-edit-id').value; const rec = { name, dose:document.getElementById('med-dose').value.trim(), form:document.getElementById('med-form').value, instr:document.getElementById('med-instr').value.trim(), obs:document.getElementById('med-obs').value.trim(), times:[...medTimes], photos:[...medPhotos], dt:getNow() };
-  try { if (editId) { rec.id = editId; await dbPut('remedios',rec); toast('✓ Remédio atualizado!'); } else { await dbAdd('remedios',rec); toast('✓ Remédio salvo!'); } closeMedModal(); renderMeds(); updateDash(); } catch(e) { toast('Erro: '+e.message,true); }
+  const name = document.getElementById('med-name').value.trim(); if (!name) { toast('⚠️ Nome obrigatório', true); return; }
+  const editId = document.getElementById('med-edit-id').value; const rec = { name, dose:document.getElementById('med-dose').value.trim(), form:document.getElementById('med-form').value, instr:document.getElementById('med-instr').value.trim(), obs:document.getElementById('med-obs').value.trim(), times:[...medTimes], dt:getNow() };
+  try { if (editId) { rec.id = editId; await dbPut('remedios',rec); toast('✓ Atualizado!'); } else { await dbAdd('remedios',rec); toast('✓ Cadastrado!'); } closeMedModal(); renderMeds(); updateDash(); } catch(e) { toast('Erro: '+e.message, true); }
 }
-async function deleteMed(id) { confirm2('Excluir remédio','Remover permanentemente?', async () => { await dbDelete('remedios',id); toast('✓ Remédio excluído'); renderMeds(); updateDash(); }); }
+async function deleteMed(id) { confirm2('Excluir remédio','Remover?', async () => { await dbDelete('remedios',id); toast('✓ Excluído'); renderMeds(); updateDash(); }); }
 async function renderMeds() {
-  const meds = await dbGetAll('remedios'); const el = document.getElementById('med-list'); if (!meds.length) { el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum remédio cadastrado</p></div></div>'; return; }
-  el.innerHTML = meds.map(m => `<div class="med-card"><div class="med-header"><div class="med-ico"><i class="ti ti-pill"></i></div><div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose,m.form].filter(Boolean).join(' · ')}</div></div></div>${m.times&&m.times.length?`<div class="med-times">${m.times.map(t=>`<span class="med-time-tag"><i class="ti ti-clock" style="font-size:11px;margin-right:3px"></i>${t}</span>`).join('')}</div>`:''}${m.instr?`<div style="font-size:13px;color:var(--t2);margin-bottom:6px"><i class="ti ti-info-circle" style="font-size:12px;margin-right:4px"></i>${m.instr}</div>`:''}${m.obs?`<div style="font-size:12px;color:var(--t3);margin-bottom:6px">${m.obs}</div>`:''}${m.photos&&m.photos.length?`<div class="med-imgs">${m.photos.map(s=>`<img class="med-img" src="${s}" onclick="W.openImg('${s}')">`).join('')}</div>`:''}<div class="med-actions"><button class="med-btn edit" onclick="W.openMedModal('${m.id}')"><i class="ti ti-edit"></i> Editar</button><button class="med-btn del" onclick="W.deleteMed('${m.id}')"><i class="ti ti-trash"></i> Excluir</button></div></div>`).join('');
+  const meds = await dbGetAll('remedios'); const el = document.getElementById('med-list'); if (!meds.length) { el.innerHTML='<div class="card"><div class="empty"><p>Nenhum remédio cadastrado</p></div></div>'; return; }
+  el.innerHTML = meds.map(m => `<div class="med-card"><div class="med-header"><div class="med-ico"><i class="ti ti-pill"></i></div><div><div class="med-name">${m.name}</div><div class="med-dose">${m.dose||''}</div></div></div><div class="med-actions"><button class="med-btn edit" onclick="W.openMedModal('${m.id}')">Editar</button><button class="med-btn del" onclick="W.deleteMed('${m.id}')">Excluir</button></div></div>`).join('');
 }
 
-/* ═══════════════════════════════
-   MÓDULO DE ATUALIZAÇÃO DO DASHBOARD
-═══════════════════════════════ */
 async function updateDash() {
   const [bps, gls, wts, meds] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('remedios')]);
-  if (bps.length) { const l = bps[0]; document.getElementById('d-sis').textContent = l.sis; document.getElementById('d-dia').textContent = l.dia; document.getElementById('d-bp-i').textContent = (l.moment||'') + (l.pos?' · '+l.pos:'') + ' · ' + fdt(l.dt); }
-  if (gls.length) { const l = gls[0]; document.getElementById('d-gl').textContent = l.val; document.getElementById('d-gl-i').textContent = (l.moment||'') + ' · ' + fdt(l.dt); }
-  if (wts.length) { const l = wts[0]; document.getElementById('d-wt').textContent = l.val; document.getElementById('d-wt-i').textContent = (l.moment||'') + ' · ' + fdt(l.dt); if (l.imc) { const [lbl] = classifyIMC(l.imc); document.getElementById('d-imc').textContent = l.imc; document.getElementById('d-imc-class').textContent = lbl; } }
+  if (bps.length) { const l = bps[0]; document.getElementById('d-sis').textContent = l.sis; document.getElementById('d-dia').textContent = l.dia; document.getElementById('d-bp-i').textContent = fdt(l.dt); }
+  if (gls.length) { const l = gls[0]; document.getElementById('d-gl').textContent = l.val; document.getElementById('d-gl-i').textContent = fdt(l.dt); }
+  if (wts.length) { const l = wts[0]; document.getElementById('d-wt').textContent = l.val; document.getElementById('d-imc').textContent = l.imc || '—'; if (l.imc) document.getElementById('d-imc-class').textContent = classifyIMC(l.imc)[0]; }
   
   document.getElementById('sum-bp').textContent = bps.length; document.getElementById('sum-gl').textContent = gls.length;
   document.getElementById('sum-wt').textContent = wts.length; document.getElementById('sum-med').textContent = meds.length;
   
   const todayEl = document.getElementById('d-meds-today'); const allTimes = [];
   meds.forEach(m => (m.times||[]).forEach(t => allTimes.push({time:t, name:m.name, dose:m.dose}))); allTimes.sort((a,b) => a.time.localeCompare(b.time));
-  todayEl.innerHTML = allTimes.length ? allTimes.map(t => `<div class="sched-row"><div><div style="font-size:15px;font-weight:700"><i class="ti ti-clock" style="font-size:13px;margin-right:4px"></i>${t.time}</div><div style="font-size:12px;color:var(--t3)">${t.name}${t.dose?' — '+t.dose:''}</div></div><span style="font-size:20px">💊</span></div>`).join('') : '<div class="empty" style="padding:8px"><p>Nenhum horário cadastrado</p></div>';
+  
+  todayEl.innerHTML = allTimes.length ? allTimes.map(t => `
+    <div class="sched-row">
+      <div>
+        <div style="font-size:15px;font-weight:700">⏱️ ${t.time} - ${t.name}</div>
+        <div style="font-size:12px;color:var(--t3)">Dosagem: ${t.dose || 'Não informada'}</div>
+      </div>
+      <button class="btn-take" onclick="W.registrarTomada('${t.name}', '${t.dose || ''}')"><i class="ti ti-check"></i> Tomar</button>
+    </div>`).join('') : '<div class="empty" style="padding:8px"><p>Nenhum remédio para hoje</p></div>';
   
   renderChart('chart-bp', [...bps].slice(0,10).reverse(), r=>r.sis, '#1a56a0', 80, 200);
   renderChart('chart-gl', [...gls].slice(0,10).reverse(), r=>r.val, '#1a7a3c', 50, 350);
   renderChart('chart-wt', [...wts].slice(0,10).reverse(), r=>r.val, '#0e7a6e', 40, 150);
 }
 
-/* ═══════════════════════════════
-   RENDERIZADOR DE HISTÓRICO GERAL
-═══════════════════════════════ */
 async function renderHist() {
-  const [bps, gls, wts, cots] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('cotacoes_farmacia')]);
+  const [bps, gls, wts, cots, intakes] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('cotacoes_farmacia'), dbGetAll('historico_tomadas')]);
   
-  const bpEl = document.getElementById('hist-bp');
-  bpEl.innerHTML = bps.length ? '<div class="card">' + bps.map(r => { const [lbl,cls] = classifyBP(r.sis, r.dia); return `<div class="li"><div class="ico bp"><i class="ti ti-heart"></i></div><div class="lb"><div class="lv">${r.sis}/${r.dia} mmHg</div><div class="lm">${r.moment||''} · ${fdt(r.dt)}</div></div><div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`; }).join('') + '</div>' : '<div class="card"><div class="empty"><i class="ti ti-heart-off"></i><p>Nenhuma medição</p></div></div>';
-
-  const glEl = document.getElementById('hist-gl');
-  glEl.innerHTML = gls.length ? '<div class="card">' + gls.map(r => { const [lbl,cls] = classifyGL(r.val, r.moment); return `<div class="li"><div class="ico gl"><i class="ti ti-droplet"></i></div><div class="lb"><div class="lv">${r.val} mg/dL</div><div class="lm">${r.moment||''} · ${fdt(r.dt)}</div></div><div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`; }).join('') + '</div>' : '<div class="card"><div class="empty"><i class="ti ti-droplet-off"></i><p>Nenhuma medição</p></div></div>';
-
-  const wtEl = document.getElementById('hist-wt');
-  wtEl.innerHTML = wts.length ? '<div class="card">' + wts.map(r => { const imcTxt = r.imc ? (() => { const [lbl,cls] = classifyIMC(r.imc); return `<span class="badge ${cls}" style="margin-top:4px;display:inline-block">IMC ${r.imc} · ${lbl}</span>`; })() : ''; return `<div class="li"><div class="ico wt"><i class="ti ti-scale"></i></div><div class="lb"><div class="lv">${r.val} kg</div><div class="lm">${fdt(r.dt)}</div>${imcTxt}</div><div class="la"><button class="ibtn" onclick="W.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`; }).join('') + '</div>' : '<div class="card"><div class="empty"><i class="ti ti-scale"></i><p>Nenhum registro de peso</p></div></div>';
-
+  document.getElementById('hist-bp').innerHTML = bps.length ? '<div class="card">' + bps.map(r => `<div class="li"><div class="lb"><div class="lv">${r.sis}/${r.dia} mmHg</div><div class="lm">${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>' : '<div class="empty"><p>Nenhum registro</p></div>';
+  document.getElementById('hist-gl').innerHTML = gls.length ? '<div class="card">' + gls.map(r => `<div class="li"><div class="lb"><div class="lv">${r.val} mg/dL</div><div class="lm">${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>' : '<div class="empty"><p>Nenhum registro</p></div>';
+  document.getElementById('hist-wt').innerHTML = wts.length ? '<div class="card">' + wts.map(r => `<div class="li"><div class="lb"><div class="lv">${r.val} kg</div><div class="lm">${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>' : '<div class="empty"><p>Nenhum registro</p></div>';
+  
   const cotEl = document.getElementById('hist-cot');
-  if (!cots.length) { cotEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-search-off"></i><p>Nenhuma cotação arquivada.</p></div></div>'; } 
+  if (!cots.length) { cotEl.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma cotação arquivada.</p></div></div>'; } 
   else {
     const mP = {}; cots.forEach(r => r.items.forEach(i => { if (!mP[i.nome] || i.preco < mP[i.nome].preco) mP[i.nome] = { preco: i.preco, farmacia: r.farmacia, exibicao: i.nomeExibicao, dt: r.dt, idC: r.id }; }));
-    cotEl.innerHTML = '<div class="card">' + Object.values(mP).map(i => `<div class="li"><div class="ico cot"><i class="ti ti-pill"></i></div><div class="lb"><div class="lv" style="color:var(--green)">${i.exibicao}</div><div class="lm">🏪 Onde comprei: <b>${i.farmacia}</b></div><div class="lm" style="font-size:11px;">Cotação: ${fdt(i.dt)}</div></div><div class="la"><span class="badge b-normal" style="font-size:12px;">R$ ${i.preco.toFixed(2)}</span><button class="ibtn" onclick="W.deleteCot('${i.idC}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>';
+    cotEl.innerHTML = '<div class="card">' + Object.values(mP).map(i => `<div class="li"><div class="lb"><div class="lv" style="color:var(--green)">${i.exibicao}</div><div class="lm">🏪 Farmácia: <b>${i.farmacia}</b></div><div class="lm" style="font-size:11px;">Data: ${fdt(i.dt)}</div></div><div class="la"><span class="badge b-normal">R$ ${i.preco.toFixed(2)}</span><button class="ibtn" onclick="W.deleteCot('${i.idC}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>';
   }
+
+  // Renderiza histórico de remédios tomados (Dia e Hora)
+  document.getElementById('hist-intake').innerHTML = intakes.length ? '<div class="card">' + intakes.map(r => `
+    <div class="li">
+      <div class="ico med"><i class="ti ti-pill"></i></div>
+      <div class="lb">
+        <div class="lv" style="color:var(--blue); font-weight:bold;">🟢 Ingerido: ${r.nome}</div>
+        <div class="lm">Dose: ${r.dose || 'Não especificada'}</div>
+        <div class="lm" style="font-size:11px; font-weight:600;"><i class="ti ti-calendar"></i> Registro: ${fdt(r.dt)}</div>
+      </div>
+      <div class="la"><button class="ibtn" onclick="W.deleteIntake('${r.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>`).join('') + '</div>' : '<div class="card"><div class="empty"><p>Nenhum histórico de ingestão registrado.</p></div></div>';
 }
 
 function openImg(src) { document.getElementById('img-src').src = src; document.getElementById('img-modal').classList.add('on'); }
 function closeImg() { document.getElementById('img-modal').classList.remove('on'); }
 
-/* MAPEAMENTO DOS PROCESSOS DO ESCOPO WINDOW */
-const W = {
-  goPage, switchHist, saveBP, deleteBP, saveGL, deleteGL, saveWT, deleteWT,
-  openMedModal, closeMedModal, addTime, removeTime, addPhoto, removePhoto, saveMed, deleteMed,
-  openRxModal, closeRxModal, addRxPhoto, removeRxPhoto, saveRx, deleteRx,
-  addMedInputRow, savePharmacyCotation, deleteCot, renderCotations, resetCotForm,
-  openImg, closeImg, closeConfirm
-};
+/* EXPOSIÇÃO WINDOW */
+W.registrarTomada = registrarTomada; W.deleteIntake = deleteIntake;
 window.W = W;
 
-/* ═══════════════════════════════
-   INICIALIZAÇÃO AUTOMÁTICA DO ECOSSISTEMA
-═══════════════════════════════ */
+/* INICIALIZAÇÃO */
 (async () => {
-  setupChips('[data-bpm]', v => bpMoment = v); setupChips('[data-bpp]', v => bpPos = v);
-  setupChips('[data-glm]', v => glMoment = v); setupChips('[data-glt]', v => glType = v);
-  setupChips('[data-wtm]', v => wtMoment = v);
-
-  ['wt-val','wt-alt'].forEach(id => {
-    document.getElementById(id)?.addEventListener('input', () => {
-      const p = parseFloat(document.getElementById('wt-val').value); const a = parseFloat(document.getElementById('wt-alt').value); const prev = document.getElementById('wt-imc-preview');
-      if (p && a >= 100) { const imc = calcIMC(p,a); const [lbl] = classifyIMC(imc); document.getElementById('wt-imc-val').textContent = imc; document.getElementById('wt-imc-lbl').textContent = lbl; prev.style.display = 'block'; } else { prev.style.display = 'none'; }
-    });
-  });
-
-  document.getElementById('bp-dt').value = getNow(); document.getElementById('gl-dt').value = getNow(); document.getElementById('wt-dt').value = getNow();
-
+  setupChips('[data-bpm]', v => bpMoment = v); setupChips('[data-bpp]', v => bpPos = v); setupChips('[data-glm]', v => glMoment = v); setupChips('[data-glt]', v => glType = v); setupChips('[data-wtm]', v => wtMoment = v);
+  document.getElementById('bp-dt').value = getNow(); document.getElementById('gl-dt').value = getNow();
   try {
     await getDocs(collection(FS, 'pressao'));
-    document.getElementById('db-dot').style.background = '#1a7a3c';
-    document.getElementById('db-txt').textContent = '☁️ Conectado ao Firebase — dados sincronizados ✓';
+    document.getElementById('db-dot').style.background = '#1a7a3c'; document.getElementById('db-txt').textContent = '☁️ Conectado ao Firebase ✓';
     document.getElementById('db-badge').textContent = 'CONECTADO';
     await updateDash();
-  } catch(e) {
-    document.getElementById('db-dot').style.background = '#b02020';
-    document.getElementById('db-txt').textContent = '⚠️ Erro de conexão: ' + e.message;
-  }
+  } catch(e) { document.getElementById('db-dot').style.background = '#b02020'; document.getElementById('db-txt').textContent = '⚠️ Erro: ' + e.message; }
 })();
 </script>
 </body>
