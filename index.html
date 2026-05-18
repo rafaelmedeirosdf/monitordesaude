@@ -99,14 +99,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ico.wt{background:var(--teal-bg);color:var(--teal)}
 .ico.med{background:var(--purple-bg);color:var(--purple)}
 .ico.cot{background:var(--amber-bg);color:var(--amber)}
-.ico.rx{background:var(--teal-bg);color:var(--teal)}
 .lb{flex:1;min-width:0}
 .lv{font-size:15px;font-weight:700;color:var(--t1)}
 .lm{font-size:12px;color:var(--t3);margin-top:1px}
 .ln{font-size:11px;color:var(--t2);background:var(--bg2);border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
 .la{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:8px}
-.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:18px;display:flex;align-items:center;justify-content:center}
-.ibtn:active{background:var(--bd2)}
+.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--red);font-size:18px;display:flex;align-items:center;justify-content:center}
+.ibtn:active{background:var(--red-bg)}
 
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -162,11 +161,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .img-modal.on{display:flex}
 .img-modal img { max-width: 95vw; max-height: 90vh; border-radius: 10px; object-fit: contain; }
 .img-close { position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,.2); border: none; color: #fff; width: 38px; height: 38px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-.smb{background:var(--bg2);border-radius:9px;padding:10px 8px;text-align:center}
-.smv{font-size:20px;font-weight:700;color:var(--t1)}
-.sml{font-size:10px;color:var(--t3);margin-top:2px}
-.empty{text-align:center;padding:20px;color:var(--t3)}
 </style>
 </head>
 <body>
@@ -174,7 +168,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="hdr">
     <div class="hdr-row">
       <h1>❤️ Monitor de Saúde</h1>
-      <span class="hbadge" id="db-badge">☁️ Conectando...</span>
+      <span class="hbadge" id="db-badge">☁️ Firebase</span>
     </div>
     <div class="hdr-sub">Desenvolvido por Rafael Medeiros</div>
   </div>
@@ -277,7 +271,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
              <button class="chip" data-glt="Laboratório">Laboratório</button>
            </div>
          </div>
-         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: em jejum..."></div>
+         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: em repouso..."></div>
          <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
          <button class="btn green" onclick="W.saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
        </div>
@@ -462,13 +456,14 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const FS = getFirestore(app);
+const dbFirestore = getFirestore(app);
 
-async function dbAdd(col, rec) { const r = await addDoc(collection(FS, col), rec); return r.id; }
-async function dbPut(col, rec) { const { id, ...data } = rec; await setDoc(doc(FS, col, String(id)), data, { merge: true }); return id; }
-async function dbGetAll(col) { const snap = await getDocs(collection(FS, col)); const rows = []; snap.forEach(d => rows.push({ id: d.id, ...d.data() })); return rows.sort((a, b) => (b.dt || '').localeCompare(a.dt || '')); }
-async function dbGet(col, id) { const snap = await getDoc(doc(FS, col, String(id))); return snap.exists() ? { id: snap.id, ...snap.data() } : null; }
-async function dbDelete(col, id) { await deleteDoc(doc(FS, col, String(id))); return true; }
+/* OPERAÇÕES DO BANCO AJUSTADAS PARA A INSTÂNCIA REAL */
+async function dbAdd(col, rec) { const r = await addDoc(collection(dbFirestore, col), rec); return r.id; }
+async function dbPut(col, rec) { const { id, ...data } = rec; await setDoc(doc(dbFirestore, col, String(id)), data, { merge: true }); return id; }
+async function dbGetAll(col) { const snap = await getDocs(collection(dbFirestore, col)); const rows = []; snap.forEach(d => rows.push({ id: d.id, ...d.data() })); return rows.sort((a, b) => (b.dt || '').localeCompare(a.dt || '')); }
+async function dbGet(col, id) { const snap = await getDoc(doc(dbFirestore, col, String(id))); return snap.exists() ? { id: snap.id, ...snap.data() } : null; }
+async function dbDelete(col, id) { await deleteDoc(doc(dbFirestore, col, String(id))); return true; }
 
 let bpMoment = 'Antes do café', bpPos = 'Sentado';
 let glMoment = 'Jejum', glType = 'Glicosímetro';
@@ -674,7 +669,6 @@ async function updateDash() {
   renderChart('chart-wt', [...wts].slice(0,10).reverse(), r=>r.val, '#0e7a6e', 40, 150);
 }
 
-/* HISTÓRICO */
 async function renderHist() {
   const [bps, gls, wts, cots, intakes] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('cotacoes_farmacia'), dbGetAll('historico_tomadas')]);
   
@@ -714,12 +708,12 @@ const W = {
 };
 window.W = W;
 
-/* INICIALIZAÇÃO */
+/* INICIALIZAÇÃO CORRIGIDA CONTRA CONFLITOS DE INSTÂNCIA (FS -> dbFirestore) */
 (async () => {
   setupChips('[data-bpm]', v => bpMoment = v); setupChips('[data-bpp]', v => bpPos = v); setupChips('[data-glm]', v => glMoment = v); setupChips('[data-glt]', v => glType = v); setupChips('[data-wtm]', v => wtMoment = v);
   document.getElementById('bp-dt').value = getNow(); document.getElementById('gl-dt').value = getNow(); document.getElementById('wt-dt').value = getNow();
   try {
-    const q = query(collection(FS, 'pressao'));
+    const q = query(collection(dbFirestore, 'pressao'));
     await getDocs(q);
     document.getElementById('db-dot').style.background = '#1a7a3c'; document.getElementById('db-txt').textContent = '☁️ Conectado ao Firebase ✓';
     document.getElementById('db-badge').textContent = 'CONECTADO'; await updateDash();
