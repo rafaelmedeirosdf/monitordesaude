@@ -43,6 +43,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
 .hdr h1{font-size:21px;font-weight:700;letter-spacing:-.3px}
 .hdr-sub{font-size:13px;opacity:.72}
+.hbadge{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600}
 
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg1);border-top:.5px solid var(--bd2);display:flex;z-index:200;padding-bottom:max(env(safe-area-inset-bottom),4px);overflow-x:auto}
 .nb{flex:1;min-width:52px;border:none;background:transparent;cursor:pointer;padding:9px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:500;color:var(--t3);font-family:inherit;transition:color .15s}
@@ -104,7 +105,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .lm{font-size:12px;color:var(--t3);margin-top:1px}
 .ln{font-size:11px;color:var(--t2);background:var(--bg2);border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
 .la{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:8px}
-.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t2);font-size:18px;display:flex;align-items:center;justify-content:center}
+.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:18px;display:flex;align-items:center;justify-content:center}
 .ibtn:active{background:var(--bd2)}
 
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
@@ -147,9 +148,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .med-btn.edit{background:var(--blue-bg);color:var(--blue-t)}
 .med-btn.del{background:var(--red-bg);color:var(--red-t)}
 
-.cot-item{background:var(--bg2);border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid var(--bd2)}
-.cot-win{background:var(--green-bg) !important;border-color:var(--green) !important}
-
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-overlay.on{display:flex}
 .confirm-box{background:var(--bg1);border-radius:18px;padding:22px 20px;width:100%;max-width:340px;text-align:center}
@@ -171,7 +169,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   <div class="hdr">
     <div class="hdr-row">
       <h1>❤️ Monitor de Saúde</h1>
-      <span class="hbadge" id="db-badge">☁️ Conectando...</span>
+      <span class="hbadge" id="db-badge">☁️ Firebase</span>
     </div>
     <div class="hdr-sub">Desenvolvido por Rafael Medeiros</div>
   </div>
@@ -274,7 +272,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
              <button class="chip" data-glt="Laboratório">Laboratório</button>
            </div>
          </div>
-         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: em jejum..."></div>
+         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: em repouso..."></div>
          <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
          <button class="btn green" onclick="W.saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
        </div>
@@ -399,7 +397,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <button class="btn" style="width:auto;padding:11px 16px" onclick="W.addTime()"><i class="ti ti-plus"></i></button>
       </div>
     </div>
-    <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Uso contínuo..."></div>
+    <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Observações..."></div>
     <button class="btn purple" onclick="W.saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
   </div>
 </div>
@@ -421,7 +419,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         </select>
       </div>
     </div>
-    <div class="f"><label>Medicamentos inclusos *</label><input class="fi" id="rx-meds" type="text" placeholder="Ex.: Losartana"></div>
+    <div class="f"><label>Medicamentos inclusos *</label><input class="fi" id="rx-meds" type="text" placeholder="Ex.: Losartana, Metformina"></div>
     <div class="f"><label>Observações</label><input class="fi" id="rx-obs" type="text" placeholder="Ex.: via original retida..."></div>
     <button class="btn teal" onclick="W.saveRx()"><i class="ti ti-device-floppy"></i> Arquivar na Nuvem</button>
   </div>
@@ -447,7 +445,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B10hXyPV4",
@@ -527,7 +525,7 @@ async function saveWT() {
 }
 function deleteWT(id) { confirm2('Excluir peso','Remover permanentemente?', async () => { await dbDelete('peso', id); toast('✓ Excluído'); renderHist(); updateDash(); }); }
 
-/* ═══ MÓDULO COTAÇÃO ═══ */
+/* ═══ MÓDULO COTAÇÃO — SINCRO E EDIÇÃO FIXADAS ═══ */
 async function sincronizarRemediosDropdowns() {
   try {
     listagemRemediosCache = await dbGetAll('remedios');
@@ -549,7 +547,7 @@ function addMedInputRow(medName = '', medPrice = '') {
 }
 function resetCotForm() {
   document.getElementById('cot-edit-id').value = ''; document.getElementById('cot-pharmacy-name').value = ''; document.getElementById('cot-dt').value = getNow(); document.getElementById('cot-form-title').textContent = 'Registrar Preços por Farmácia';
-  document.getElementById('cot-btn-container').innerHTML = `<button class="btn amber" onclick="W.savePharmacyCotation()"><button class="btn amber" onclick="W.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>`;
+  document.getElementById('cot-btn-container').innerHTML = `<button class="btn amber" onclick="W.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>`;
   document.getElementById('cot-meds-container').innerHTML = `<label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label><div class="fr f" style="margin-bottom: 8px; align-items: center;"><select class="fs med-search-dropdown"><option value="">Carregando...</option></select><input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço" step="0.01"></div>`;
 }
 window.openEditCotation = function(id) {
@@ -643,6 +641,7 @@ async function renderMeds() {
   el.innerHTML = meds.map(m => `<div class="med-card"><div class="med-header"><div class="med-ico"><i class="ti ti-pill"></i></div><div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose, m.form].filter(Boolean).join(' · ')}</div></div></div>${m.times&&m.times.length?`<div class="med-times">${m.times.map(t=>`<span class="med-time-tag">${t}</span>`).join('')}</div>`:''}<div class="med-actions"><button class="med-btn edit" onclick="W.openMedModal('${m.id}')">Editar</button><button class="med-btn del" onclick="W.deleteMed('${m.id}')">Excluir</button></div></div>`).join('');
 }
 
+/* PAINEL PRINCIPAL (DASHBOARD) */
 async function updateDash() {
   const [bps, gls, wts, meds] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('remedios')]);
   if (bps.length) { const l = bps[0]; document.getElementById('d-sis').textContent = l.sis; document.getElementById('d-dia').textContent = l.dia; document.getElementById('d-bp-i').textContent = fdt(l.dt); }
@@ -680,7 +679,7 @@ async function renderHist() {
   if (!cots.length) { cotEl.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma cotação arquivada.</p></div></div>'; } 
   else {
     const mP = {}; cots.forEach(r => r.items.forEach(i => { if (!mP[i.nome] || i.preco < mP[i.nome].preco) mP[i.nome] = { preco: i.preco, farmacia: r.farmacia, exibicao: i.nomeExibicao, dt: r.dt, idC: r.id }; }));
-    cotEl.innerHTML = '<div class="card">' + Object.values(mP).map(i => `<div class="li"><div class="ico cot"><i class="ti ti-pill"></i></div><div class="lb"><div class="lv" style="color:var(--green)">${i.exibicao}</div><div class="lm">🏪 Farmácia: <b>${i.farmacia}</b></div><div class="lm" style="font-size:11px;">Data: ${fdt(i.dt)}</div></div><div class="la"><span class="badge b-normal">R$ ${i.preco.toFixed(2)}</span><button class="ibtn" onclick="W.deleteCot('${i.idC}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>';
+    cotEl.innerHTML = '<div class="card">' + Object.values(mP).map(i => `<div class="li"><div class="lb"><div class="lv" style="color:var(--green)">${i.exibicao}</div><div class="lm">🏪 Farmácia: <b>${i.farmacia}</b></div><div class="lm" style="font-size:11px;">Data: ${fdt(i.dt)}</div></div><div class="la"><span class="badge b-normal">R$ ${i.preco.toFixed(2)}</span><button class="ibtn" onclick="W.deleteCot('${i.idC}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>';
   }
 
   document.getElementById('hist-intake').innerHTML = intakes.length ? '<div class="card">' + intakes.map(r => `
@@ -708,41 +707,15 @@ const W = {
 };
 window.W = W;
 
-/* INICIALIZAÇÃO ENGENHARIA FIXADA */
+/* INICIALIZAÇÃO ENGENHARIA PROJETADA */
 (async () => {
-  setupChips('[data-bpm]', v => bpMoment = v); 
-  setupChips('[data-bpp]', v => bpPos = v); 
-  setupChips('[data-glm]', v => glMoment = v); 
-  setupChips('[data-glt]', v => glType = v); 
-  setupChips('[data-wtm]', v => wtMoment = v);
-
-  ['wt-val','wt-alt'].forEach(id => {
-    document.getElementById(id)?.addEventListener('input', () => {
-      const p = parseFloat(document.getElementById('wt-val').value); 
-      const a = parseFloat(document.getElementById('wt-alt').value); 
-      const prev = document.getElementById('wt-imc-preview');
-      if (p && a >= 100) { 
-        const imc = calcIMC(p,a); const [lbl] = classifyIMC(imc); 
-        document.getElementById('wt-imc-val').textContent = imc; 
-        document.getElementById('wt-imc-lbl').textContent = lbl; 
-        prev.style.display = 'block'; 
-      } else { prev.style.display = 'none'; }
-    });
-  });
-
-  document.getElementById('bp-dt').value = getNow(); 
-  document.getElementById('gl-dt').value = getNow();
-
+  setupChips('[data-bpm]', v => bpMoment = v); setupChips('[data-bpp]', v => bpPos = v); setupChips('[data-glm]', v => glMoment = v); setupChips('[data-glt]', v => glType = v); setupChips('[data-wtm]', v => wtMoment = v);
+  document.getElementById('bp-dt').value = getNow(); document.getElementById('gl-dt').value = getNow();
   try {
     await getDocs(collection(FS, 'pressao'));
-    document.getElementById('db-dot').style.background = '#1a7a3c'; 
-    document.getElementById('db-txt').textContent = '☁️ Conectado ao Firebase ✓';
-    document.getElementById('db-badge').textContent = 'CONECTADO'; 
-    await updateDash();
-  } catch(e) { 
-    document.getElementById('db-dot').style.background = '#b02020'; 
-    document.getElementById('db-txt').textContent = '⚠️ Erro: ' + e.message; 
-  }
+    document.getElementById('db-dot').style.background = '#1a7a3c'; document.getElementById('db-txt').textContent = '☁️ Conectado ao Firebase ✓';
+    document.getElementById('db-badge').textContent = 'CONECTADO'; await updateDash();
+  } catch(e) { document.getElementById('db-dot').style.background = '#b02020'; document.getElementById('db-txt').textContent = '⚠️ Erro: ' + e.message; }
 })();
 </script>
 </body>
