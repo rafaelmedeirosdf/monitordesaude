@@ -46,7 +46,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .hbadge{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600}
 
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg1);border-top:.5px solid var(--bd2);display:flex;z-index:200;padding-bottom:max(env(safe-area-inset-bottom),4px);overflow-x:auto}
-.nb{flex:1;min-width:52px;border:none;background:transparent;cursor:pointer;padding:9px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:500;color:var(--t3);font-family:inherit;transition:color .15s}
+.nb{flex:1;min-width:54px;border:none;background:transparent;cursor:pointer;padding:9px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:500;color:var(--t3);font-family:inherit;transition:color .15s}
 .nb i{font-size:20px}
 .nb.on{color:var(--blue)}
 
@@ -99,14 +99,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ico.wt{background:var(--teal-bg);color:var(--teal)}
 .ico.med{background:var(--purple-bg);color:var(--purple)}
 .ico.cot{background:var(--amber-bg);color:var(--amber)}
-.ico.rx{background:var(--teal-bg);color:var(--teal)}
 .lb{flex:1;min-width:0}
 .lv{font-size:15px;font-weight:700;color:var(--t1)}
 .lm{font-size:12px;color:var(--t3);margin-top:1px}
 .ln{font-size:11px;color:var(--t2);background:var(--bg2);border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
 .la{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:8px}
-.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:18px;display:flex;align-items:center;justify-content:center}
-.ibtn:active{background:var(--bd2)}
+.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--red);font-size:18px;display:flex;align-items:center;justify-content:center}
+.ibtn:active{background:var(--red-bg)}
 
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
@@ -397,7 +396,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <button class="btn" style="width:auto;padding:11px 16px" onclick="W.addTime()"><i class="ti ti-plus"></i></button>
       </div>
     </div>
-    <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Observações..."></div>
+    <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Uso contínuo..."></div>
     <button class="btn purple" onclick="W.saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
   </div>
 </div>
@@ -448,7 +447,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/fireba
 import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B10hXyPV4",
+  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B180hXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
   projectId: "monitordesaudedf",
   storageBucket: "monitordesaudedf.firebasestorage.app",
@@ -456,13 +455,13 @@ const firebaseConfig = {
   appId: "1:116851967587:web:871b7323325963f5391a56"
 };
 const app = initializeApp(firebaseConfig);
-const FS = getFirestore(app);
+const dbFirestore = getFirestore(app);
 
-async function dbAdd(col, rec) { const r = await addDoc(collection(FS, col), rec); return r.id; }
-async function dbPut(col, rec) { const { id, ...data } = rec; await setDoc(doc(FS, col, String(id)), data, { merge: true }); return id; }
-async function dbGetAll(col) { const snap = await getDocs(collection(FS, col)); const rows = []; snap.forEach(d => rows.push({ id: d.id, ...d.data() })); return rows.sort((a, b) => (b.dt || '').localeCompare(a.dt || '')); }
-async function dbGet(col, id) { const snap = await getDoc(doc(FS, col, String(id))); return snap.exists() ? { id: snap.id, ...snap.data() } : null; }
-async function dbDelete(col, id) { await deleteDoc(doc(FS, col, String(id))); return true; }
+async function dbAdd(col, rec) { const r = await addDoc(collection(dbFirestore, col), rec); return r.id; }
+async function dbPut(col, rec) { const { id, ...data } = rec; await setDoc(doc(dbFirestore, col, String(id)), data, { merge: true }); return id; }
+async function dbGetAll(col) { const snap = await getDocs(collection(dbFirestore, col)); const rows = []; snap.forEach(d => rows.push({ id: d.id, ...d.data() })); return rows.sort((a, b) => (b.dt || '').localeCompare(a.dt || '')); }
+async function dbGet(col, id) { const snap = await getDoc(doc(dbFirestore, col, String(id))); return snap.exists() ? { id: snap.id, ...snap.data() } : null; }
+async function dbDelete(col, id) { await deleteDoc(doc(dbFirestore, col, String(id))); return true; }
 
 let bpMoment = 'Antes do café', bpPos = 'Sentado';
 let glMoment = 'Jejum', glType = 'Glicosímetro';
@@ -525,7 +524,7 @@ async function saveWT() {
 }
 function deleteWT(id) { confirm2('Excluir peso','Remover permanentemente?', async () => { await dbDelete('peso', id); toast('✓ Excluído'); renderHist(); updateDash(); }); }
 
-/* ═══ MÓDULO COTAÇÃO — SINCRO E EDIÇÃO FIXADAS ═══ */
+/* COTAÇÃO DE PREÇOS POR FARMÁCIA */
 async function sincronizarRemediosDropdowns() {
   try {
     listagemRemediosCache = await dbGetAll('remedios');
@@ -584,7 +583,7 @@ async function renderCotations() {
   historyEl.innerHTML = records.map(rec => { const soma = rec.items.reduce((a, c) => a + c.preco, 0); const ativa = rec.dt && rec.dt.split('T')[0] === targetDate; return `<div class="card" style="${ativa?'border-left:4px solid var(--blue);':''}"><div style="display:flex;justify-content:space-between;"><div><b>🏪 ${rec.farmacia}</b><div class="lm">${fdt(rec.dt)}</div></div><div><button class="ibtn" style="color:var(--blue)" onclick="window.openEditCotation('${rec.id}')"><i class="ti ti-edit"></i></button><button class="ibtn" onclick="W.deleteCot('${rec.id}')"><i class="ti ti-trash"></i></button></div></div><div style="margin-top:6px;">${rec.items.map(i=>`<div style="display:flex;justify-content:space-between;font-size:13px;"><span>${i.nomeExibicao}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('')}<b>Total: R$ ${soma.toFixed(2)}</b></div></div>`; }).join('');
 }
 
-/* ═══ MÓDULO MARCAR COMO TOMADO (DIA E HORA NO HISTÓRICO) ═══ */
+/* MÓDULO MARCAR COMO TOMADO (DIA E HORA EXATOS) */
 async function registrarTomada(nome, dose) {
   const payload = { nome, dose, dt: getNow() };
   try {
@@ -595,7 +594,7 @@ async function registrarTomada(nome, dose) {
 }
 function deleteIntake(id) { confirm2('Excluir histórico de tomada?', 'O registro de data e hora será removido.', async () => { await dbDelete('historico_tomadas', id); toast('✓ Registro removido'); renderHist(); }); }
 
-/* RECEITAS (BUSCA NA COLEÇÃO OFICIAL DE PRODUÇÃO) */
+/* RECEITAS (COLEÇÃO OFICIAL VINCULADA) */
 async function saveRx() {
   const doctor = document.getElementById('rx-doctor').value.trim(); const meds = document.getElementById('rx-meds').value.trim(); const dE = document.getElementById('rx-date').value; if (!doctor||!meds||!dE) { toast('⚠️ Preencha os campos obrigatórios', true); return; }
   const vM = parseInt(document.getElementById('rx-months').value); const dV = new Date(dE+'T12:00:00'); dV.setMonth(dV.getMonth()+vM); const editId = document.getElementById('rx-edit-id').value;
@@ -641,7 +640,6 @@ async function renderMeds() {
   el.innerHTML = meds.map(m => `<div class="med-card"><div class="med-header"><div class="med-ico"><i class="ti ti-pill"></i></div><div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose, m.form].filter(Boolean).join(' · ')}</div></div></div>${m.times&&m.times.length?`<div class="med-times">${m.times.map(t=>`<span class="med-time-tag">${t}</span>`).join('')}</div>`:''}<div class="med-actions"><button class="med-btn edit" onclick="W.openMedModal('${m.id}')">Editar</button><button class="med-btn del" onclick="W.deleteMed('${m.id}')">Excluir</button></div></div>`).join('');
 }
 
-/* PAINEL PRINCIPAL (DASHBOARD) */
 async function updateDash() {
   const [bps, gls, wts, meds] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('remedios')]);
   if (bps.length) { const l = bps[0]; document.getElementById('d-sis').textContent = l.sis; document.getElementById('d-dia').textContent = l.dia; document.getElementById('d-bp-i').textContent = fdt(l.dt); }
@@ -679,7 +677,7 @@ async function renderHist() {
   if (!cots.length) { cotEl.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma cotação arquivada.</p></div></div>'; } 
   else {
     const mP = {}; cots.forEach(r => r.items.forEach(i => { if (!mP[i.nome] || i.preco < mP[i.nome].preco) mP[i.nome] = { preco: i.preco, farmacia: r.farmacia, exibicao: i.nomeExibicao, dt: r.dt, idC: r.id }; }));
-    cotEl.innerHTML = '<div class="card">' + Object.values(mP).map(i => `<div class="li"><div class="lb"><div class="lv" style="color:var(--green)">${i.exibicao}</div><div class="lm">🏪 Farmácia: <b>${i.farmacia}</b></div><div class="lm" style="font-size:11px;">Data: ${fdt(i.dt)}</div></div><div class="la"><span class="badge b-normal">R$ ${i.preco.toFixed(2)}</span><button class="ibtn" onclick="W.deleteCot('${i.idC}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>';
+    cotEl.innerHTML = '<div class="card">' + Object.values(mP).map(i => `<div class="li"><div class="ico cot"><i class="ti ti-pill"></i></div><div class="lb"><div class="lv" style="color:var(--green)">${i.exibicao}</div><div class="lm">🏪 Farmácia: <b>${i.farmacia}</b></div><div class="lm" style="font-size:11px;">Data: ${fdt(i.dt)}</div></div><div class="la"><span class="badge b-normal">R$ ${i.preco.toFixed(2)}</span><button class="ibtn" onclick="W.deleteCot('${i.idC}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>';
   }
 
   document.getElementById('hist-intake').innerHTML = intakes.length ? '<div class="card">' + intakes.map(r => `
@@ -707,7 +705,7 @@ const W = {
 };
 window.W = W;
 
-/* INICIALIZAÇÃO ENGENHARIA PROJETADA */
+/* INICIALIZAÇÃO ENGENHARIA PROJETADA CORRIGIDA */
 (async () => {
   setupChips('[data-bpm]', v => bpMoment = v); setupChips('[data-bpp]', v => bpPos = v); setupChips('[data-glm]', v => glMoment = v); setupChips('[data-glt]', v => glType = v); setupChips('[data-wtm]', v => wtMoment = v);
   document.getElementById('bp-dt').value = getNow(); document.getElementById('gl-dt').value = getNow();
