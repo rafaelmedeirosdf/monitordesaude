@@ -9,6 +9,7 @@
 <title>Monitor de Saúde</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
+/* Variáveis de design universais */
 :root{
   --bg0:#f0f2f5;--bg1:#fff;--bg2:#f4f6f8;--bg3:#e8ecf0;
   --t1:#0d1117;--t2:#5a6375;--t3:#9aa0ad;
@@ -21,6 +22,7 @@
   --teal:#0e7a6e;--teal-bg:#d0f2ee;--teal-t:#074d45;
   --sh:0 2px 12px rgba(0,0,0,.07);
 }
+/* Modo Escuro Automático */
 @media(prefers-color-scheme:dark){:root{
   --bg0:#0e1117;--bg1:#161b22;--bg2:#1e2530;--bg3:#252d3a;
   --t1:#e6eaf0;--t2:#8b96a8;--t3:#555f6e;
@@ -73,6 +75,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 }
 .fi:focus,.fs:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,160,.15)}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
 
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
 .chip{padding:7px 13px;border-radius:30px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s}
@@ -507,7 +510,7 @@ import {
   getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-// Credenciais corrigidas, com o número "8" injetado na apiKey antes da letra "O"
+// Credenciais oficiais corrigidas (O número 8 foi restaurado antes do O)
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B18OhXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
@@ -717,7 +720,7 @@ async function sincronizarRemediosDropdowns() {
         listagemRemediosCache.map(m => `<option value="${m.name}">${m.name} ${m.dose ? `(${m.dose})` : ''}</option>`).join('');
       if(valorSelecionado) select.value = valorSelecionado;
     });
-  } catch(e) { console.error(e); }
+  } catch(e) { console.error("Falha ao sincronizar lista de medicamentos para cotação: ", e); }
 }
 
 function addMedInputRow(medName = '', medPrice = '') {
@@ -761,6 +764,7 @@ window.openEditCotation = function(id) {
     container.innerHTML = `<label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>`;
     rec.items.forEach(item => addMedInputRow(item.nomeExibicao, item.preco));
     sincronizarRemediosDropdowns();
+    document.getElementById('pg-cot').scrollIntoView({ behavior: 'smooth' });
   });
 };
 
@@ -1032,7 +1036,7 @@ window.openImgModal = openImgModal;
 document.getElementById('confirm-ok').onclick = () => { if (window.confirmCallback) window.confirmCallback(); closeConfirm(); };
 
 /* INICIALIZAÇÃO AUTOMÁTICA EM MALHA COM FALLBACK RASTREÁVEL */
-window.onload = async () => {
+(async () => {
   setupChips('[data-bpm]', v => bpMoment = v);
   setupChips('[data-bpp]', v => bpPos = v);
   setupChips('[data-glm]', v => glMoment = v);
@@ -1062,30 +1066,29 @@ window.onload = async () => {
   document.getElementById('cot-dt').value = getNow();
 
   try {
-    if (!dbFirestore) throw new Error("A conexão com o banco de dados falhou na inicialização. Verifique sua chave de API.");
+    if (!dbFirestore) throw new Error("O Firebase falhou na inicialização.");
     
-    // Testa a permissão de leitura executando a coleta das métricas logo na abertura
-    const colRef = collection(dbFirestore, 'pressao');
-    await getDocs(query(colRef));
+    // Verificando a conexão real puxando os dados assim que abre
+    await updateDash();
+    await sincronizarRemediosDropdowns();
+    await renderCotations();
+    await renderRxList();
 
+    // Se chegou até aqui sem cair no 'catch', o banco está lendo tudo perfeitamente
     document.getElementById('db-dot').style.background = '#1a7a3c';
     document.getElementById('db-txt').textContent = 'Conectado à Nuvem do Firebase ✓';
     
-    await sincronizarRemediosDropdowns();
-    await updateDash();
-    await renderCotations();
-    await renderRxList();
   } catch(e) {
     document.getElementById('db-dot').style.background = '#b02020';
     if (e.message.includes('Missing or insufficient permissions')) {
        document.getElementById('db-txt').textContent = 'Acesso Negado: Regras do Banco Bloqueadas';
        toast('⚠️ O Firestore está bloqueando as leituras. Atualize as regras do banco para acesso público.', true);
     } else {
-       document.getElementById('db-txt').textContent = 'Erro de Sincronização: Falha no Firebase';
+       document.getElementById('db-txt').textContent = 'Erro de Sincronização: Falha na Internet ou Banco';
        console.error("Firebase Error Trace:", e);
     }
   }
-};
+})();
 </script>
 </body>
 </html>
