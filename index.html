@@ -173,7 +173,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </head>
 <body>
 <div id="app">
-
   <div class="hdr">
     <div class="hdr-row">
       <h1>❤️ Monitor de Saúde</h1>
@@ -182,227 +181,229 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <div class="hdr-sub" id="hdr-sub">Desenvolvido por Rafael Medeiros</div>
   </div>
 
-  <div id="pg-home" class="pg on">
-    <div class="dbs">
-       <div class="dbd" id="db-dot"></div><span id="db-txt">Iniciando...</span>
-    </div>
+  <div id="main-content">
+     <div id="pg-home" class="pg on">
+       <div class="dbs">
+          <div class="dbd" id="db-dot"></div><span id="db-txt">Iniciando conexão...</span>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-heart"></i> Última pressão</div>
-      <div class="sg">
-        <div class="sb"><div class="sl">Sistólica</div><div class="sv" id="d-sis">—</div><div class="su">mmHg</div></div>
-        <div class="sb"><div class="sl">Diastólica</div><div class="sv" id="d-dia">—</div><div class="su">mmHg</div></div>
-      </div>
-      <div class="ss" id="d-bp-i">Nenhuma medição registrada</div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-heart"></i> Última pressão</div>
+         <div class="sg">
+           <div class="sb"><div class="sl">Sistólica</div><div class="sv" id="d-sis">—</div><div class="su">mmHg</div></div>
+           <div class="sb"><div class="sl">Diastólica</div><div class="sv" id="d-dia">—</div><div class="su">mmHg</div></div>
+         </div>
+         <div class="ss" id="d-bp-i">Nenhuma medição registrada</div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-droplet"></i> Última glicemia</div>
-      <div class="sg one">
-        <div class="sb"><div class="sl">Glicose</div><div class="sv" id="d-gl">—</div><div class="su">mg/dL</div></div>
-      </div>
-      <div class="ss" id="d-gl-i">Nenhuma medição registrada</div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-droplet"></i> Última glicemia</div>
+         <div class="sg one">
+           <div class="sb"><div class="sl">Glicose</div><div class="sv" id="d-gl">—</div><div class="su">mg/dL</div></div>
+         </div>
+         <div class="ss" id="d-gl-i">Nenhuma medição registrada</div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-scale"></i> Último peso</div>
-      <div class="sg">
-        <div class="sb"><div class="sl">Peso</div><div class="sv" id="d-wt">—</div><div class="su">kg</div></div>
-        <div class="sb"><div class="sl">IMC</div><div class="sv" id="d-imc">—</div><div class="su" id="d-imc-class"></div></div>
-      </div>
-      <div class="ss" id="d-wt-i">Nenhuma medição registrada</div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-scale"></i> Último peso</div>
+         <div class="sg">
+           <div class="sb"><div class="sl">Peso</div><div class="sv" id="d-wt">—</div><div class="su">kg</div></div>
+           <div class="sb"><div class="sl">IMC</div><div class="sv" id="d-imc">—</div><div class="su" id="d-imc-class"></div></div>
+         </div>
+         <div class="ss" id="d-wt-i">Nenhuma medição registrada</div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-pill"></i> Remédios de hoje</div>
-      <div id="d-meds-today"><div class="empty" style="padding:10px"><p>Nenhum remédio cadastrado</p></div></div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-pill"></i> Remédios de hoje</div>
+         <div id="d-meds-today"><div class="empty" style="padding:10px"><p>Nenhum remédio cadastrado</p></div></div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-chart-bar"></i> Pressão sistólica</div>
-      <div class="mchart" id="chart-bp"></div>
-    </div>
-    <div class="card">
-      <div class="ct"><i class="ti ti-chart-bar"></i> Glicemia</div>
-      <div class="mchart" id="chart-gl"></div>
-    </div>
-    <div class="card">
-      <div class="ct"><i class="ti ti-chart-bar"></i> Evolução do peso</div>
-      <div class="mchart" id="chart-wt"></div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-chart-bar"></i> Pressão sistólica</div>
+         <div class="mchart" id="chart-bp"></div>
+       </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-chart-bar"></i> Glicemia</div>
+         <div class="mchart" id="chart-gl"></div>
+       </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-chart-bar"></i> Evolução do peso</div>
+         <div class="mchart" id="chart-wt"></div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-database"></i> Banco de dados</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div class="smb"><div class="smv" id="sum-bp">0</div><div class="sml">Pressões</div></div>
-        <div class="smb"><div class="smv" id="sum-gl">0</div><div class="sml">Glicemias</div></div>
-        <div class="smb"><div class="smv" id="sum-wt">0</div><div class="sml">Pesos</div></div>
-        <div class="smb"><div class="smv" id="sum-med">0</div><div class="sml">Remédios</div></div>
-      </div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-database"></i> Banco de dados</div>
+         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+           <div class="smb"><div class="smv" id="sum-bp">0</div><div class="sml">Pressões</div></div>
+           <div class="smb"><div class="smv" id="sum-gl">0</div><div class="sml">Glicemias</div></div>
+           <div class="smb"><div class="smv" id="sum-wt">0</div><div class="sml">Pesos</div></div>
+           <div class="smb"><div class="smv" id="sum-med">0</div><div class="sml">Remédios</div></div>
+         </div>
+       </div>
+     </div>
+
+     <div id="pg-bp" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de pressão</div>
+         <div class="fr f">
+           <div><label>Sistólica (mmHg) *</label><input class="fi" id="bp-sis" type="number" inputmode="numeric" placeholder="120" min="60" max="260"></div>
+           <div><label>Diastólica (mmHg) *</label><input class="fi" id="bp-dia" type="number" inputmode="numeric" placeholder="80" min="40" max="160"></div>
+         </div>
+         <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-pulse" type="number" inputmode="numeric" placeholder="70 — opcional"></div>
+         <div class="f">
+           <label>Momento</label>
+           <div class="chips">
+             <button class="chip on" data-bpm="Antes do café">Antes café</button>
+             <button class="chip" data-bpm="Após café">Após café</button>
+             <button class="chip" data-bpm="Almoço">Almoço</button>
+             <button class="chip" data-bpm="Tarde">Tarde</button>
+             <button class="chip" data-bpm="Dormir">Dormir</button>
+           </div>
+         </div>
+         <div class="f">
+           <label>Posição</label>
+           <div class="chips">
+             <button class="chip on" data-bpp="Sentado">Sentado</button>
+             <button class="chip" data-bpp="Deitado">Deitado</button>
+             <button class="chip" data-bpp="Em pé">Em pé</button>
+           </div>
+         </div>
+         <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso, após exercício..."></div>
+         <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
+         <button class="btn" onclick="saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
+       </div>
+     </div>
+
+     <div id="pg-gl" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de glicemia</div>
+         <div class="f"><label>Glicose (mg/dL) *</label><input class="fi" id="gl-val" type="number" inputmode="numeric" placeholder="100" min="20" max="700"></div>
+         <div class="f">
+           <label>Momento da coleta</label>
+           <div class="chips">
+             <button class="chip on" data-glm="Jejum">Jejum</button>
+             <button class="chip" data-glm="Pré-refeição">Pré-refeição</button>
+             <button class="chip" data-glm="Pós-refeição">Pós-refeição</button>
+             <button class="chip" data-glm="Antes dormir">Antes dormir</button>
+             <button class="chip" data-glm="Madrugada">Madrugada</button>
+           </div>
+         </div>
+         <div class="f">
+           <label>Tipo de medição</label>
+           <div class="chips">
+             <button class="chip on" data-glt="Glicosímetro">Glicosímetro</button>
+             <button class="chip" data-glt="Laboratório">Laboratório</button>
+             <button class="chip" data-glt="Sensor CGM">Sensor CGM</button>
+           </div>
+         </div>
+         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: antes da insulina, após caminhada..."></div>
+         <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
+         <button class="btn green" onclick="saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
+       </div>
+     </div>
+
+     <div id="pg-wt" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-plus-circle"></i> Registrar peso</div>
+         <div class="fr f">
+           <div><label>Peso (kg) *</label><input class="fi" id="wt-val" type="number" inputmode="decimal" placeholder="70.5" min="20" max="300" step="0.1"></div>
+           <div><label>Altura (cm)</label><input class="fi" id="wt-alt" type="number" inputmode="numeric" placeholder="170" min="100" max="250"></div>
+         </div>
+         <div id="wt-imc-preview" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg2);border-radius:10px;text-align:center">
+           <div style="font-size:12px;color:var(--t3);margin-bottom:3px">IMC calculado</div>
+           <div style="font-size:24px;font-weight:700" id="wt-imc-val">—</div>
+           <div style="font-size:13px;color:var(--t2)" id="wt-imc-lbl">—</div>
+         </div>
+         <div class="f">
+           <label>Momento</label>
+           <div class="chips">
+             <button class="chip on" data-wtm="Manhã em jejum">Jejum manhã</button>
+             <button class="chip" data-wtm="Antes do almoço">Antes almoço</button>
+             <button class="chip" data-wtm="À noite">À noite</button>
+             <button class="chip" data-wtm="Outro">Outro</button>
+           </div>
+         </div>
+         <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: após academia, em jejum..."></div>
+         <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
+         <button class="btn teal" onclick="saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
+       </div>
+     </div>
+
+     <div id="pg-med" class="pg">
+       <button class="btn purple" onclick="openMedModal(null)" style="margin-bottom:14px"><i class="ti ti-plus"></i> Cadastrar novo remédio</button>
+       <div id="med-list"></div>
+     </div>
+
+     <div id="pg-cot" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-building-store"></i> <span id="cot-form-title">Registrar Preços por Farmácia</span></div>
+         <input type="hidden" id="cot-edit-id">
+
+         <div class="f">
+           <label>Nome da Farmácia *</label>
+           <input class="fi" id="cot-pharmacy-name" type="text" placeholder="Ex.: Drogaria São Paulo, Pacheco...">
+         </div>
+         <div class="f">
+           <label>Data e Hora da Cotação *</label>
+           <input class="fi" id="cot-dt" type="datetime-local" onchange="window.renderCotations()">
+         </div>
+         
+         <div id="cot-meds-container">
+           <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>
+           <div class="fr f" style="margin-bottom: 8px; align-items: center;">
+             <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
+             <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+           </div>
+           <div class="fr f" style="margin-bottom: 8px; align-items: center;">
+             <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
+             <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+           </div>
+         </div>
+         
+         <button class="btn ghost" onclick="window.addMedInputRow()" style="margin-bottom:12px; padding:8px;"><i class="ti ti-plus"></i> Adicionar Mais Medicamentos</button>
+         
+         <div class="btn-row" id="cot-btn-container">
+            <button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>
+         </div>
+       </div>
+
+       <div class="card" id="cot-decision-card" style="display:none;">
+         <div class="ct" style="color:var(--blue-t); font-weight:800;"><i class="ti ti-bulb"></i> Painel Comparativo e Decisão Diária</div>
+         <div id="cot-decision-content" style="font-size:14px; line-height:1.5;"></div>
+       </div>
+
+       <div id="pharmacy-history-list"></div>
+     </div>
+
+     <div id="pg-rx" class="pg">
+       <button class="btn teal" onclick="window.openRxModal(null)" style="margin-bottom:14px;"><i class="ti ti-file-text"></i> Arquivar Nova Receita de Uso Contínuo</button>
+       <div id="rx-list-container"></div>
+     </div>
+
+     <div id="pg-hist" class="pg">
+       <div class="frow">
+         <button class="fb on" id="hf-bp" onclick="switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
+         <button class="fb" id="hf-gl" onclick="switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
+         <button class="fb" id="hf-wt" onclick="switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
+         <button class="fb" id="hf-cot" onclick="switchHist('cot')"><i class="ti ti-search"></i> Cotações</button>
+       </div>
+       <div id="hist-bp"></div>
+       <div id="hist-gl" style="display:none"></div>
+       <div id="hist-wt" style="display:none"></div>
+       <div id="hist-cot" style="display:none"></div>
+     </div>
+
+     <nav class="bnav">
+       <button class="nb on" onclick="goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
+       <button class="nb" onclick="goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
+       <button class="nb" onclick="goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
+       <button class="nb" onclick="goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
+       <button class="nb" onclick="goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
+       <button class="nb" onclick="goPage('rx',this)"><i class="ti ti-file-text"></i>Receitas</button>
+       <button class="nb" onclick="goPage('cot',this)"><i class="ti ti-search"></i>Cotar</button>
+       <button class="nb" onclick="goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
+     </nav>
   </div>
-
-  <div id="pg-bp" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de pressão</div>
-      <div class="fr f">
-        <div><label>Sistólica (mmHg) *</label><input class="fi" id="bp-sis" type="number" inputmode="numeric" placeholder="120" min="60" max="260"></div>
-        <div><label>Diastólica (mmHg) *</label><input class="fi" id="bp-dia" type="number" inputmode="numeric" placeholder="80" min="40" max="160"></div>
-      </div>
-      <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-pulse" type="number" inputmode="numeric" placeholder="70 — opcional"></div>
-      <div class="f">
-        <label>Momento</label>
-        <div class="chips">
-          <button class="chip on" data-bpm="Antes do café">Antes café</button>
-          <button class="chip" data-bpm="Após café">Após café</button>
-          <button class="chip" data-bpm="Almoço">Almoço</button>
-          <button class="chip" data-bpm="Tarde">Tarde</button>
-          <button class="chip" data-bpm="Dormir">Dormir</button>
-        </div>
-      </div>
-      <div class="f">
-        <label>Posição</label>
-        <div class="chips">
-          <button class="chip on" data-bpp="Sentado">Sentado</button>
-          <button class="chip" data-bpp="Deitado">Deitado</button>
-          <button class="chip" data-bpp="Em pé">Em pé</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso, após exercício..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
-      <button class="btn" onclick="saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-  </div>
-
-  <div id="pg-gl" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de glicemia</div>
-      <div class="f"><label>Glicose (mg/dL) *</label><input class="fi" id="gl-val" type="number" inputmode="numeric" placeholder="100" min="20" max="700"></div>
-      <div class="f">
-        <label>Momento da coleta</label>
-        <div class="chips">
-          <button class="chip on" data-glm="Jejum">Jejum</button>
-          <button class="chip" data-glm="Pré-refeição">Pré-refeição</button>
-          <button class="chip" data-glm="Pós-refeição">Pós-refeição</button>
-          <button class="chip" data-glm="Antes dormir">Antes dormir</button>
-          <button class="chip" data-glm="Madrugada">Madrugada</button>
-        </div>
-      </div>
-      <div class="f">
-        <label>Tipo de medição</label>
-        <div class="chips">
-          <button class="chip on" data-glt="Glicosímetro">Glicosímetro</button>
-          <button class="chip" data-glt="Laboratório">Laboratório</button>
-          <button class="chip" data-glt="Sensor CGM">Sensor CGM</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: antes da insulina, após caminhada..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
-      <button class="btn green" onclick="saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-  </div>
-
-  <div id="pg-wt" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-plus-circle"></i> Registrar peso</div>
-      <div class="fr f">
-        <div><label>Peso (kg) *</label><input class="fi" id="wt-val" type="number" inputmode="decimal" placeholder="70.5" min="20" max="300" step="0.1"></div>
-        <div><label>Altura (cm)</label><input class="fi" id="wt-alt" type="number" inputmode="numeric" placeholder="170" min="100" max="250"></div>
-      </div>
-      <div id="wt-imc-preview" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg2);border-radius:10px;text-align:center">
-        <div style="font-size:12px;color:var(--t3);margin-bottom:3px">IMC calculado</div>
-        <div style="font-size:24px;font-weight:700" id="wt-imc-val">—</div>
-        <div style="font-size:13px;color:var(--t2)" id="wt-imc-lbl">—</div>
-      </div>
-      <div class="f">
-        <label>Momento</label>
-        <div class="chips">
-          <button class="chip on" data-wtm="Manhã em jejum">Jejum manhã</button>
-          <button class="chip" data-wtm="Antes do almoço">Antes almoço</button>
-          <button class="chip" data-wtm="À noite">À noite</button>
-          <button class="chip" data-wtm="Outro">Outro</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: após academia, em jejum..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
-      <button class="btn teal" onclick="saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
-    </div>
-  </div>
-
-  <div id="pg-med" class="pg">
-    <button class="btn purple" onclick="openMedModal(null)" style="margin-bottom:14px"><i class="ti ti-plus"></i> Cadastrar novo remédio</button>
-    <div id="med-list"></div>
-  </div>
-
-  <div id="pg-cot" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-building-store"></i> <span id="cot-form-title">Registrar Preços por Farmácia</span></div>
-      <input type="hidden" id="cot-edit-id">
-
-      <div class="f">
-        <label>Nome da Farmácia *</label>
-        <input class="fi" id="cot-pharmacy-name" type="text" placeholder="Ex.: Drogaria São Paulo, Pacheco...">
-      </div>
-      <div class="f">
-        <label>Data e Hora da Cotação *</label>
-        <input class="fi" id="cot-dt" type="datetime-local" onchange="window.renderCotations()">
-      </div>
-      
-      <div id="cot-meds-container">
-        <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>
-        <div class="fr f" style="margin-bottom: 8px; align-items: center;">
-          <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
-          <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
-        </div>
-        <div class="fr f" style="margin-bottom: 8px; align-items: center;">
-          <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
-          <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
-        </div>
-      </div>
-      
-      <button class="btn ghost" onclick="window.addMedInputRow()" style="margin-bottom:12px; padding:8px;"><i class="ti ti-plus"></i> Adicionar Mais Medicamentos</button>
-      
-      <div class="btn-row" id="cot-btn-container">
-         <button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>
-      </div>
-    </div>
-
-    <div class="card" id="cot-decision-card" style="display:none;">
-      <div class="ct" style="color:var(--blue-t); font-weight:800;"><i class="ti ti-bulb"></i> Painel Comparativo e Decisão Diária</div>
-      <div id="cot-decision-content" style="font-size:14px; line-height:1.5;"></div>
-    </div>
-
-    <div id="pharmacy-history-list"></div>
-  </div>
-
-  <div id="pg-rx" class="pg">
-    <button class="btn teal" onclick="window.openRxModal(null)" style="margin-bottom:14px;"><i class="ti ti-file-text"></i> Arquivar Nova Receita de Uso Contínuo</button>
-    <div id="rx-list-container"></div>
-  </div>
-
-  <div id="pg-hist" class="pg">
-    <div class="frow">
-      <button class="fb on" id="hf-bp" onclick="switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
-      <button class="fb" id="hf-gl" onclick="switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
-      <button class="fb" id="hf-wt" onclick="switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
-      <button class="fb" id="hf-cot" onclick="switchHist('cot')"><i class="ti ti-search"></i> Cotações</button>
-    </div>
-    <div id="hist-bp"></div>
-    <div id="hist-gl" style="display:none"></div>
-    <div id="hist-wt" style="display:none"></div>
-    <div id="hist-cot" style="display:none"></div>
-  </div>
-
-  <nav class="bnav">
-    <button class="nb on" onclick="goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
-    <button class="nb" onclick="goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
-    <button class="nb" onclick="goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
-    <button class="nb" onclick="goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
-    <button class="nb" onclick="goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
-    <button class="nb" onclick="goPage('rx',this)"><i class="ti ti-file-text"></i>Receitas</button>
-    <button class="nb" onclick="goPage('cot',this)"><i class="ti ti-search"></i>Cotar</button>
-    <button class="nb" onclick="goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
-  </nav>
 </div>
 
 <div class="overlay" id="med-modal" onclick="closeMedModal(event)">
@@ -506,9 +507,9 @@ import {
   getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-// Credenciais oficiais corrigidas do seu console
+// Credenciais corrigidas, com o número "8" injetado na apiKey antes da letra "O"
 const firebaseConfig = {
-  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B1OhXyPV4",
+  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B18OhXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
   projectId: "monitordesaudedf",
   storageBucket: "monitordesaudedf.firebasestorage.app",
@@ -516,13 +517,19 @@ const firebaseConfig = {
   appId: "1:116851967587:web:871b7323325963f5391a56"
 };
 
-const app = initializeApp(firebaseConfig);
-const dbFirestore = getFirestore(app);
+let app, dbFirestore;
+
+try {
+  app = initializeApp(firebaseConfig);
+  dbFirestore = getFirestore(app);
+} catch (error) {
+  document.getElementById('db-dot').style.background = '#b02020';
+  document.getElementById('db-txt').textContent = 'Erro ao inicializar SDK Firebase';
+  console.error("Firebase Init Error:", error);
+}
 
 let listagemRemediosCache = [];
 let rxPhotosCache = []; 
-
-async function openDB() { return true; }
 
 /* CRUD INTEGRADO DO FIRESTORE */
 async function dbAdd(store, rec) {
@@ -562,6 +569,80 @@ async function dbDelete(store, id) {
 }
 
 /* AÇÕES DE INTERFACE DO MONITOR */
+function getNow() {
+  const n = new Date(), p = x => String(x).padStart(2,'0');
+  return `${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`;
+}
+
+function fdt(dt) {
+  if (!dt) return '—';
+  const d = new Date(dt.includes('T') ? dt : dt + 'T12:00:00');
+  if(isNaN(d.getTime())) return dt;
+  return d.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'}) +
+    (dt.includes('T') ? ' às ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) : '');
+}
+
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = err ? '#6e0e0e' : '#1a1f2e';
+  t.classList.add('on');
+  setTimeout(() => t.classList.remove('on'), 3000);
+}
+
+function confirm2(title, msg, cb) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent = msg;
+  window.confirmCallback = cb;
+  document.getElementById('confirm-overlay').classList.add('on');
+}
+
+function closeConfirm() {
+  document.getElementById('confirm-overlay').classList.remove('on');
+  window.confirmCallback = null;
+}
+
+function classifyBP(s, d) {
+  if (s < 120 && d < 80) return ['Normal', 'b-normal'];
+  if (s < 130 && d < 80) return ['Elevada', 'b-alerta'];
+  if (s < 140 || d < 90) return ['Hipert. 1', 'b-alto'];
+  return ['Hipert. 2', 'b-alto'];
+}
+
+function classifyGL(v, m) {
+  if (v < 70) return ['Hipoglicemia', 'b-baixo'];
+  if (m === 'Jejum') {
+    if (v < 100) return ['Normal', 'b-normal'];
+    if (v < 126) return ['Pré-diabetes', 'b-alerta'];
+    return ['Diabetes', 'b-alto'];
+  }
+  if (v < 140) return ['Normal', 'b-normal'];
+  if (v < 200) return ['Atenção', 'b-alerta'];
+  return ['Alta', 'b-alto'];
+}
+
+function calcIMC(peso, altura) {
+  if (!altura || altura < 100) return null;
+  return +(peso / ((altura / 100) ** 2)).toFixed(1);
+}
+
+function classifyIMC(imc) {
+  if (imc < 18.5) return ['Abaixo do peso', 'b-baixo'];
+  if (imc < 25)   return ['Peso normal', 'b-normal'];
+  if (imc < 30)   return ['Sobrepeso', 'b-alerta'];
+  if (imc < 35)   return ['Obesidade 1', 'b-alto'];
+  if (imc < 40)   return ['Obesidade 2', 'b-alto'];
+  return ['Obesidade 3', 'b-alto'];
+}
+
+let bpMoment = 'Antes do café', bpPos = 'Sentado';
+let glMoment = 'Jejum', glType = 'Glicosímetro';
+let wtMoment = 'Manhã em jejum';
+let histTab = 'bp';
+let medTimes = []; 
+let medPhotos = []; 
+window.confirmCallback = null;
+
 async function saveBP() {
   const s = parseInt(document.getElementById('bp-sis').value);
   const d = parseInt(document.getElementById('bp-dia').value);
@@ -692,7 +773,7 @@ async function savePharmacyCotation() {
   const medicamentos = [];
   rows.forEach(row => {
     const dropdown = row.querySelector('.med-search-dropdown');
-    if (!dropdown) return; // Proteção adicional
+    if (!dropdown) return;
     const medName = dropdown.value;
     const medPrice = parseFloat(row.querySelector('.med-search-price').value);
     if (medName && !isNaN(medPrice)) medicamentos.push({ nome: medName.toLowerCase(), nomeExibicao: medName, preco: medPrice });
@@ -862,7 +943,7 @@ async function renderMeds() {
   document.getElementById('med-list').innerHTML = meds.map(m => `<div class="med-card"><b>💊 ${m.name}</b> (${m.dose})<div>⏱️ ${(m.times||[]).join(', ')}</div><div class="med-actions"><button onclick="window.openMedModal('${m.id}')">Editar</button><button onclick="window.deleteMed('${m.id}')">Excluir</button></div></div>`).join('');
 }
 
-/* PAINEL PRINCIPAL (DASHBOARD) */
+/* PAINEL PRINCIPAL (DASHBOARD COLETOR) */
 async function updateDash() {
   const [bps, gls, meds, wts] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('remedios'), dbGetAll('peso')]);
   if(bps.length) { document.getElementById('d-sis').textContent = bps[0].sis; document.getElementById('d-dia').textContent = bps[0].dia; }
@@ -875,7 +956,6 @@ async function updateDash() {
   document.getElementById('sum-bp').textContent = bps.length; document.getElementById('sum-gl').textContent = gls.length;
   document.getElementById('sum-wt').textContent = wts.length; document.getElementById('sum-med').textContent = meds.length;
   
-  // Renderização gráfica protegida
   renderChart('chart-bp', [...bps].slice(0,10).reverse(), r => r.sis, '#1a56a0', 80, 200);
   renderChart('chart-gl', [...gls].slice(0,10).reverse(), r => r.val, '#1a7a3c', 50, 350);
   renderChart('chart-wt', [...wts].slice(0,10).reverse(), r => r.val, '#0e7a6e', 40, 150);
@@ -883,7 +963,7 @@ async function updateDash() {
 
 function renderChart(id, data, getter, color, mn, mx) {
   const wrap = document.getElementById(id);
-  if (!wrap) return; // Proteção contra travamento se a div não for encontrada
+  if (!wrap) return;
   if (!data.length) {
     wrap.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--t3)">Sem dados ainda</div>';
     return;
@@ -949,12 +1029,45 @@ window.addMedInputRow = addMedInputRow;
 window.deleteCot = deleteCot;
 window.openImgModal = openImgModal;
 
-document.getElementById('confirm-ok').onclick = () => { if (confirmCallback) confirmCallback(); closeConfirm(); };
+document.getElementById('confirm-ok').onclick = () => { if (window.confirmCallback) window.confirmCallback(); closeConfirm(); };
 
-/* INICIALIZAÇÃO AUTOMÁTICA EM MALHA */
-(async () => {
+/* INICIALIZAÇÃO AUTOMÁTICA EM MALHA COM FALLBACK RASTREÁVEL */
+window.onload = async () => {
+  setupChips('[data-bpm]', v => bpMoment = v);
+  setupChips('[data-bpp]', v => bpPos = v);
+  setupChips('[data-glm]', v => glMoment = v);
+  setupChips('[data-glt]', v => glType = v);
+  setupChips('[data-wtm]', v => wtMoment = v);
+
+  ['wt-val','wt-alt'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      const p = parseFloat(document.getElementById('wt-val').value);
+      const a = parseFloat(document.getElementById('wt-alt').value);
+      const prev = document.getElementById('wt-imc-preview');
+      if (p && a && a >= 100) {
+        const imc = calcIMC(p, a);
+        const [lbl] = classifyIMC(imc);
+        document.getElementById('wt-imc-val').textContent = imc;
+        document.getElementById('wt-imc-lbl').textContent = lbl;
+        prev.style.display = 'block';
+      } else {
+        prev.style.display = 'none';
+      }
+    });
+  });
+
+  document.getElementById('bp-dt').value = getNow();
+  document.getElementById('gl-dt').value = getNow();
+  document.getElementById('wt-dt').value = getNow();
+  document.getElementById('cot-dt').value = getNow();
+
   try {
-    await openDB();
+    if (!dbFirestore) throw new Error("A conexão com o banco de dados falhou na inicialização. Verifique sua chave de API.");
+    
+    // Testa a permissão de leitura executando a coleta das métricas logo na abertura
+    const colRef = collection(dbFirestore, 'pressao');
+    await getDocs(query(colRef));
+
     document.getElementById('db-dot').style.background = '#1a7a3c';
     document.getElementById('db-txt').textContent = 'Conectado à Nuvem do Firebase ✓';
     
@@ -964,9 +1077,15 @@ document.getElementById('confirm-ok').onclick = () => { if (confirmCallback) con
     await renderRxList();
   } catch(e) {
     document.getElementById('db-dot').style.background = '#b02020';
-    document.getElementById('db-txt').textContent = 'Erro de Sincronização: ' + e.message;
+    if (e.message.includes('Missing or insufficient permissions')) {
+       document.getElementById('db-txt').textContent = 'Acesso Negado: Regras do Banco Bloqueadas';
+       toast('⚠️ O Firestore está bloqueando as leituras. Atualize as regras do banco para acesso público.', true);
+    } else {
+       document.getElementById('db-txt').textContent = 'Erro de Sincronização: Falha no Firebase';
+       console.error("Firebase Error Trace:", e);
+    }
   }
-})();
+};
 </script>
 </body>
 </html>
