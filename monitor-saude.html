@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Saúde">
+<meta name="theme-color" content="#1a56a0">
+<title>Monitor de Saúde</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{
+  --bg0:#f0f2f5;--bg1:#fff;--bg2:#f4f6f8;
+  --t1:#0d1117;--t2:#5a6375;--t3:#9aa0ad;
+  --bd:rgba(0,0,0,.09);--bd2:rgba(0,0,0,.16);
+  --blue:#1a56a0;--blue-bg:#ddeeff;--blue-t:#0a3d7a;
+  --green:#1a7a3c;--green-bg:#d4f0df;--green-t:#0e4d22;
+  --amber:#8a5200;--amber-bg:#fdebc8;--amber-t:#5c3600;
+  --red:#b02020;--red-bg:#fad8d8;--red-t:#700f0f;
+  --purple:#5a2d9e;--purple-bg:#ede8fb;--purple-t:#3d1d70;
+  --teal:#0e7a6e;--teal-bg:#d0f2ee;--teal-t:#074d45;
+  --sh:0 2px 12px rgba(0,0,0,.07);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg0:#0e1117;--bg1:#161b22;--bg2:#1e2530;
+  --t1:#e6eaf0;--t2:#8b96a8;--t3:#555f6e;
+  --bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.13);
+  --blue:#4d9de0;--blue-bg:#0d2340;--blue-t:#7bbef5;
+  --green:#3db368;--green-bg:#0d2e1c;--green-t:#5dd488;
+  --amber:#f0a830;--amber-bg:#2e1e05;--amber-t:#f5c060;
+  --red:#e05555;--red-bg:#2e0e0e;--red-t:#f07070;
+  --purple:#9b6cef;--purple-bg:#1e1040;--purple-t:#c4a5ff;
+  --teal:#2bbdae;--teal-bg:#04302c;--teal-t:#5de0d4;
+  --sh:0 2px 16px rgba(0,0,0,.4);
+}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg0);color:var(--t1);min-height:100vh;overscroll-behavior:none}
+#app{max-width:430px;margin:0 auto;min-height:100vh}
+
+.hdr{background:linear-gradient(150deg,#0d3a7a,#1a56a0 55%,#1e6fc4);color:#fff;padding:52px 20px 22px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.05)}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.hdr h1{font-size:21px;font-weight:700;letter-spacing:-.3px}
+.hdr-sub{font-size:13px;opacity:.72}
+.hbadge{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600}
+
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg1);border-top:.5px solid var(--bd2);display:flex;z-index:200;padding-bottom:max(env(safe-area-inset-bottom),4px);overflow-x:auto}
+.nb{flex:1;min-width:48px;border:none;background:transparent;cursor:pointer;padding:9px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:500;color:var(--t3);font-family:inherit;transition:color .15s}
+.nb i{font-size:20px}
+.nb.on{color:var(--blue)}
+
+.pg{display:none;padding:14px 13px 100px}
+.pg.on{display:block}
+
+.card{background:var(--bg1);border-radius:18px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:15px 17px;margin-bottom:13px}
+.ct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:13px;display:flex;align-items:center;gap:6px}
+.ct i{font-size:14px}
+
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.sg.one{grid-template-columns:1fr}
+.sb{background:var(--bg2);border-radius:13px;padding:13px 10px;text-align:center}
+.sl{font-size:11px;color:var(--t3);margin-bottom:4px}
+.sv{font-size:29px;font-weight:700;line-height:1;color:var(--t1)}
+.su{font-size:11px;color:var(--t2);margin-top:3px}
+.ss{font-size:12px;color:var(--t3);text-align:center;margin-top:7px}
+
+.f{margin-bottom:12px}
+.f label{display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px}
+.fi,.fs{width:100%;padding:11px 13px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:15px;color:var(--t1);font-family:inherit;appearance:none;-webkit-appearance:none}
+.fi:focus,.fs:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,160,.15)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
+.chip{padding:7px 13px;border-radius:30px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s}
+.chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+.btn{width:100%;padding:13px;border-radius:14px;border:none;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .15s}
+.btn:active{transform:scale(.97);opacity:.9}
+.btn.green{background:var(--green)}
+.btn.purple{background:var(--purple)}
+.btn.teal{background:var(--teal)}
+.btn.ghost{background:var(--bg2);color:var(--t2);border:1px solid var(--bd2)}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+
+.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap}
+.b-normal{background:var(--green-bg);color:var(--green-t)}
+.b-alerta{background:var(--amber-bg);color:var(--amber-t)}
+.b-alto{background:var(--red-bg);color:var(--red-t)}
+.b-baixo{background:var(--blue-bg);color:var(--blue-t)}
+
+.li{display:flex;align-items:flex-start;padding:11px 0;border-bottom:.5px solid var(--bd)}
+.li:last-child{border-bottom:none;padding-bottom:0}
+.li:first-child{padding-top:0}
+.ico{width:40px;height:40px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;margin-right:11px;margin-top:1px}
+.ico.bp{background:var(--blue-bg);color:var(--blue)}
+.ico.gl{background:var(--green-bg);color:var(--green)}
+.ico.wt{background:var(--teal-bg);color:var(--teal)}
+.ico.med{background:var(--purple-bg);color:var(--purple)}
+.lb{flex:1;min-width:0}
+.lv{font-size:15px;font-weight:700;color:var(--t1)}
+.lm{font-size:12px;color:var(--t3);margin-top:1px}
+.ln{font-size:11px;color:var(--t2);background:var(--bg2);border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
+.la{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0;margin-left:8px}
+.ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--red);font-size:18px;display:flex;align-items:center;justify-content:center}
+.ibtn:active{background:var(--red-bg)}
+
+.mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
+.blbl{font-size:9px;color:var(--t3)}
+
+.ri{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px;border-bottom:.5px solid var(--bd)}
+.ri:last-child{border-bottom:none}
+.rdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+.empty{text-align:center;padding:28px 16px;color:var(--t3)}
+.empty i{font-size:42px;display:block;margin-bottom:9px;opacity:.3}
+.empty p{font-size:14px}
+
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.frow{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+.fb{flex:1;min-width:70px;padding:9px 4px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:12px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
+.fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+.dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
+.dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;transition:background .4s}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.overlay.on{display:flex}
+.modal{background:var(--bg1);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),20px)}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.modal-close{background:var(--bg2);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--t2)}
+
+.med-card{background:var(--bg1);border-radius:16px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:14px 16px;margin-bottom:12px}
+.med-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.med-ico{width:44px;height:44px;border-radius:12px;background:var(--purple-bg);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.med-name{font-size:16px;font-weight:700;color:var(--t1)}
+.med-dose{font-size:13px;color:var(--t2);margin-top:1px}
+.med-times{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.med-time-tag{background:var(--purple-bg);color:var(--purple-t);border-radius:20px;padding:4px 11px;font-size:12px;font-weight:600}
+.med-imgs{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.med-img{width:64px;height:64px;border-radius:9px;object-fit:cover;cursor:pointer;border:.5px solid var(--bd2)}
+.med-actions{display:flex;gap:7px;margin-top:10px}
+.med-btn{flex:1;padding:9px;border-radius:9px;border:none;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit}
+.med-btn.edit{background:var(--blue-bg);color:var(--blue-t)}
+.med-btn.del{background:var(--red-bg);color:var(--red-t)}
+
+.confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
+.confirm-overlay.on{display:flex}
+.confirm-box{background:var(--bg1);border-radius:18px;padding:22px 20px;width:100%;max-width:340px;text-align:center}
+.confirm-box h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.confirm-box p{font-size:14px;color:var(--t2);margin-bottom:20px;line-height:1.5}
+.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.cbtn{padding:12px;border-radius:11px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.cbtn.cancel{background:var(--bg2);color:var(--t2)}
+.cbtn.confirm{background:var(--red);color:#fff}
+
+.img-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:700;display:none;align-items:center;justify-content:center}
+.img-modal.on{display:flex}
+.img-modal img{max-width:95vw;max-height:90vh;border-radius:10px;object-fit:contain}
+.img-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+.sched-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:.5px solid var(--bd)}
+.sched-row:last-child{border-bottom:none}
+
+.smb{background:var(--bg2);border-radius:9px;padding:10px 8px;text-align:center}
+.smv{font-size:20px;font-weight:700;color:var(--t1)}
+.sml{font-size:10px;color:var(--t3);margin-top:2px}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="hdr-row">
+      <h1>❤️ Monitor de Saúde</h1>
+      <span class="hbadge">☁️ Firebase</span>
+    </div>
+    <div class="hdr-sub">Desenvolvido por Rafael Medeiros</div>
+  </div>
+
+  <!-- INÍCIO -->
+  <div id="pg-home" class="pg on">
+    <div class="dbs"><div class="dbd" id="db-dot"></div><span id="db-txt">Conectando ao Firebase...</span></div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-heart"></i> Última pressão</div>
+      <div class="sg">
+        <div class="sb"><div class="sl">Sistólica</div><div class="sv" id="d-sis">—</div><div class="su">mmHg</div></div>
+        <div class="sb"><div class="sl">Diastólica</div><div class="sv" id="d-dia">—</div><div class="su">mmHg</div></div>
+      </div>
+      <div class="ss" id="d-bp-i">Nenhuma medição registrada</div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-droplet"></i> Última glicemia</div>
+      <div class="sg one">
+        <div class="sb"><div class="sl">Glicose</div><div class="sv" id="d-gl">—</div><div class="su">mg/dL</div></div>
+      </div>
+      <div class="ss" id="d-gl-i">Nenhuma medição registrada</div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-scale"></i> Último peso</div>
+      <div class="sg">
+        <div class="sb"><div class="sl">Peso</div><div class="sv" id="d-wt">—</div><div class="su">kg</div></div>
+        <div class="sb"><div class="sl">IMC</div><div class="sv" id="d-imc">—</div><div class="su" id="d-imc-class"></div></div>
+      </div>
+      <div class="ss" id="d-wt-i">Nenhuma medição registrada</div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-pill"></i> Remédios de hoje</div>
+      <div id="d-meds-today"><div class="empty" style="padding:8px"><p>Nenhum remédio cadastrado</p></div></div>
+    </div>
+    <div class="card"><div class="ct"><i class="ti ti-chart-bar"></i> Pressão sistólica</div><div class="mchart" id="chart-bp"></div></div>
+    <div class="card"><div class="ct"><i class="ti ti-chart-bar"></i> Glicemia</div><div class="mchart" id="chart-gl"></div></div>
+    <div class="card"><div class="ct"><i class="ti ti-chart-bar"></i> Peso</div><div class="mchart" id="chart-wt"></div></div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-database"></i> Totais no banco de dados</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="smb"><div class="smv" id="sum-bp">—</div><div class="sml">Pressões</div></div>
+        <div class="smb"><div class="smv" id="sum-gl">—</div><div class="sml">Glicemias</div></div>
+        <div class="smb"><div class="smv" id="sum-wt">—</div><div class="sml">Pesos</div></div>
+        <div class="smb"><div class="smv" id="sum-med">—</div><div class="sml">Remédios</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRESSÃO -->
+  <div id="pg-bp" class="pg">
+    <div class="card">
+      <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de pressão</div>
+      <div class="fr f">
+        <div><label>Sistólica (mmHg) *</label><input class="fi" id="bp-sis" type="number" inputmode="numeric" placeholder="120"></div>
+        <div><label>Diastólica (mmHg) *</label><input class="fi" id="bp-dia" type="number" inputmode="numeric" placeholder="80"></div>
+      </div>
+      <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-pulse" type="number" inputmode="numeric" placeholder="70 — opcional"></div>
+      <div class="f"><label>Momento</label>
+        <div class="chips">
+          <button class="chip on" data-bpm="Antes do café">Antes café</button>
+          <button class="chip" data-bpm="Após café">Após café</button>
+          <button class="chip" data-bpm="Almoço">Almoço</button>
+          <button class="chip" data-bpm="Tarde">Tarde</button>
+          <button class="chip" data-bpm="Dormir">Dormir</button>
+        </div>
+      </div>
+      <div class="f"><label>Posição</label>
+        <div class="chips">
+          <button class="chip on" data-bpp="Sentado">Sentado</button>
+          <button class="chip" data-bpp="Deitado">Deitado</button>
+          <button class="chip" data-bpp="Em pé">Em pé</button>
+        </div>
+      </div>
+      <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso, após exercício..."></div>
+      <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
+      <button class="btn" onclick="W.saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-info-circle"></i> Classificação (OMS)</div>
+      <div class="ri"><div class="rdot" style="background:#1a7a3c"></div><span><b>Normal:</b> abaixo de 120/80 mmHg</span></div>
+      <div class="ri"><div class="rdot" style="background:#e8a020"></div><span><b>Elevada:</b> 120–129 / &lt;80 mmHg</span></div>
+      <div class="ri"><div class="rdot" style="background:#e05555"></div><span><b>Hipert. 1:</b> 130–139 / 80–89 mmHg</span></div>
+      <div class="ri"><div class="rdot" style="background:#b02020"></div><span><b>Hipert. 2:</b> ≥140 / ≥90 mmHg</span></div>
+    </div>
+  </div>
+
+  <!-- GLICEMIA -->
+  <div id="pg-gl" class="pg">
+    <div class="card">
+      <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de glicemia</div>
+      <div class="f"><label>Glicose (mg/dL) *</label><input class="fi" id="gl-val" type="number" inputmode="numeric" placeholder="100"></div>
+      <div class="f"><label>Momento da coleta</label>
+        <div class="chips">
+          <button class="chip on" data-glm="Jejum">Jejum</button>
+          <button class="chip" data-glm="Pré-refeição">Pré-refeição</button>
+          <button class="chip" data-glm="Pós-refeição">Pós-refeição</button>
+          <button class="chip" data-glm="Antes dormir">Antes dormir</button>
+          <button class="chip" data-glm="Madrugada">Madrugada</button>
+        </div>
+      </div>
+      <div class="f"><label>Tipo de medição</label>
+        <div class="chips">
+          <button class="chip on" data-glt="Glicosímetro">Glicosímetro</button>
+          <button class="chip" data-glt="Laboratório">Laboratório</button>
+          <button class="chip" data-glt="Sensor CGM">Sensor CGM</button>
+        </div>
+      </div>
+      <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: antes da insulina, após caminhada..."></div>
+      <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
+      <button class="btn green" onclick="W.saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-info-circle"></i> Classificação</div>
+      <div class="ri"><div class="rdot" style="background:#1a56a0"></div><span><b>Hipoglicemia:</b> abaixo de 70 mg/dL</span></div>
+      <div class="ri"><div class="rdot" style="background:#1a7a3c"></div><span><b>Jejum normal:</b> 70–99 mg/dL</span></div>
+      <div class="ri"><div class="rdot" style="background:#e8a020"></div><span><b>Pré-diabetes:</b> 100–125 mg/dL</span></div>
+      <div class="ri"><div class="rdot" style="background:#b02020"></div><span><b>Diabetes:</b> ≥126 mg/dL</span></div>
+    </div>
+  </div>
+
+  <!-- PESO -->
+  <div id="pg-wt" class="pg">
+    <div class="card">
+      <div class="ct"><i class="ti ti-plus-circle"></i> Registrar peso</div>
+      <div class="fr f">
+        <div><label>Peso (kg) *</label><input class="fi" id="wt-val" type="number" inputmode="decimal" placeholder="70.5" step="0.1"></div>
+        <div><label>Altura (cm)</label><input class="fi" id="wt-alt" type="number" inputmode="numeric" placeholder="170"></div>
+      </div>
+      <div id="wt-imc-preview" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg2);border-radius:10px;text-align:center">
+        <div style="font-size:12px;color:var(--t3);margin-bottom:3px">IMC calculado</div>
+        <div style="font-size:24px;font-weight:700" id="wt-imc-val">—</div>
+        <div style="font-size:13px;color:var(--t2)" id="wt-imc-lbl">—</div>
+      </div>
+      <div class="f"><label>Momento</label>
+        <div class="chips">
+          <button class="chip on" data-wtm="Manhã em jejum">Jejum manhã</button>
+          <button class="chip" data-wtm="Antes do almoço">Antes almoço</button>
+          <button class="chip" data-wtm="À noite">À noite</button>
+          <button class="chip" data-wtm="Outro">Outro</button>
+        </div>
+      </div>
+      <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: após academia, em jejum..."></div>
+      <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
+      <button class="btn teal" onclick="W.saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-info-circle"></i> Classificação IMC (OMS)</div>
+      <div class="ri"><div class="rdot" style="background:#1a56a0"></div><span><b>Abaixo do peso:</b> IMC &lt; 18,5</span></div>
+      <div class="ri"><div class="rdot" style="background:#1a7a3c"></div><span><b>Normal:</b> 18,5 – 24,9</span></div>
+      <div class="ri"><div class="rdot" style="background:#e8a020"></div><span><b>Sobrepeso:</b> 25 – 29,9</span></div>
+      <div class="ri"><div class="rdot" style="background:#b02020"></div><span><b>Obesidade:</b> ≥ 30</span></div>
+    </div>
+  </div>
+
+  <!-- REMÉDIOS -->
+  <div id="pg-med" class="pg">
+    <button class="btn purple" onclick="W.openMedModal(null)" style="margin-bottom:14px"><i class="ti ti-plus"></i> Cadastrar novo remédio</button>
+    <div id="med-list"></div>
+  </div>
+
+  <!-- RECEITAS -->
+  <div id="pg-rx" class="pg">
+    <button class="btn teal" onclick="W.openRxModal(null)" style="margin-bottom:14px"><i class="ti ti-file-text"></i> Arquivar nova receita</button>
+    <div id="rx-list"></div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div id="pg-hist" class="pg">
+    <div class="frow">
+      <button class="fb on" id="hf-bp" onclick="W.switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
+      <button class="fb" id="hf-gl" onclick="W.switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
+      <button class="fb" id="hf-wt" onclick="W.switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
+    </div>
+    <div id="hist-bp"></div>
+    <div id="hist-gl" style="display:none"></div>
+    <div id="hist-wt" style="display:none"></div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="bnav">
+    <button class="nb on" onclick="W.goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
+    <button class="nb" onclick="W.goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
+    <button class="nb" onclick="W.goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
+    <button class="nb" onclick="W.goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
+    <button class="nb" onclick="W.goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
+    <button class="nb" onclick="W.goPage('rx',this)"><i class="ti ti-file-text"></i>Receitas</button>
+    <button class="nb" onclick="W.goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
+  </nav>
+</div>
+
+<!-- MODAL REMÉDIO -->
+<div class="overlay" id="med-modal" onclick="if(event.target===this)W.closeMedModal()">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="med-modal-title">Novo remédio</span>
+      <button class="modal-close" onclick="W.closeMedModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="med-edit-id">
+    <div class="f"><label>Nome do remédio *</label><input class="fi" id="med-name" type="text" placeholder="Ex.: Losartana, Metformina..."></div>
+    <div class="fr f">
+      <div><label>Dosagem</label><input class="fi" id="med-dose" type="text" placeholder="Ex.: 50mg"></div>
+      <div><label>Forma</label>
+        <select class="fs" id="med-form">
+          <option>Comprimido</option><option>Cápsula</option><option>Líquido</option>
+          <option>Injeção</option><option>Gotas</option><option>Adesivo</option><option>Outro</option>
+        </select>
+      </div>
+    </div>
+    <div class="f"><label>Instruções de uso</label><input class="fi" id="med-instr" type="text" placeholder="Ex.: tomar com água, antes do café..."></div>
+    <div class="f">
+      <label>Horários de tomada</label>
+      <div id="times-list" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px"></div>
+      <div style="display:flex;gap:8px">
+        <input class="fi" id="new-time" type="time" style="flex:1">
+        <button class="btn" style="width:auto;padding:11px 16px" onclick="W.addTime()"><i class="ti ti-plus"></i></button>
+      </div>
+    </div>
+    <div class="f">
+      <label>Fotos (caixa, bula, receita)</label>
+      <div id="med-photos-preview" class="med-imgs" style="margin-bottom:8px"></div>
+      <div class="btn-row">
+        <button class="btn ghost" onclick="document.getElementById('photo-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
+        <button class="btn ghost" onclick="document.getElementById('photo-file').click()"><i class="ti ti-photo"></i> Galeria</button>
+      </div>
+      <input type="file" id="photo-cam" accept="image/*" capture="environment" style="display:none" onchange="W.addPhoto(this)">
+      <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="W.addPhoto(this)">
+    </div>
+    <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Ex.: armazenar na geladeira..."></div>
+    <button class="btn purple" onclick="W.saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
+  </div>
+</div>
+
+<!-- MODAL RECEITA -->
+<div class="overlay" id="rx-modal" onclick="if(event.target===this)W.closeRxModal()">
+  <div class="modal">
+    <div class="modal-title">
+      <span id="rx-modal-title">Arquivar Receita Médica</span>
+      <button class="modal-close" onclick="W.closeRxModal()"><i class="ti ti-x"></i></button>
+    </div>
+    <input type="hidden" id="rx-edit-id">
+    <div class="f"><label>Nome do Médico *</label><input class="fi" id="rx-doctor" type="text" placeholder="Ex.: Dr. Silva"></div>
+    <div class="f"><label>CRM</label><input class="fi" id="rx-crm" type="text" placeholder="Ex.: 12345-DF"></div>
+    <div class="fr f">
+      <div><label>Data de Emissão *</label><input class="fi" id="rx-date" type="date"></div>
+      <div><label>Validade</label>
+        <select class="fs" id="rx-months">
+          <option value="6">6 meses</option>
+          <option value="12">1 ano</option>
+          <option value="1">1 mês</option>
+        </select>
+      </div>
+    </div>
+    <div class="f"><label>Medicamentos inclusos *</label><input class="fi" id="rx-meds" type="text" placeholder="Ex.: Losartana, Metformina"></div>
+    <div class="f">
+      <label>Foto da Receita</label>
+      <div id="rx-photos-preview" class="med-imgs" style="margin-bottom:8px"></div>
+      <div class="btn-row">
+        <button class="btn ghost" onclick="document.getElementById('rx-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
+        <button class="btn ghost" onclick="document.getElementById('rx-file').click()"><i class="ti ti-photo"></i> Galeria</button>
+      </div>
+      <input type="file" id="rx-cam" accept="image/*" capture="environment" style="display:none" onchange="W.addRxPhoto(this)">
+      <input type="file" id="rx-file" accept="image/*" multiple style="display:none" onchange="W.addRxPhoto(this)">
+    </div>
+    <div class="f"><label>Observações</label><input class="fi" id="rx-obs" type="text" placeholder="Ex.: via original retida..."></div>
+    <button class="btn teal" onclick="W.saveRx()"><i class="ti ti-device-floppy"></i> Arquivar na Nuvem</button>
+  </div>
+</div>
+
+<!-- CONFIRMAÇÃO -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <h3 id="confirm-title">Confirmar exclusão</h3>
+    <p id="confirm-msg">Tem certeza? Esta ação não pode ser desfeita.</p>
+    <div class="confirm-btns">
+      <button class="cbtn cancel" onclick="W.closeConfirm()">Cancelar</button>
+      <button class="cbtn confirm" id="confirm-ok">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- IMAGEM AMPLIADA -->
+<div class="img-modal" id="img-modal" onclick="W.closeImg()">
+  <img id="img-src" src="" alt="">
+  <button class="img-close" onclick="W.closeImg()"><i class="ti ti-x"></i></button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+/* ═══════════════════════════════
+   FIREBASE
+═══════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B180hXyPV4",
+  authDomain: "monitordesaudedf.firebaseapp.com",
+  projectId: "monitordesaudedf",
+  storageBucket: "monitordesaudedf.firebasestorage.app",
+  messagingSenderId: "116851967587",
+  appId: "1:116851967587:web:871b7323325963f5391a56"
+};
+const app = initializeApp(firebaseConfig);
+const FS = getFirestore(app);
+
+async function dbAdd(col, rec) {
+  const r = await addDoc(collection(FS, col), rec); return r.id;
+}
+async function dbPut(col, rec) {
+  const { id, ...data } = rec;
+  await setDoc(doc(FS, col, String(id)), data, { merge: true }); return id;
+}
+async function dbGetAll(col) {
+  const snap = await getDocs(collection(FS, col));
+  const rows = []; snap.forEach(d => rows.push({ id: d.id, ...d.data() }));
+  return rows.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
+}
+async function dbGet(col, id) {
+  const snap = await getDoc(doc(FS, col, String(id)));
+  return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+}
+async function dbDelete(col, id) {
+  await deleteDoc(doc(FS, col, String(id))); return true;
+}
+
+/* ═══════════════════════════════
+   ESTADO
+═══════════════════════════════ */
+let bpMoment = 'Antes do café', bpPos = 'Sentado';
+let glMoment = 'Jejum', glType = 'Glicosímetro';
+let wtMoment = 'Manhã em jejum';
+let medTimes = [], medPhotos = [];
+let rxPhotos = [];
+let confirmCb = null;
+
+/* ═══════════════════════════════
+   UTILS
+═══════════════════════════════ */
+function getNow() {
+  const n = new Date(), p = x => String(x).padStart(2,'0');
+  return `${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`;
+}
+function fdt(dt) {
+  if (!dt) return '—';
+  try {
+    const d = new Date(dt.includes('T') ? dt : dt + 'T12:00:00');
+    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}) +
+      (dt.includes('T') ? ' às ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : '');
+  } catch(e) { return dt; }
+}
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.background = err ? '#6e0e0e' : '#1a1f2e';
+  t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 3000);
+}
+function classifyBP(s, d) {
+  if (s < 120 && d < 80) return ['Normal','b-normal'];
+  if (s < 130 && d < 80) return ['Elevada','b-alerta'];
+  if (s < 140 || d < 90) return ['Hipert. 1','b-alto'];
+  return ['Hipert. 2','b-alto'];
+}
+function classifyGL(v, m) {
+  if (v < 70) return ['Hipoglicemia','b-baixo'];
+  if (m === 'Jejum') {
+    if (v < 100) return ['Normal','b-normal'];
+    if (v < 126) return ['Pré-diabetes','b-alerta'];
+    return ['Diabetes','b-alto'];
+  }
+  if (v < 140) return ['Normal','b-normal'];
+  if (v < 200) return ['Atenção','b-alerta'];
+  return ['Alta','b-alto'];
+}
+function calcIMC(p, a) { return a >= 100 ? +(p / ((a/100)**2)).toFixed(1) : null; }
+function classifyIMC(imc) {
+  if (imc < 18.5) return ['Abaixo do peso','b-baixo'];
+  if (imc < 25)   return ['Normal','b-normal'];
+  if (imc < 30)   return ['Sobrepeso','b-alerta'];
+  if (imc < 35)   return ['Obesidade 1','b-alto'];
+  if (imc < 40)   return ['Obesidade 2','b-alto'];
+  return ['Obesidade 3','b-alto'];
+}
+function renderChart(id, data, getter, color, mn, mx) {
+  const wrap = document.getElementById(id); if (!wrap) return;
+  if (!data.length) { wrap.innerHTML = '<div style="flex:1;text-align:center;font-size:12px;color:var(--t3);align-self:center">Sem dados ainda</div>'; return; }
+  wrap.innerHTML = '';
+  data.forEach(r => {
+    const v = getter(r), pct = Math.max(5, Math.min(100, ((v-mn)/(mx-mn))*100));
+    const col = document.createElement('div'); col.className = 'bc';
+    col.innerHTML = `<div class="bbar" style="height:${pct}%;background:${color};opacity:.75"></div><div class="blbl">${v}</div>`;
+    wrap.appendChild(col);
+  });
+}
+function setupChips(sel, setter) {
+  document.querySelectorAll(sel).forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll(sel).forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    setter(btn.dataset[Object.keys(btn.dataset)[0]]);
+  }));
+}
+
+/* ═══════════════════════════════
+   CONFIRM
+═══════════════════════════════ */
+function confirm2(title, msg, cb) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent = msg;
+  confirmCb = cb;
+  document.getElementById('confirm-overlay').classList.add('on');
+}
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('on'); confirmCb = null; }
+document.getElementById('confirm-ok').onclick = () => { if (confirmCb) confirmCb(); closeConfirm(); };
+
+/* ═══════════════════════════════
+   NAVEGAÇÃO
+═══════════════════════════════ */
+function goPage(name, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById('pg-' + name).classList.add('on');
+  if (btn) btn.classList.add('on');
+  if (name === 'home') updateDash();
+  if (name === 'hist') renderHist();
+  if (name === 'med')  renderMeds();
+  if (name === 'rx')   renderRx();
+}
+function switchHist(type) {
+  ['bp','gl','wt'].forEach(t => {
+    document.getElementById('hf-'+t).classList.toggle('on', t===type);
+    document.getElementById('hist-'+t).style.display = t===type ? 'block' : 'none';
+  });
+  renderHist();
+}
+
+/* ═══════════════════════════════
+   PRESSÃO
+═══════════════════════════════ */
+async function saveBP() {
+  const s = parseInt(document.getElementById('bp-sis').value);
+  const d = parseInt(document.getElementById('bp-dia').value);
+  const pulse = document.getElementById('bp-pulse').value;
+  const note = document.getElementById('bp-note').value.trim();
+  const dt = document.getElementById('bp-dt').value || getNow();
+  if (!s||!d||s<60||d<40||s>260||d>160) { toast('⚠️ Valores inválidos de pressão',true); return; }
+  try {
+    await dbAdd('pressao', {sis:s, dia:d, pulse:pulse?parseInt(pulse):null, moment:bpMoment, pos:bpPos, note, dt});
+    ['bp-sis','bp-dia','bp-pulse','bp-note'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('bp-dt').value = getNow();
+    toast('✓ Pressão salva na nuvem!'); updateDash();
+  } catch(e) { toast('Erro: '+e.message, true); }
+}
+function deleteBP(id) {
+  confirm2('Excluir pressão','Remover este registro permanentemente?', async () => {
+    await dbDelete('pressao', id); toast('✓ Excluído'); renderHist(); updateDash();
+  });
+}
+
+/* ═══════════════════════════════
+   GLICEMIA
+═══════════════════════════════ */
+async function saveGL() {
+  const v = parseInt(document.getElementById('gl-val').value);
+  const note = document.getElementById('gl-note').value.trim();
+  const dt = document.getElementById('gl-dt').value || getNow();
+  if (!v||v<20||v>700) { toast('⚠️ Valor inválido de glicemia',true); return; }
+  try {
+    await dbAdd('glicemia', {val:v, moment:glMoment, type:glType, note, dt});
+    ['gl-val','gl-note'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('gl-dt').value = getNow();
+    toast('✓ Glicemia salva na nuvem!'); updateDash();
+  } catch(e) { toast('Erro: '+e.message, true); }
+}
+function deleteGL(id) {
+  confirm2('Excluir glicemia','Remover este registro permanentemente?', async () => {
+    await dbDelete('glicemia', id); toast('✓ Excluído'); renderHist(); updateDash();
+  });
+}
+
+/* ═══════════════════════════════
+   PESO
+═══════════════════════════════ */
+async function saveWT() {
+  const val = parseFloat(document.getElementById('wt-val').value);
+  const alt = parseFloat(document.getElementById('wt-alt').value);
+  const note = document.getElementById('wt-note').value.trim();
+  const dt = document.getElementById('wt-dt').value || getNow();
+  if (!val||val<20||val>300) { toast('⚠️ Peso inválido',true); return; }
+  const imc = calcIMC(val, alt);
+  try {
+    await dbAdd('peso', {val, alt:alt||null, imc, moment:wtMoment, note, dt});
+    ['wt-val','wt-note'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('wt-dt').value = getNow();
+    document.getElementById('wt-imc-preview').style.display = 'none';
+    toast('✓ Peso salvo na nuvem!'); updateDash();
+  } catch(e) { toast('Erro: '+e.message, true); }
+}
+function deleteWT(id) {
+  confirm2('Excluir peso','Remover este registro permanentemente?', async () => {
+    await dbDelete('peso', id); toast('✓ Excluído'); renderHist(); updateDash();
+  });
+}
+
+/* ═══════════════════════════════
+   DASHBOARD
+═══════════════════════════════ */
+async function updateDash() {
+  const [bps, gls, wts, meds] = await Promise.all([
+    dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('remedios')
+  ]);
+  // Pressão
+  if (bps.length) {
+    const l = bps[0];
+    document.getElementById('d-sis').textContent = l.sis;
+    document.getElementById('d-dia').textContent = l.dia;
+    document.getElementById('d-bp-i').textContent = (l.moment||'') + (l.pos?' · '+l.pos:'') + ' · ' + fdt(l.dt);
+  }
+  // Glicemia
+  if (gls.length) {
+    const l = gls[0];
+    document.getElementById('d-gl').textContent = l.val;
+    document.getElementById('d-gl-i').textContent = (l.moment||'') + ' · ' + fdt(l.dt);
+  }
+  // Peso
+  if (wts.length) {
+    const l = wts[0];
+    document.getElementById('d-wt').textContent = l.val;
+    document.getElementById('d-wt-i').textContent = (l.moment||'') + ' · ' + fdt(l.dt);
+    if (l.imc) {
+      const [lbl] = classifyIMC(l.imc);
+      document.getElementById('d-imc').textContent = l.imc;
+      document.getElementById('d-imc-class').textContent = lbl;
+    }
+  }
+  // Totais
+  document.getElementById('sum-bp').textContent = bps.length;
+  document.getElementById('sum-gl').textContent = gls.length;
+  document.getElementById('sum-wt').textContent = wts.length;
+  document.getElementById('sum-med').textContent = meds.length;
+  // Remédios hoje
+  const todayEl = document.getElementById('d-meds-today');
+  const allTimes = [];
+  meds.forEach(m => (m.times||[]).forEach(t => allTimes.push({time:t, name:m.name, dose:m.dose})));
+  allTimes.sort((a,b) => a.time.localeCompare(b.time));
+  todayEl.innerHTML = allTimes.length
+    ? allTimes.map(t => `<div class="sched-row"><div><div style="font-size:15px;font-weight:700"><i class="ti ti-clock" style="font-size:13px;margin-right:4px"></i>${t.time}</div><div style="font-size:12px;color:var(--t3)">${t.name}${t.dose?' — '+t.dose:''}</div></div><span style="font-size:20px">💊</span></div>`).join('')
+    : '<div class="empty" style="padding:8px"><p>Nenhum horário cadastrado</p></div>';
+  // Gráficos
+  renderChart('chart-bp', [...bps].slice(0,10).reverse(), r=>r.sis, '#1a56a0', 80, 200);
+  renderChart('chart-gl', [...gls].slice(0,10).reverse(), r=>r.val, '#1a7a3c', 50, 350);
+  renderChart('chart-wt', [...wts].slice(0,10).reverse(), r=>r.val, '#0e7a6e', 40, 150);
+}
+
+/* ═══════════════════════════════
+   HISTÓRICO
+═══════════════════════════════ */
+async function renderHist() {
+  const [bps, gls, wts] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso')]);
+  const bpEl = document.getElementById('hist-bp');
+  bpEl.innerHTML = bps.length ? '<div class="card">' + bps.map(r => {
+    const [lbl,cls] = classifyBP(r.sis, r.dia);
+    return `<div class="li">
+      <div class="ico bp"><i class="ti ti-heart"></i></div>
+      <div class="lb">
+        <div class="lv">${r.sis}/${r.dia} mmHg${r.pulse?` · ${r.pulse} bpm`:''}</div>
+        <div class="lm">${r.moment||''}${r.pos?' · '+r.pos:''} · ${fdt(r.dt)}</div>
+        ${r.note?`<span class="ln">${r.note}</span>`:''}
+      </div>
+      <div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>`;
+  }).join('') + '</div>'
+  : '<div class="card"><div class="empty"><i class="ti ti-heart-off"></i><p>Nenhuma medição de pressão</p></div></div>';
+
+  const glEl = document.getElementById('hist-gl');
+  glEl.innerHTML = gls.length ? '<div class="card">' + gls.map(r => {
+    const [lbl,cls] = classifyGL(r.val, r.moment);
+    return `<div class="li">
+      <div class="ico gl"><i class="ti ti-droplet"></i></div>
+      <div class="lb">
+        <div class="lv">${r.val} mg/dL · <span style="font-weight:400;font-size:13px">${r.type||''}</span></div>
+        <div class="lm">${r.moment||''} · ${fdt(r.dt)}</div>
+        ${r.note?`<span class="ln">${r.note}</span>`:''}
+      </div>
+      <div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>`;
+  }).join('') + '</div>'
+  : '<div class="card"><div class="empty"><i class="ti ti-droplet-off"></i><p>Nenhuma medição de glicemia</p></div></div>';
+
+  const wtEl = document.getElementById('hist-wt');
+  wtEl.innerHTML = wts.length ? '<div class="card">' + wts.map(r => {
+    const imcTxt = r.imc ? (() => { const [lbl,cls] = classifyIMC(r.imc); return `<span class="badge ${cls}" style="margin-top:4px;display:inline-block">IMC ${r.imc} · ${lbl}</span>`; })() : '';
+    return `<div class="li">
+      <div class="ico wt"><i class="ti ti-scale"></i></div>
+      <div class="lb">
+        <div class="lv">${r.val} kg${r.alt?' · '+r.alt+' cm':''}</div>
+        <div class="lm">${r.moment||''} · ${fdt(r.dt)}</div>
+        ${imcTxt}
+        ${r.note?`<span class="ln">${r.note}</span>`:''}
+      </div>
+      <div class="la"><button class="ibtn" onclick="W.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div>
+    </div>`;
+  }).join('') + '</div>'
+  : '<div class="card"><div class="empty"><i class="ti ti-scale"></i><p>Nenhum registro de peso</p></div></div>';
+}
+
+/* ═══════════════════════════════
+   REMÉDIOS
+═══════════════════════════════ */
+function openMedModal(id) {
+  medTimes = []; medPhotos = [];
+  document.getElementById('med-edit-id').value = id || '';
+  document.getElementById('med-modal-title').textContent = id ? 'Editar remédio' : 'Novo remédio';
+  ['med-name','med-dose','med-instr','med-obs'].forEach(i => document.getElementById(i).value='');
+  document.getElementById('med-form').value = 'Comprimido';
+  renderMedTimes(); renderMedPhotosEl();
+  if (id) {
+    dbGet('remedios', id).then(m => {
+      if (!m) return;
+      document.getElementById('med-name').value = m.name||'';
+      document.getElementById('med-dose').value = m.dose||'';
+      document.getElementById('med-instr').value = m.instr||'';
+      document.getElementById('med-obs').value = m.obs||'';
+      document.getElementById('med-form').value = m.form||'Comprimido';
+      medTimes = [...(m.times||[])]; medPhotos = [...(m.photos||[])];
+      renderMedTimes(); renderMedPhotosEl();
+    });
+  }
+  document.getElementById('med-modal').classList.add('on');
+}
+function closeMedModal() { document.getElementById('med-modal').classList.remove('on'); }
+function addTime() {
+  const t = document.getElementById('new-time').value;
+  if (!t || medTimes.includes(t)) return;
+  medTimes.push(t); medTimes.sort(); renderMedTimes();
+  document.getElementById('new-time').value = '';
+}
+function removeTime(t) { medTimes = medTimes.filter(x => x !== t); renderMedTimes(); }
+function renderMedTimes() {
+  document.getElementById('times-list').innerHTML = medTimes.map(t =>
+    `<span class="med-time-tag"><i class="ti ti-clock" style="font-size:12px;margin-right:3px"></i>${t}
+    <button onclick="W.removeTime('${t}')" style="background:none;border:none;cursor:pointer;color:inherit;font-size:14px;margin-left:4px;padding:0;line-height:1">×</button></span>`
+  ).join('');
+}
+function addPhoto(input) {
+  Array.from(input.files).forEach(f => {
+    const r = new FileReader(); r.onload = e => { medPhotos.push(e.target.result); renderMedPhotosEl(); };
+    r.readAsDataURL(f);
+  }); input.value='';
+}
+function removePhoto(i) { medPhotos.splice(i,1); renderMedPhotosEl(); }
+function renderMedPhotosEl() {
+  document.getElementById('med-photos-preview').innerHTML = medPhotos.map((s,i) =>
+    `<div style="position:relative;display:inline-block">
+      <img class="med-img" src="${s}" onclick="W.openImg('${s}')">
+      <button onclick="W.removePhoto(${i})" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;line-height:1">×</button>
+    </div>`
+  ).join('');
+}
+async function saveMed() {
+  const name = document.getElementById('med-name').value.trim();
+  if (!name) { toast('⚠️ Informe o nome do remédio',true); return; }
+  const editId = document.getElementById('med-edit-id').value;
+  const rec = {
+    name, dose:document.getElementById('med-dose').value.trim(),
+    form:document.getElementById('med-form').value,
+    instr:document.getElementById('med-instr').value.trim(),
+    obs:document.getElementById('med-obs').value.trim(),
+    times:[...medTimes], photos:[...medPhotos], dt:getNow()
+  };
+  try {
+    if (editId) { rec.id = editId; await dbPut('remedios',rec); toast('✓ Remédio atualizado!'); }
+    else { await dbAdd('remedios',rec); toast('✓ Remédio salvo na nuvem!'); }
+    closeMedModal(); renderMeds(); updateDash();
+  } catch(e) { toast('Erro: '+e.message,true); }
+}
+async function deleteMed(id) {
+  confirm2('Excluir remédio','Remover permanentemente?', async () => {
+    await dbDelete('remedios',id); toast('✓ Remédio excluído'); renderMeds(); updateDash();
+  });
+}
+async function renderMeds() {
+  const meds = await dbGetAll('remedios');
+  const el = document.getElementById('med-list');
+  if (!meds.length) { el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum remédio cadastrado</p></div></div>'; return; }
+  el.innerHTML = meds.map(m => `
+    <div class="med-card">
+      <div class="med-header">
+        <div class="med-ico"><i class="ti ti-pill"></i></div>
+        <div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose,m.form].filter(Boolean).join(' · ')}</div></div>
+      </div>
+      ${m.times&&m.times.length?`<div class="med-times">${m.times.map(t=>`<span class="med-time-tag"><i class="ti ti-clock" style="font-size:11px;margin-right:3px"></i>${t}</span>`).join('')}</div>`:''}
+      ${m.instr?`<div style="font-size:13px;color:var(--t2);margin-bottom:6px"><i class="ti ti-info-circle" style="font-size:12px;margin-right:4px"></i>${m.instr}</div>`:''}
+      ${m.obs?`<div style="font-size:12px;color:var(--t3);margin-bottom:6px">${m.obs}</div>`:''}
+      ${m.photos&&m.photos.length?`<div class="med-imgs">${m.photos.map(s=>`<img class="med-img" src="${s}" onclick="W.openImg('${s}')">`).join('')}</div>`:''}
+      <div class="med-actions">
+        <button class="med-btn edit" onclick="W.openMedModal('${m.id}')"><i class="ti ti-edit"></i> Editar</button>
+        <button class="med-btn del" onclick="W.deleteMed('${m.id}')"><i class="ti ti-trash"></i> Excluir</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════
+   RECEITAS
+═══════════════════════════════ */
+function openRxModal(id) {
+  rxPhotos = [];
+  document.getElementById('rx-edit-id').value = id||'';
+  document.getElementById('rx-modal-title').textContent = id ? 'Editar receita' : 'Arquivar Receita';
+  ['rx-doctor','rx-crm','rx-meds','rx-obs'].forEach(i => document.getElementById(i).value='');
+  document.getElementById('rx-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('rx-months').value = '6';
+  renderRxPhotosEl();
+  if (id) {
+    dbGet('receitas', id).then(rx => {
+      if (!rx) return;
+      document.getElementById('rx-doctor').value = rx.medico||'';
+      document.getElementById('rx-crm').value = rx.crm||'';
+      document.getElementById('rx-date').value = rx.dataEmissao||'';
+      document.getElementById('rx-months').value = rx.validadeMeses||'6';
+      document.getElementById('rx-meds').value = rx.medicamentos||'';
+      document.getElementById('rx-obs').value = rx.obs||'';
+      rxPhotos = [...(rx.fotos||[])]; renderRxPhotosEl();
+    });
+  }
+  document.getElementById('rx-modal').classList.add('on');
+}
+function closeRxModal() { document.getElementById('rx-modal').classList.remove('on'); }
+function addRxPhoto(input) {
+  Array.from(input.files).forEach(f => {
+    const r = new FileReader(); r.onload = e => { rxPhotos.push(e.target.result); renderRxPhotosEl(); };
+    r.readAsDataURL(f);
+  }); input.value='';
+}
+function removeRxPhoto(i) { rxPhotos.splice(i,1); renderRxPhotosEl(); }
+function renderRxPhotosEl() {
+  document.getElementById('rx-photos-preview').innerHTML = rxPhotos.map((s,i) =>
+    `<div style="position:relative;display:inline-block">
+      <img class="med-img" src="${s}" onclick="W.openImg('${s}')">
+      <button onclick="W.removeRxPhoto(${i})" style="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;line-height:1">×</button>
+    </div>`
+  ).join('');
+}
+async function saveRx() {
+  const medico = document.getElementById('rx-doctor').value.trim();
+  const meds = document.getElementById('rx-meds').value.trim();
+  const dE = document.getElementById('rx-date').value;
+  if (!medico||!meds||!dE) { toast('⚠️ Preencha os campos obrigatórios',true); return; }
+  const vM = parseInt(document.getElementById('rx-months').value);
+  const dV = new Date(dE+'T12:00:00'); dV.setMonth(dV.getMonth()+vM);
+  const editId = document.getElementById('rx-edit-id').value;
+  const rec = {
+    medico, crm:document.getElementById('rx-crm').value.trim(),
+    dataEmissao:dE, validadeMeses:vM,
+    dataVencimento:dV.toISOString().split('T')[0],
+    medicamentos:meds, obs:document.getElementById('rx-obs').value.trim(),
+    fotos:[...rxPhotos], dt:getNow()
+  };
+  try {
+    if (editId) { rec.id=editId; await dbPut('receitas',rec); toast('✓ Receita atualizada!'); }
+    else { await dbAdd('receitas',rec); toast('✓ Receita arquivada na nuvem!'); }
+    closeRxModal(); renderRx();
+  } catch(e) { toast('Erro: '+e.message,true); }
+}
+async function deleteRx(id) {
+  confirm2('Excluir receita','Remover permanentemente?', async () => {
+    await dbDelete('receitas',id); toast('✓ Receita excluída'); renderRx();
+  });
+}
+async function renderRx() {
+  const rxs = await dbGetAll('receitas');
+  const el = document.getElementById('rx-list');
+  const hoje = new Date().toISOString().split('T')[0];
+  if (!rxs.length) { el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma receita arquivada</p></div></div>'; return; }
+  el.innerHTML = rxs.map(r => {
+    const exp = hoje > (r.dataVencimento||'');
+    return `<div class="med-card" style="${exp?'border:1.5px solid var(--red)':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div>
+          <div style="font-size:16px;font-weight:700">🩺 Dr(a). ${r.medico}</div>
+          ${r.crm?`<div style="font-size:12px;color:var(--t3)">CRM: ${r.crm}</div>`:''}
+        </div>
+        ${exp?`<span class="badge b-alto">Vencida</span>`:`<span class="badge b-normal">Válida</span>`}
+      </div>
+      <div style="font-size:13px;color:var(--teal);margin-bottom:4px">💊 ${r.medicamentos}</div>
+      <div style="font-size:12px;color:var(--t3)">Emissão: ${fdt(r.dataEmissao)} · Vence: <b style="${exp?'color:var(--red)':''}">${fdt(r.dataVencimento)}</b></div>
+      ${r.obs?`<div style="font-size:12px;color:var(--t3);margin-top:4px">${r.obs}</div>`:''}
+      ${r.fotos&&r.fotos.length?`<div class="med-imgs">${r.fotos.map(s=>`<img class="med-img" src="${s}" onclick="W.openImg('${s}')">`).join('')}</div>`:''}
+      <div class="med-actions">
+        <button class="med-btn edit" onclick="W.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button>
+        <button class="med-btn del" onclick="W.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════
+   IMAGEM
+═══════════════════════════════ */
+function openImg(src) { document.getElementById('img-src').src=src; document.getElementById('img-modal').classList.add('on'); }
+function closeImg() { document.getElementById('img-modal').classList.remove('on'); }
+
+/* ═══════════════════════════════
+   EXPOR FUNÇÕES PARA O HTML
+═══════════════════════════════ */
+const W = {
+  goPage, switchHist,
+  saveBP, deleteBP,
+  saveGL, deleteGL,
+  saveWT, deleteWT,
+  openMedModal, closeMedModal, addTime, removeTime, addPhoto, removePhoto, saveMed, deleteMed,
+  openRxModal, closeRxModal, addRxPhoto, removeRxPhoto, saveRx, deleteRx,
+  openImg, closeImg, closeConfirm
+};
+window.W = W;
+
+/* ═══════════════════════════════
+   INICIALIZAÇÃO
+═══════════════════════════════ */
+(async () => {
+  // Chips
+  setupChips('[data-bpm]', v => bpMoment = v);
+  setupChips('[data-bpp]', v => bpPos = v);
+  setupChips('[data-glm]', v => glMoment = v);
+  setupChips('[data-glt]', v => glType = v);
+  setupChips('[data-wtm]', v => wtMoment = v);
+
+  // IMC ao vivo
+  ['wt-val','wt-alt'].forEach(id => {
+    document.getElementById(id)?.addEventListener('input', () => {
+      const p = parseFloat(document.getElementById('wt-val').value);
+      const a = parseFloat(document.getElementById('wt-alt').value);
+      const prev = document.getElementById('wt-imc-preview');
+      if (p && a >= 100) {
+        const imc = calcIMC(p,a);
+        const [lbl] = classifyIMC(imc);
+        document.getElementById('wt-imc-val').textContent = imc;
+        document.getElementById('wt-imc-lbl').textContent = lbl;
+        prev.style.display = 'block';
+      } else { prev.style.display = 'none'; }
+    });
+  });
+
+  // Datas
+  document.getElementById('bp-dt').value = getNow();
+  document.getElementById('gl-dt').value = getNow();
+  document.getElementById('wt-dt').value = getNow();
+
+  // Testar conexão Firebase
+  try {
+    await getDocs(collection(FS, 'pressao'));
+    document.getElementById('db-dot').style.background = '#1a7a3c';
+    document.getElementById('db-txt').textContent = '☁️ Conectado ao Firebase — dados sincronizados em todos os dispositivos ✓';
+    await updateDash();
+  } catch(e) {
+    document.getElementById('db-dot').style.background = '#b02020';
+    document.getElementById('db-txt').textContent = '⚠️ Erro de conexão: ' + e.message;
+    console.error(e);
+  }
+})();
+</script>
+</body>
+</html>
