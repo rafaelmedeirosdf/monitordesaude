@@ -35,7 +35,6 @@
   --teal:#2bbdae;--teal-bg:#04302c;--teal-t:#5de0d4;
   --sh:0 2px 16px rgba(0,0,0,.4);
 }}
-/* CSS Reset para normalização cross-browser */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg0);color:var(--t1);min-height:100vh;overscroll-behavior:none}
@@ -55,7 +54,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .nb i{font-size:22px}
 .nb.on{color:var(--blue)}
 
-/* PAGES */
 .pg{display:none;padding:14px 13px 90px}
 .pg.on{display:block}
 
@@ -64,7 +62,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:13px;display:flex;align-items:center;gap:6px}
 .ct i{font-size:14px}
 
-/* STATS */
+/* STATS GRID */
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .sg.one{grid-template-columns:1fr}
 .sb{background:var(--bg2);border-radius:13px;padding:13px 10px;text-align:center}
@@ -82,7 +80,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 }
 .fi:focus,.fs:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,160,.15)}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
 
 /* CHIPS */
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
@@ -100,14 +97,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .btn.teal{background:var(--teal)}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 
-/* BADGES */
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap}
 .b-normal{background:var(--green-bg);color:var(--green-t)}
 .b-alerta{background:var(--amber-bg);color:var(--amber-t)}
 .b-alto{background:var(--red-bg);color:var(--red-t)}
 .b-baixo{background:var(--blue-bg);color:var(--blue)}
 
-/* LIST */
 .li{display:flex;align-items:flex-start;padding:11px 0;border-bottom:.5px solid var(--bd)}
 .li:last-child{border-bottom:none;padding-bottom:0}
 .li:first-child{padding-top:0}
@@ -126,33 +121,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--t3);font-size:17px;display:flex;align-items:center;justify-content:center}
 .ibtn:active{background:var(--red-bg);color:var(--red)}
 
-/* CHART */
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
 .blbl{font-size:9px;color:var(--t3)}
 
-/* TOASTS */
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* FILTROS DE HISTÓRICO */
 .frow{display:flex;gap:7px;margin-bottom:13px}
 .fb{flex:1;padding:9px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
 .fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* MONITOR DE BASE DE DADOS */
 .dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
 .dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0}
 
-/* MODAIS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.on{display:flex}
 .modal{background:var(--bg1);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),20px)}
 .modal-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
 .modal-close{background:var(--bg2);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--t2)}
 
-/* REMÉDIOS CARDS */
 .med-card{background:var(--bg1);border-radius:16px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:14px 16px;margin-bottom:12px}
 .med-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .med-ico{width:44px;height:44px;border-radius:12px;background:var(--purple-bg);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
@@ -167,17 +156,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .med-btn.edit{background:var(--blue-bg);color:var(--blue-t)}
 .med-btn.del{background:var(--red-bg);color:var(--red-t)}
 
-/* COTAÇÕES CARDS */
 .cot-item{background:var(--bg2);border-radius:10px;padding:10px;margin-bottom:8px;border:1px solid var(--bd2)}
 .cot-win{background:var(--green-bg) !important;border-color:var(--green) !important}
 
-/* DIÁLOGOS DE CONFIRMAÇÃO */
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-overlay.on{display:flex}
 .confirm-box{background:var(--bg1);border-radius:18px;padding:22px 20px;width:100%;max-width:340px;text-align:center}
 .confirm-box h3{font-size:18px;font-weight:700;margin-bottom:8px}
 .confirm-box p{font-size:14px;color:var(--t2);margin-bottom:20px;line-height:1.5}
-.confirm-box btns{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .cbtn{padding:12px;border-radius:11px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
 .cbtn.cancel{background:var(--bg2);color:var(--t2)}
 .cbtn.confirm{background:var(--red);color:#fff}
@@ -203,213 +190,229 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <div class="hdr-sub" id="hdr-sub">Desenvolvido por Rafael Medeiros</div>
   </div>
 
-  <div id="pg-home" class="pg on">
-    <div class="dbs"><div class="dbd" id="db-dot"></div><span id="db-txt">Iniciando...</span></div>
+  <div id="main-content">
+     <div id="pg-home" class="pg on">
+       <div class="dbs">
+          <div class="dbd" id="db-dot"></div><span id="db-txt">Iniciando conexão...</span>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-heart"></i> Última pressão</div>
-      <div class="sg">
-        <div class="sb"><div class="sl">Sistólica</div><div class="sv" id="d-sis">—</div><div class="su">mmHg</div></div>
-        <div class="sb"><div class="sl">Diastólica</div><div class="sv" id="d-dia">—</div><div class="su">mmHg</div></div>
-      </div>
-      <div class="ss" id="d-bp-i">Nenhuma medição registrada</div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-heart"></i> Última pressão</div>
+         <div class="sg">
+           <div class="sb"><div class="sl">Sistólica</div><div class="sv" id="d-sis">—</div><div class="su">mmHg</div></div>
+           <div class="sb"><div class="sl">Diastólica</div><div class="sv" id="d-dia">—</div><div class="su">mmHg</div></div>
+         </div>
+         <div class="ss" id="d-bp-i">Nenhuma medição registrada</div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-droplet"></i> Última glicemia</div>
-      <div class="sg one">
-        <div class="sb"><div class="sl">Glicose</div><div class="sv" id="d-gl">—</div><div class="su">mg/dL</div></div>
-      </div>
-      <div class="ss" id="d-gl-i">Nenhuma medição registrada</div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-droplet"></i> Última glicemia</div>
+         <div class="sg one">
+           <div class="sb"><div class="sl">Glicose</div><div class="sv" id="d-gl">—</div><div class="su">mg/dL</div></div>
+         </div>
+         <div class="ss" id="d-gl-i">Nenhuma medição registrada</div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-scale"></i> Último peso</div>
-      <div class="sg">
-        <div class="sb"><div class="sl">Peso</div><div class="sv" id="d-wt">—</div><div class="su">kg</div></div>
-        <div class="sb"><div class="sl">IMC</div><div class="sv" id="d-imc">—</div><div class="su" id="d-imc-class"></div></div>
-      </div>
-      <div class="ss" id="d-wt-i">Nenhuma medição registrada</div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-scale"></i> Último peso</div>
+         <div class="sg">
+           <div class="sb"><div class="sl">Peso</div><div class="sv" id="d-wt">—</div><div class="su">kg</div></div>
+           <div class="sb"><div class="sl">IMC</div><div class="sv" id="d-imc">—</div><div class="su" id="d-imc-class"></div></div>
+         </div>
+         <div class="ss" id="d-wt-i">Nenhuma medição registrada</div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-pill"></i> Remédios de hoje</div>
-      <div id="d-meds-today"><div class="empty" style="padding:10px"><p>Nenhum remédio cadastrado</p></div></div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-pill"></i> Remédios de hoje</div>
+         <div id="d-meds-today"><div class="empty" style="padding:10px"><p>Nenhum remédio cadastrado</p></div></div>
+       </div>
 
-    <div class="card">
-      <div class="ct"><i class="ti ti-database"></i> Banco de dados</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div class="smb"><div class="smv" id="sum-bp">0</div><div class="sml">Pressões</div></div>
-        <div class="smb"><div class="smv" id="sum-gl">0</div><div class="sml">Glicemias</div></div>
-        <div class="smb"><div class="smv" id="sum-wt">0</div><div class="sml">Pesos</div></div>
-        <div class="smb"><div class="smv" id="sum-med">0</div><div class="sml">Remédios</div></div>
-      </div>
-    </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-chart-bar"></i> Pressão sistólica</div>
+         <div class="mchart" id="chart-bp"></div>
+       </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-chart-bar"></i> Glicemia</div>
+         <div class="mchart" id="chart-gl"></div>
+       </div>
+       <div class="card">
+         <div class="ct"><i class="ti ti-chart-bar"></i> Evolução do peso</div>
+         <div class="mchart" id="chart-wt"></div>
+       </div>
+
+       <div class="card">
+         <div class="ct"><i class="ti ti-database"></i> Banco de dados</div>
+         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+           <div class="smb"><div class="smv" id="sum-bp">0</div><div class="sml">Pressões</div></div>
+           <div class="smb"><div class="smv" id="sum-gl">0</div><div class="sml">Glicemias</div></div>
+           <div class="smb"><div class="smv" id="sum-wt">0</div><div class="sml">Pesos</div></div>
+           <div class="smb"><div class="smv" id="sum-med">0</div><div class="sml">Remédios</div></div>
+         </div>
+       </div>
+     </div>
+
+     <div id="pg-bp" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de pressão</div>
+         <div class="fr f">
+           <div><label>Sistólica (mmHg) *</label><input class="fi" id="bp-sis" type="number" inputmode="numeric" placeholder="120" min="60" max="260"></div>
+           <div><label>Diastólica (mmHg) *</label><input class="fi" id="bp-dia" type="number" inputmode="numeric" placeholder="80" min="40" max="160"></div>
+         </div>
+         <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-pulse" type="number" inputmode="numeric" placeholder="70 — opcional"></div>
+         <div class="f">
+           <label>Momento</label>
+           <div class="chips">
+             <button class="chip on" data-bpm="Antes do café">Antes café</button>
+             <button class="chip" data-bpm="Após café">Após café</button>
+             <button class="chip" data-bpm="Almoço">Almoço</button>
+             <button class="chip" data-bpm="Tarde">Tarde</button>
+             <button class="chip" data-bpm="Dormir">Dormir</button>
+           </div>
+         </div>
+         <div class="f">
+           <label>Posição</label>
+           <div class="chips">
+             <button class="chip on" data-bpp="Sentado">Sentado</button>
+             <button class="chip" data-bpp="Deitado">Deitado</button>
+             <button class="chip" data-bpp="Em pé">Em pé</button>
+           </div>
+         </div>
+         <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso, após exercício..."></div>
+         <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
+         <button class="btn" onclick="saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
+       </div>
+     </div>
+
+     <div id="pg-gl" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de glicemia</div>
+         <div class="f"><label>Glicose (mg/dL) *</label><input class="fi" id="gl-val" type="number" inputmode="numeric" placeholder="100" min="20" max="700"></div>
+         <div class="f">
+           <label>Momento da coleta</label>
+           <div class="chips">
+             <button class="chip on" data-glm="Jejum">Jejum</button>
+             <button class="chip" data-glm="Pré-refeição">Pré-refeição</button>
+             <button class="chip" data-glm="Pós-refeição">Pós-refeição</button>
+             <button class="chip" data-glm="Antes dormir">Antes dormir</button>
+             <button class="chip" data-glm="Madrugada">Madrugada</button>
+           </div>
+         </div>
+         <div class="f">
+           <label>Tipo de medição</label>
+           <div class="chips">
+             <button class="chip on" data-glt="Glicosímetro">Glicosímetro</button>
+             <button class="chip" data-glt="Laboratório">Laboratório</button>
+             <button class="chip" data-glt="Sensor CGM">Sensor CGM</button>
+           </div>
+         </div>
+         <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: antes da insulina, após caminhada..."></div>
+         <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
+         <button class="btn green" onclick="saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
+       </div>
+     </div>
+
+     <div id="pg-wt" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-plus-circle"></i> Registrar peso</div>
+         <div class="fr f">
+           <div><label>Peso (kg) *</label><input class="fi" id="wt-val" type="number" inputmode="decimal" placeholder="70.5" min="20" max="300" step="0.1"></div>
+           <div><label>Altura (cm)</label><input class="fi" id="wt-alt" type="number" inputmode="numeric" placeholder="170" min="100" max="250"></div>
+         </div>
+         <div id="wt-imc-preview" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg2);border-radius:10px;text-align:center">
+           <div style="font-size:12px;color:var(--t3);margin-bottom:3px">IMC calculado</div>
+           <div style="font-size:24px;font-weight:700" id="wt-imc-val">—</div>
+           <div style="font-size:13px;color:var(--t2)" id="wt-imc-lbl">—</div>
+         </div>
+         <div class="f">
+           <label>Momento</label>
+           <div class="chips">
+             <button class="chip on" data-wtm="Manhã em jejum">Jejum manhã</button>
+             <button class="chip" data-wtm="Antes do almoço">Antes almoço</button>
+             <button class="chip" data-wtm="À noite">À noite</button>
+             <button class="chip" data-wtm="Outro">Outro</button>
+           </div>
+         </div>
+         <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: após academia, em jejum..."></div>
+         <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
+         <button class="btn teal" onclick="saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
+       </div>
+     </div>
+
+     <div id="pg-med" class="pg">
+       <button class="btn purple" onclick="openMedModal(null)" style="margin-bottom:14px"><i class="ti ti-plus"></i> Cadastrar novo remédio</button>
+       <div id="med-list"></div>
+     </div>
+
+     <div id="pg-cot" class="pg">
+       <div class="card">
+         <div class="ct"><i class="ti ti-building-store"></i> <span id="cot-form-title">Registrar Preços por Farmácia</span></div>
+         <input type="hidden" id="cot-edit-id">
+
+         <div class="f">
+           <label>Nome da Farmácia *</label>
+           <input class="fi" id="cot-pharmacy-name" type="text" placeholder="Ex.: Drogaria São Paulo, Pacheco...">
+         </div>
+         <div class="f">
+           <label>Data e Hora da Cotação *</label>
+           <input class="fi" id="cot-dt" type="datetime-local" onchange="window.renderCotations()">
+         </div>
+         
+         <div id="cot-meds-container">
+           <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>
+           <div class="fr f" style="margin-bottom: 8px; align-items: center;">
+             <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
+             <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+           </div>
+           <div class="fr f" style="margin-bottom: 8px; align-items: center;">
+             <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
+             <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
+           </div>
+         </div>
+         
+         <button class="btn ghost" onclick="window.addMedInputRow()" style="margin-bottom:12px; padding:8px;"><i class="ti ti-plus"></i> Adicionar Mais Medicamentos</button>
+         
+         <div class="btn-row" id="cot-btn-container">
+            <button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>
+         </div>
+       </div>
+
+       <div class="card" id="cot-decision-card" style="display:none;">
+         <div class="ct" style="color:var(--blue-t); font-weight:800;"><i class="ti ti-bulb"></i> Painel Comparativo e Decisão Diária</div>
+         <div id="cot-decision-content" style="font-size:14px; line-height:1.5;"></div>
+       </div>
+
+       <div id="pharmacy-history-list"></div>
+     </div>
+
+     <div id="pg-rx" class="pg">
+       <button class="btn teal" onclick="window.openRxModal(null)" style="margin-bottom:14px;"><i class="ti ti-file-text"></i> Arquivar Nova Receita de Uso Contínuo</button>
+       <div id="rx-list-container"></div>
+     </div>
+
+     <div id="pg-hist" class="pg">
+       <div class="frow">
+         <button class="fb on" id="hf-bp" onclick="switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
+         <button class="fb" id="hf-gl" onclick="switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
+         <button class="fb" id="hf-wt" onclick="switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
+         <button class="fb" id="hf-cot" onclick="switchHist('cot')"><i class="ti ti-search"></i> Cotações</button>
+       </div>
+       <div id="hist-bp"></div>
+       <div id="hist-gl" style="display:none"></div>
+       <div id="hist-wt" style="display:none"></div>
+       <div id="hist-cot" style="display:none"></div>
+     </div>
+
+     <nav class="bnav">
+       <button class="nb on" onclick="goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
+       <button class="nb" onclick="goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
+       <button class="nb" onclick="goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
+       <button class="nb" onclick="goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
+       <button class="nb" onclick="goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
+       <button class="nb" onclick="goPage('rx',this)"><i class="ti ti-file-text"></i>Receitas</button>
+       <button class="nb" onclick="goPage('cot',this)"><i class="ti ti-search"></i>Cotar</button>
+       <button class="nb" onclick="goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
+     </nav>
   </div>
-
-  <div id="pg-bp" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de pressão</div>
-      <div class="fr f">
-        <div><label>Sistólica (mmHg) *</label><input class="fi" id="bp-sis" type="number" inputmode="numeric" placeholder="120" min="60" max="260"></div>
-        <div><label>Diastólica (mmHg) *</label><input class="fi" id="bp-dia" type="number" inputmode="numeric" placeholder="80" min="40" max="160"></div>
-      </div>
-      <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-pulse" type="number" inputmode="numeric" placeholder="70 — opcional"></div>
-      <div class="f">
-        <label>Momento</label>
-        <div class="chips">
-          <button class="chip on" data-bpm="Antes do café">Antes café</button>
-          <button class="chip" data-bpm="Após café">Após café</button>
-          <button class="chip" data-bpm="Almoço">Almoço</button>
-          <button class="chip" data-bpm="Tarde">Tarde</button>
-          <button class="chip" data-bpm="Dormir">Dormir</button>
-        </div>
-      </div>
-      <div class="f">
-        <label>Posição</label>
-        <div class="chips">
-          <button class="chip on" data-bpp="Sentado">Sentado</button>
-          <button class="chip" data-bpp="Deitado">Deitado</button>
-          <button class="chip" data-bpp="Em pé">Em pé</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="bp-note" type="text" placeholder="Ex.: em repouso, após exercício..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
-      <button class="btn" onclick="saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-  </div>
-
-  <div id="pg-gl" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-plus-circle"></i> Nova medição de glicemia</div>
-      <div class="f"><label>Glicose (mg/dL) *</label><input class="fi" id="gl-val" type="number" inputmode="numeric" placeholder="100" min="20" max="700"></div>
-      <div class="f">
-        <label>Momento da coleta</label>
-        <div class="chips">
-          <button class="chip on" data-glm="Jejum">Jejum</button>
-          <button class="chip" data-glm="Pré-refeição">Pré-refeição</button>
-          <button class="chip" data-glm="Pós-refeição">Pós-refeição</button>
-          <button class="chip" data-glm="Antes dormir">Antes dormir</button>
-          <button class="chip" data-glm="Madrugada">Madrugada</button>
-        </div>
-      </div>
-      <div class="f">
-        <label>Tipo de medição</label>
-        <div class="chips">
-          <button class="chip on" data-glt="Glicosímetro">Glicosímetro</button>
-          <button class="chip" data-glt="Laboratório">Laboratório</button>
-          <button class="chip" data-glt="Sensor CGM">Sensor CGM</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="gl-note" type="text" placeholder="Ex.: antes da insulina, após caminhada..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
-      <button class="btn green" onclick="saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-  </div>
-
-  <div id="pg-wt" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-plus-circle"></i> Registrar peso</div>
-      <div class="fr f">
-        <div><label>Peso (kg) *</label><input class="fi" id="wt-val" type="number" inputmode="decimal" placeholder="70.5" min="20" max="300" step="0.1"></div>
-        <div><label>Altura (cm)</label><input class="fi" id="wt-alt" type="number" inputmode="numeric" placeholder="170" min="100" max="250"></div>
-      </div>
-      <div id="wt-imc-preview" style="display:none;margin-bottom:12px;padding:12px;background:var(--bg2);border-radius:10px;text-align:center">
-        <div style="font-size:12px;color:var(--t3);margin-bottom:3px">IMC calculado</div>
-        <div style="font-size:24px;font-weight:700" id="wt-imc-val">—</div>
-        <div style="font-size:13px;color:var(--t2)" id="wt-imc-lbl">—</div>
-      </div>
-      <div class="f">
-        <label>Momento</label>
-        <div class="chips">
-          <button class="chip on" data-wtm="Manhã em jejum">Jejum manhã</button>
-          <button class="chip" data-wtm="Antes do almoço">Antes almoço</button>
-          <button class="chip" data-wtm="À noite">À noite</button>
-          <button class="chip" data-wtm="Outro">Outro</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: após academia, em jejum..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
-      <button class="btn teal" onclick="saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
-    </div>
-  </div>
-
-  <div id="pg-med" class="pg">
-    <button class="btn purple" onclick="openMedModal(null)" style="margin-bottom:14px"><i class="ti ti-plus"></i> Cadastrar novo remédio</button>
-    <div id="med-list"></div>
-  </div>
-
-  <div id="pg-cot" class="pg">
-    <div class="card">
-      <div class="ct"><i class="ti ti-building-store"></i> <span id="cot-form-title">Registrar Preços por Farmácia</span></div>
-      
-      <input type="hidden" id="cot-edit-id">
-
-      <div class="f">
-        <label>Nome da Farmácia *</label>
-        <input class="fi" id="cot-pharmacy-name" type="text" placeholder="Ex.: Drogaria São Paulo, Pacheco...">
-      </div>
-      <div class="f">
-        <label>Data e Hora da Cotação *</label>
-        <input class="fi" id="cot-dt" type="datetime-local" onchange="window.renderCotations()">
-      </div>
-      
-      <div id="cot-meds-container">
-        <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>
-        <div class="fr f" style="margin-bottom: 8px; align-items: center;">
-          <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
-          <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
-        </div>
-        <div class="fr f" style="margin-bottom: 8px; align-items: center;">
-          <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
-          <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
-        </div>
-      </div>
-      
-      <button class="btn ghost" onclick="window.addMedInputRow()" style="margin-bottom:12px; padding:8px;"><i class="ti ti-plus"></i> Adicionar Mais Medicamentos</button>
-      
-      <div class="btn-row" id="cot-btn-container">
-         <button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>
-      </div>
-    </div>
-
-    <div class="card" id="cot-decision-card" style="display:none;">
-      <div class="ct" style="color:var(--blue-t); font-weight:800;"><i class="ti ti-bulb"></i> Painel Comparativo e Decisão Diária</div>
-      <div id="cot-decision-content" style="font-size:14px; line-height:1.5;"></div>
-    </div>
-
-    <div id="pharmacy-history-list"></div>
-  </div>
-
-  <div id="pg-rx" class="pg">
-    <button class="btn teal" onclick="window.openRxModal(null)" style="margin-bottom:14px;"><i class="ti ti-file-text"></i> Arquivar Nova Receita de Uso Contínuo</button>
-    <div id="rx-list-container"></div>
-  </div>
-
-  <div id="pg-hist" class="pg">
-    <div class="frow">
-      <button class="fb on" id="hf-bp" onclick="switchHist('bp')"><i class="ti ti-heart"></i> Pressão</button>
-      <button class="fb" id="hf-gl" onclick="switchHist('gl')"><i class="ti ti-droplet"></i> Glicemia</button>
-      <button class="fb" id="hf-wt" onclick="switchHist('wt')"><i class="ti ti-scale"></i> Peso</button>
-      <button class="fb" id="hf-cot" onclick="switchHist('cot')"><i class="ti ti-search"></i> Cotações</button>
-    </div>
-    <div id="hist-bp"></div>
-    <div id="hist-gl" style="display:none"></div>
-    <div id="hist-wt" style="display:none"></div>
-    <div id="hist-cot" style="display:none"></div>
-  </div>
-
-  <nav class="bnav">
-    <button class="nb on" onclick="goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
-    <button class="nb" onclick="goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
-    <button class="nb" onclick="goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
-    <button class="nb" onclick="goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
-    <button class="nb" onclick="goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
-    <button class="nb" onclick="goPage('rx',this)"><i class="ti ti-file-text"></i>Receitas</button>
-    <button class="nb" onclick="goPage('cot',this)"><i class="ti ti-search"></i>Cotar</button>
-    <button class="nb" onclick="goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
-  </nav>
 </div>
 
 <div class="overlay" id="med-modal" onclick="closeMedModal(event)">
@@ -419,7 +422,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <button class="modal-close" onclick="closeMedModal()"><i class="ti ti-x"></i></button>
     </div>
     <input type="hidden" id="med-edit-id">
-
     <div class="f"><label>Nome do remédio *</label><input class="fi" id="med-name" type="text" placeholder="Ex.: Losartana, Metformina..."></div>
     <div class="fr f">
       <div><label>Dosagem</label><input class="fi" id="med-dose" type="text" placeholder="Ex.: 50mg"></div>
@@ -439,7 +441,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <button class="btn" style="width:auto;padding:11px 16px" onclick="addTime()"><i class="ti ti-plus"></i></button>
       </div>
     </div>
-
     <div class="f">
       <label>Fotos (caixa, bula, receita)</label>
       <div id="med-photos-preview" class="med-imgs" style="margin-bottom:8px"></div>
@@ -450,7 +451,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <input type="file" id="photo-cam" accept="image/*" capture="environment" style="display:none" onchange="addPhoto(this)">
       <input type="file" id="photo-file" accept="image/*" multiple style="display:none" onchange="addPhoto(this)">
     </div>
-
     <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Ex.: armazenar na geladeira, uso contínuo..."></div>
     <button class="btn purple" onclick="saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
   </div>
@@ -463,10 +463,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <button class="modal-close" onclick="window.closeRxModal()"><i class="ti ti-x"></i></button>
     </div>
     <input type="hidden" id="rx-edit-id">
-
     <div class="f"><label>Nome do Médico Emissor *</label><input class="fi" id="rx-doctor" type="text" placeholder="Ex.: Dr. Silva"></div>
     <div class="f"><label>CRM do Médico</label><input class="fi" id="rx-crm" type="text" placeholder="Ex.: 12345-DF"></div>
-    
     <div class="fr f">
       <div><label>Data de Emissão *</label><input class="fi" id="rx-date-issued" type="date"></div>
       <div>
@@ -474,18 +472,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <select class="fs" id="rx-duration">
           <option value="6">6 Meses (Uso Contínuo)</option>
           <option value="12">1 Ano</option>
-          <option value="1">1 Mês (Antibióticos/Controlados)</option>
+          <option value="1">1 Mês</option>
         </select>
       </div>
     </div>
-
+    <div class="f"><label>Medicamentos Inclusos nesta Folha *</label><input class="fi" id="rx-meds-covered" type="text" placeholder="Ex.: Losartana, Metformina"></div>
     <div class="f">
-      <label>Medicamentos Inclusos nesta Folha *</label>
-      <input class="fi" id="rx-meds-covered" type="text" placeholder="Ex.: Losartana 50mg, Sinvastatina 20mg">
-    </div>
-
-    <div class="f">
-      <label>Foto Digital da Receita (Bula/Papel) *</label>
+      <label>Foto Digital da Receita *</label>
       <div id="rx-photos-preview" class="med-imgs" style="margin-bottom:8px;"></div>
       <div class="btn-row">
         <button class="btn ghost" onclick="document.getElementById('rx-photo-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
@@ -494,8 +487,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <input type="file" id="rx-photo-cam" accept="image/*" capture="environment" style="display:none" onchange="window.addRxPhoto(this)">
       <input type="file" id="rx-photo-file" accept="image/*" multiple style="display:none" onchange="window.addRxPhoto(this)">
     </div>
-
-    <div class="f"><label>Observações da Receita</label><input class="fi" id="rx-obs" type="text" placeholder="Ex.: via original retida, dose dupla..."></div>
+    <div class="f"><label>Observações da Receita</label><input class="fi" id="rx-obs" type="text" placeholder="Ex.: via original retida..."></div>
     <button class="btn teal" onclick="window.saveRx()"><i class="ti ti-device-floppy"></i> Arquivar Receita na Nuvem</button>
   </div>
 </div>
@@ -503,7 +495,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
     <h3 id="confirm-title">Confirmar exclusão</h3>
-    <p id="confirm-msg">Tem certeza que deseja excluir este registro? Esta ação não pode ser desfeita.</p>
+    <p id="confirm-msg">Tem certeza?</p>
     <div class="confirm-btns">
       <button class="cbtn cancel" onclick="closeConfirm()">Cancelar</button>
       <button class="cbtn confirm" id="confirm-ok">Excluir</button>
@@ -519,14 +511,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="toast" id="toast"></div>
 
 <script type="module">
-/* ═══════════════════════════════════════════════════════════════════
-   BANCO DE DADOS — FIREBASE CLOUD FIRESTORE
-═══════════════════════════════════════════════════════════════════ */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import { 
   getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query 
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
+// Credenciais oficiais e chaves limpas da sua base remota no Google Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B180hXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
@@ -544,81 +534,44 @@ let rxPhotosCache = [];
 
 async function openDB() { return true; }
 
+/* CRUD INTEGRADO DO FIRESTORE */
 async function dbAdd(store, rec) {
-  try {
-    const colRef = collection(dbFirestore, store);
-    const docRef = await addDoc(colRef, rec);
-    return docRef.id;
-  } catch (error) {
-    console.error("Erro na gravação remota: ", error);
-    throw error;
-  }
+  const colRef = collection(dbFirestore, store);
+  const docRef = await addDoc(colRef, rec);
+  return docRef.id;
 }
 
 async function dbPut(store, rec) {
-  try {
-    const { id, ...updateData } = rec;
-    const docRef = doc(dbFirestore, store, String(id));
-    await setDoc(docRef, updateData, { merge: true });
-    return id;
-  } catch (error) {
-    console.error("Erro na atualização remota: ", error);
-    throw error;
-  }
+  const { id, ...updateData } = rec;
+  const docRef = doc(dbFirestore, store, String(id));
+  await setDoc(docRef, updateData, { merge: true });
+  return id;
 }
 
 async function dbGetAll(store) {
-  try {
-    const colRef = collection(dbFirestore, store);
-    const q = query(colRef); 
-    const querySnapshot = await getDocs(q);
-    const registros = [];
-    querySnapshot.forEach((doc) => {
-      registros.push({ id: doc.id, ...doc.data() });
-    });
-    return registros.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
-  } catch (error) {
-    console.error("Erro na varredura da coleção: ", error);
-    throw error;
-  }
+  const colRef = collection(dbFirestore, store);
+  const q = query(colRef); 
+  const querySnapshot = await getDocs(q);
+  const registros = [];
+  querySnapshot.forEach((doc) => {
+    registros.push({ id: doc.id, ...doc.data() });
+  });
+  return registros.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
 }
 
 async function dbGet(store, id) {
-  try {
-    const docRef = doc(dbFirestore, store, String(id));
-    const docSnap = await getDoc(docRef);
-    return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
-  } catch (error) {
-    console.error("Erro ao obter documento: ", error);
-    throw error;
-  }
+  const docRef = doc(dbFirestore, store, String(id));
+  const docSnap = await getDoc(docRef);
+  return docSnap.exists() ? { id: docSnap.id, ...docSnap.data() } : null;
 }
 
 async function dbDelete(store, id) {
-  try {
-    const docRef = doc(dbFirestore, store, String(id));
-    await deleteDoc(docRef);
-    return true;
-  } catch (error) {
-    console.error("Erro na exclusão do documento: ", error);
-    throw error;
-  }
+  const docRef = doc(dbFirestore, store, String(id));
+  await deleteDoc(docRef);
+  return true;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   ESTADO DA APLICAÇÃO
-═══════════════════════════════════════════════════════════════════ */
-let bpMoment = 'Antes do café', bpPos = 'Sentado';
-let glMoment = 'Jejum', glType = 'Glicosímetro';
-let wtMoment = 'Manhã em jejum';
-let histTab = 'bp';
-let medTimes = []; 
-let medPhotos = []; 
-let confirmCallback = null;
-
-/* ═══════════════════════════════════════════════════════════════════
-   MÉTODOS UTILITÁRIOS E AUXILIARES
-═══════════════════════════════════════════════════════════════════ */
+/* AÇÕES DE INTERFACE DO MONITOR */
 function getNow() {
   const n = new Date(), p = x => String(x).padStart(2,'0');
   return `${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`;
@@ -643,13 +596,13 @@ function toast(msg, err) {
 function confirm2(title, msg, cb) {
   document.getElementById('confirm-title').textContent = title;
   document.getElementById('confirm-msg').textContent = msg;
-  confirmCallback = cb;
+  window.confirmCallback = cb;
   document.getElementById('confirm-overlay').classList.add('on');
 }
 
 function closeConfirm() {
   document.getElementById('confirm-overlay').classList.remove('on');
-  confirmCallback = null;
+  window.confirmCallback = null;
 }
 
 function classifyBP(s, d) {
@@ -685,72 +638,42 @@ function classifyIMC(imc) {
   return ['Obesidade 3', 'b-alto'];
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   SISTEMA DE ROTEAMENTO INTERNO
-═══════════════════════════════════════════════════════════════════ */
-function goPage(name, btn) {
-  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-  document.getElementById('pg-' + name).classList.add('on');
-  if (btn) btn.classList.add('on');
-  
-  if (name === 'home') updateDash();
-  if (name === 'hist') renderHist();
-  if (name === 'med') renderMeds();
-  if (name === 'rx') renderRxList();
-  if (name === 'cot') {
-    // Cancela qualquer edição pendente e limpa o formulário ao entrar na aba limpa
-    window.resetCotForm();
-    sincronizarRemediosDropdowns().then(() => renderCotations());
-  }
-}
+let bpMoment = 'Antes do café', bpPos = 'Sentado';
+let glMoment = 'Jejum', glType = 'Glicosímetro';
+let wtMoment = 'Manhã em jejum';
+let histTab = 'bp';
+let medTimes = []; 
+let medPhotos = []; 
+window.confirmCallback = null;
 
-/* ═══════════════════════════════════════════════════════════════════
-   MANIPULAÇÃO DE CHIPS
-═══════════════════════════════════════════════════════════════════ */
-function setupChips(selector, setter) {
-  document.querySelectorAll(selector).forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll(selector).forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      setter(btn.dataset[Object.keys(btn.dataset)[0]]);
-    });
-  });
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   MÉTODOS DE PROCESSAMENTO DE AFERIÇÕES
-═══════════════════════════════════════════════════════════════════ */
 async function saveBP() {
   const s = parseInt(document.getElementById('bp-sis').value);
   const d = parseInt(document.getElementById('bp-dia').value);
   const pulse = document.getElementById('bp-pulse').value;
   const note = document.getElementById('bp-note').value.trim();
   const dt = document.getElementById('bp-dt').value || getNow();
-  if (!s || !d || s < 60 || d < 40 || s > 260 || d > 160) {
-    toast('⚠️ Preencha valores válidos de pressão', true); return;
-  }
+  if (!s || !d || s < 60 || d < 40 || s > 260 || d > 160) { toast('⚠️ Valores inválidos', true); return; }
   try {
     await dbAdd('pressao', { sis: s, dia: d, pulse: pulse ? parseInt(pulse) : null, moment: bpMoment, pos: bpPos, note, dt });
     ['bp-sis','bp-dia','bp-pulse','bp-note'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('bp-dt').value = getNow();
-    toast('✓ Pressão salva com sucesso!');
+    toast('✓ Pressão salva!');
     updateDash();
-  } catch(e) { toast('Erro ao salvar: ' + e.message, true); }
+  } catch(e) { toast('Erro: ' + e.message, true); }
 }
 
 async function saveGL() {
   const v = parseInt(document.getElementById('gl-val').value);
   const note = document.getElementById('gl-note').value.trim();
   const dt = document.getElementById('gl-dt').value || getNow();
-  if (!v || v < 20 || v > 700) { toast('⚠️ Preencha um valor válido de glicemia', true); return; }
+  if (!v || v < 20 || v > 700) { toast('⚠️ Valor inválido', true); return; }
   try {
     await dbAdd('glicemia', { val: v, moment: glMoment, type: glType, note, dt });
     ['gl-val','gl-note'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('gl-dt').value = getNow();
-    toast('✓ Glicemia salva com sucesso!');
+    toast('✓ Glicemia salva!');
     updateDash();
-  } catch(e) { toast('Erro ao salvar: ' + e.message, true); }
+  } catch(e) { toast('Erro: ' + e.message, true); }
 }
 
 async function saveWT() {
@@ -758,68 +681,46 @@ async function saveWT() {
   const alt = parseFloat(document.getElementById('wt-alt').value);
   const note = document.getElementById('wt-note').value.trim();
   const dt = document.getElementById('wt-dt').value || getNow();
-  if (!val || val < 20 || val > 300) { toast('⚠️ Preencha um peso válido', true); return; }
+  if (!val || val < 20 || val > 300) { toast('⚠️ Peso inválido', true); return; }
   const imc = alt >= 100 ? calcIMC(val, alt) : null;
   try {
     await dbAdd('peso', { val, alt: alt || null, imc, moment: wtMoment, note, dt });
     ['wt-val','wt-note'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('wt-dt').value = getNow();
     document.getElementById('wt-imc-preview').style.display = 'none';
-    toast('✓ Peso salvo com sucesso!');
+    toast('✓ Peso salvo!');
     updateDash();
-  } catch(e) { toast('Erro ao salvar: ' + e.message, true); }
+  } catch(e) { toast('Erro: ' + e.message, true); }
 }
 
 function deleteWT(id) {
-  confirm2('Excluir registro de peso', 'Tem certeza? Este registro será removido permanentemente.', async () => {
-    try {
-      await dbDelete('peso', id);
-      toast('✓ Peso excluído');
-      await renderHist();
-      await updateDash();
-    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
+  confirm2('Excluir registro', 'Tem certeza?', async () => {
+    try { await dbDelete('peso', id); toast('✓ Peso excluído'); await renderHist(); await updateDash(); } catch(e) { toast('Erro: ' + e.message, true); }
   });
 }
-
 function deleteBP(id) {
-  confirm2('Excluir medição de pressão', 'Tem certeza? Este registro será removido permanentemente.', async () => {
-    try {
-      await dbDelete('pressao', id);
-      toast('✓ Medição de pressão excluída');
-      await renderHist();
-      await updateDash();
-    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
+  confirm2('Excluir registro', 'Tem certeza?', async () => {
+    try { await dbDelete('pressao', id); toast('✓ Pressão excluída'); await renderHist(); await updateDash(); } catch(e) { toast('Erro: ' + e.message, true); }
   });
 }
-
 function deleteGL(id) {
-  confirm2('Excluir medição de glicemia', 'Tem certeza? Este registro será removido permanentemente.', async () => {
-    try {
-      await dbDelete('glicemia', id);
-      toast('✓ Medição de glicemia excluída');
-      await renderHist();
-      await updateDash();
-    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
+  confirm2('Excluir registro', 'Tem certeza?', async () => {
+    try { await dbDelete('glicemia', id); toast('✓ Glicemia excluída'); await renderHist(); await updateDash(); } catch(e) { toast('Erro: ' + e.message, true); }
   });
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   MÓDULO DE COTAÇÃO POR FARMÁCIA (DROPDOWN AUTOMÁTICO + EDIÇÃO + DIÁRIO)
-═══════════════════════════════════════════════════════════════════ */
+/* DROPDOWNS DE REMÉDIOS NA ABA COTAR */
 async function sincronizarRemediosDropdowns() {
   try {
     listagemRemediosCache = await dbGetAll('remedios');
     const dropdowns = document.querySelectorAll('.med-search-dropdown');
-    
     dropdowns.forEach(select => {
       const valorSelecionado = select.value; 
       select.innerHTML = '<option value="">-- Selecione o Remédio --</option>' + 
         listagemRemediosCache.map(m => `<option value="${m.name}">${m.name} ${m.dose ? `(${m.dose})` : ''}</option>`).join('');
       if(valorSelecionado) select.value = valorSelecionado;
     });
-  } catch(e) {
-    console.error("Falha ao sincronizar lista de medicamentos para cotação: ", e);
-  }
+  } catch(e) { console.error(e); }
 }
 
 function addMedInputRow(medName = '', medPrice = '') {
@@ -828,7 +729,6 @@ function addMedInputRow(medName = '', medPrice = '') {
   row.className = 'fr f';
   row.style.marginBottom = '8px';
   row.style.alignItems = 'center';
-  
   row.innerHTML = `
     <select class="fs med-search-dropdown">
       <option value="">-- Selecione o Remédio --</option>
@@ -839,56 +739,31 @@ function addMedInputRow(medName = '', medPrice = '') {
   container.appendChild(row);
 }
 
-// Limpa por completo o formulário de cotação voltando para o estado original de Nova Inserção
 function resetCotForm() {
   document.getElementById('cot-edit-id').value = '';
   document.getElementById('cot-pharmacy-name').value = '';
   document.getElementById('cot-dt').value = getNow();
   document.getElementById('cot-form-title').textContent = 'Registrar Preços por Farmácia';
-  document.getElementById('cot-btn-container').innerHTML = `
-    <button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>
-  `;
+  document.getElementById('cot-btn-container').innerHTML = `<button class="btn amber" onclick="window.savePharmacyCotation()"><i class="ti ti-device-floppy"></i> Salvar Cotação</button>`;
   document.getElementById('cot-meds-container').innerHTML = `
     <label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>
-    <div class="fr f" style="margin-bottom: 8px; align-items: center;">
-      <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
-      <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
-    </div>
-    <div class="fr f" style="margin-bottom: 8px; align-items: center;">
-      <select class="fs med-search-dropdown"><option value="">Carregando remédios...</option></select>
-      <input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço (R$)" step="0.01">
-    </div>
+    <div class="fr f" style="margin-bottom: 8px; align-items: center;"><select class="fs med-search-dropdown"><option value="">Carregando...</option></select><input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço" step="0.01"></div>
+    <div class="fr f" style="margin-bottom: 8px; align-items: center;"><select class="fs med-search-dropdown"><option value="">Carregando...</option></select><input class="fi med-search-price" type="number" inputmode="decimal" placeholder="Preço" step="0.01"></div>
   `;
 }
 
-// MODIFICADO: Função reativa para carregar cotação antiga para alteração de remédios e valores
 window.openEditCotation = function(id) {
   dbGet('cotacoes_farmacia', id).then(rec => {
     if (!rec) return;
-    
-    // Altera cabeçalho e injeta os botões de controle de Edição
     document.getElementById('cot-edit-id').value = rec.id;
     document.getElementById('cot-pharmacy-name').value = rec.farmacia || '';
     document.getElementById('cot-dt').value = rec.dt || getNow();
-    document.getElementById('cot-form-title').textContent = '✏️ Alterar Dados da Cotação';
-    
-    document.getElementById('cot-btn-container').innerHTML = `
-      <button class="btn purple" onclick="window.savePharmacyCotation()"><i class="ti ti-edit"></i> Confirmar Alteração</button>
-      <button class="btn ghost" onclick="window.resetCotForm(); window.renderCotations();">Cancelar</button>
-    `;
-    
-    // Reconstrói as linhas do formulário acoplando os remédios salvos anteriormente
+    document.getElementById('cot-form-title').textContent = '✏️ Alterar Cotação';
+    document.getElementById('cot-btn-container').innerHTML = `<button class="btn purple" onclick="window.savePharmacyCotation()"><i class="ti ti-edit"></i> Confirmar Alteração</button><button class="btn ghost" onclick="window.resetCotForm(); window.renderCotations();">Cancelar</button>`;
     const container = document.getElementById('cot-meds-container');
     container.innerHTML = `<label style="display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px">Medicamentos e Valores Pesquisados</label>`;
-    
-    rec.items.forEach(item => {
-      addMedInputRow(item.nomeExibicao, item.preco);
-    });
-    
-    // Sincroniza os selects criados
+    rec.items.forEach(item => addMedInputRow(item.nomeExibicao, item.preco));
     sincronizarRemediosDropdowns();
-    // Move o foco visual para o topo da página de inputs
-    document.getElementById('pg-cot').scrollIntoView({ behavior: 'smooth' });
   });
 };
 
@@ -896,48 +771,29 @@ async function savePharmacyCotation() {
   const pharmacyName = document.getElementById('cot-pharmacy-name').value.trim();
   const rawDt = document.getElementById('cot-dt').value || getNow();
   const editId = document.getElementById('cot-edit-id').value;
-  
-  if (!pharmacyName) { toast('⚠️ Informe o nome da farmácia', true); return; }
-
+  if (!pharmacyName) { toast('⚠️ Informe a farmácia', true); return; }
   const rows = document.getElementById('cot-meds-container').querySelectorAll('.fr');
   const medicamentos = [];
-
   rows.forEach(row => {
     const dropdown = row.querySelector('.med-search-dropdown');
+    if (!dropdown) return;
     const medName = dropdown.value;
     const medPrice = parseFloat(row.querySelector('.med-search-price').value);
-    
-    if (medName && !isNaN(medPrice)) {
-      medicamentos.push({ nome: medName.toLowerCase(), nomeExibicao: medName, preco: medPrice });
-    }
+    if (medName && !isNaN(medPrice)) medicamentos.push({ nome: medName.toLowerCase(), nomeExibicao: medName, preco: medPrice });
   });
-
-  if (medicamentos.length === 0) {
-    toast('⚠️ Selecione pelo menos 1 medicamento com preço', true);
-    return;
-  }
-
-  const payload = {
-    farmacia: pharmacyName,
-    dt: rawDt,
-    items: medicamentos
-  };
-
+  if (!medicamentos.length) { toast('⚠️ Selecione medicamentos', true); return; }
+  const payload = { farmacia: pharmacyName, dt: rawDt, items: medicamentos };
   try {
-    // MODIFICADO: Avalia o estado se estamos inserindo uma nova cotação ou gravando a alteração de uma antiga
-    if (editId) {
-      payload.id = editId;
-      await dbPut('cotacoes_farmacia', payload);
-      toast('✓ Alteração gravada com sucesso!');
-    } else {
-      await dbAdd('cotacoes_farmacia', payload);
-      toast('✓ Dados da farmácia salvos com sucesso!');
-    }
-    
-    resetCotForm();
-    await sincronizarRemediosDropdowns();
-    await renderCotations();
-  } catch(e) { toast('Erro ao salvar cotação: ' + e.message, true); }
+    if (editId) { payload.id = editId; await dbPut('cotacoes_farmacia', payload); } 
+    else { await dbAdd('cotacoes_farmacia', payload); }
+    resetCotForm(); await sincronizarRemediosDropdowns(); await renderCotations();
+  } catch(e) { toast('Erro: ' + e.message, true); }
+}
+
+async function deleteCot(id) {
+  confirm2('Excluir cotação?', 'Tem certeza?', async () => {
+    try { await dbDelete('cotacoes_farmacia', id); toast('✓ Removido'); await renderCotations(); } catch(e) { toast('Erro: ' + e.message, true); }
+  });
 }
 
 async function renderCotations() {
@@ -945,351 +801,173 @@ async function renderCotations() {
   const historyEl = document.getElementById('pharmacy-history-list');
   const decisionCard = document.getElementById('cot-decision-card');
   const decisionContent = document.getElementById('cot-decision-content');
-
-  // Captura a data selecionada no campo de input do formulário para servir de filtro de corte temporal
   const inputDtVal = document.getElementById('cot-dt').value;
   const dataFiltroAlvo = inputDtVal ? inputDtVal.split('T')[0] : new Date().toISOString().split('T')[0];
 
-  if (!records.length) {
-    historyEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-search-off"></i><p>Nenhuma farmácia registrada no histórico global.</p></div></div>';
-    decisionCard.style.display = 'none';
-    return;
-  }
-
-  // --- REQUISITO: FILTRAGEM DO MOTOR DE DECISÃO DIÁRIA ---
-  // Isola as cotações que pertencem estritamente à data selecionada (HOJE por padrão)
+  if (!records.length) { historyEl.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma cotação.</p></div></div>'; decisionCard.style.display = 'none'; return; }
   const cotaçoesDoDia = records.filter(rec => rec.dt && rec.dt.split('T')[0] === dataFiltroAlvo);
 
-  if (cotaçoesDoDia.length === 0) {
-    // Desativa o painel decisor caso não existam pesquisas registradas para o dia escolhido
-    decisionCard.style.display = 'none';
-  } else {
-    const medMelhoresPrecos = {}; 
-    const totaisPorFarmacia = {};  
-
+  if (!cotaçoesDoDia.length) { decisionCard.style.display = 'none'; } 
+  else {
+    const medMelhoresPrecos = {}; const totaisPorFarmacia = {};  
     cotaçoesDoDia.forEach(rec => {
       let totalFarmacia = 0;
       rec.items.forEach(item => {
         totalFarmacia += item.preco;
         if (!medMelhoresPrecos[item.nome] || item.preco < medMelhoresPrecos[item.nome].preco) {
-          medMelhoresPrecos[item.nome] = {
-            preco: item.preco,
-            farmacia: rec.farmacia,
-            exibicao: item.nomeExibicao,
-            dt: rec.dt
-          };
+          medMelhoresPrecos[item.nome] = { preco: item.preco, farmacia: rec.farmacia, exibicao: item.nomeExibicao, dt: rec.dt };
         }
       });
-      if (!totaisPorFarmacia[rec.farmacia]) {
-        totaisPorFarmacia[rec.farmacia] = totalFarmacia;
-      }
+      if (!totaisPorFarmacia[rec.farmacia]) totaisPorFarmacia[rec.farmacia] = totalFarmacia;
     });
-
-    let melhorCompraTotalFarmacia = '';
-    let menorCustoTotal = Infinity;
+    let melhorCompraTotalFarmacia = ''; let menorCustoTotal = Infinity;
     for (const [farmacia, total] of Object.entries(totaisPorFarmacia)) {
-      if (total < menorCustoTotal) {
-        menorCustoTotal = total;
-        melhorCompraTotalFarmacia = farmacia;
-      }
+      if (total < menorCustoTotal) { menorCustoTotal = total; melhorCompraTotalFarmacia = farmacia; }
     }
-
-    // Alimenta a área com o resultado matemático do dia selecionado
-    let htmlDecisao = `<p style="font-size:12px; color: var(--t3); margin-bottom:6px;">Calculando dados de: 🗓️ <b>${fdt(dataFiltroAlvo)}</b></p>`;
-    htmlDecisao += `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">
-      🛒 <b>Compra Unificada do Dia:</b> Vá à <b>${melhorCompraTotalFarmacia}</b> (Custo total da lista: <b>R$ ${menorCustoTotal.toFixed(2)}</b>).
-    </p>`;
-
-    htmlDecisao += `<div style="margin-top: 12px;"><b>Economia Fracionada Máxima (Hoje):</b></div><ul style="margin-left: 18px; margin-top: 4px;">`;
-    for (const key in medMelhoresPrecos) {
-      htmlDecisao += `<li style="margin-bottom:3px;">${medMelhoresPrecos[key].exibicao}: <b>R$ ${medMelhoresPrecos[key].preco.toFixed(2)}</b> na <i>${medMelhoresPrecos[key].farmacia}</i></li>`;
-    }
-    htmlDecisao += `</ul>`;
-
-    decisionContent.innerHTML = htmlDecisao;
-    decisionCard.style.display = 'block';
+    // CORRIGIDO DEFINITIVAMENTE: Removida a falha textual que paralisava a renderização das rotinas assíncronas
+    let htmlDecisao = `<p style="margin-bottom: 10px; background: var(--green-bg); color: var(--green-t); padding: 8px; border-radius: 8px;">🛒 <b>Compra Unificada:</b> <b>${melhorCompraTotalFarmacia}</b> (Total: <b>R$ ${menorCustoTotal.toFixed(2)}</b>)</p>`;
+    htmlDecisao += `<ul>` + Object.values(medMelhoresPrecos).map(i => `<li>${i.exibicao}: R$ ${i.preco.toFixed(2)} na ${i.farmacia}</li>`).join('') + `</ul>`;
+    decisionContent.innerHTML = htmlDecisao; decisionCard.style.display = 'block';
   }
 
-  // Renderização do histórico completo por farmácias
-  historyEl.innerHTML = '<h3 style="margin: 14px 0 8px 4px; font-size:15px;">Histórico Geral de Cotações</h3>' + records.map(rec => {
-    const somaItens = rec.items.reduce((acc, cur) => acc + cur.preco, 0);
-    // Verifica se este item pertence ao lote do dia filtrado para marcar com badge visual informativo
-    const pertenceAoDiaFiltrado = rec.dt && rec.dt.split('T')[0] === dataFiltroAlvo;
-
-    return `
-      <div class="card" style="${pertenceAoDiaFiltrado ? 'border-left: 4px solid var(--blue);' : ''}">
-        <div class="med-header" style="justify-content: space-between; display:flex; margin-bottom: 6px;">
-          <div>
-            <div class="med-name">🏪 ${rec.farmacia} ${pertenceAoDiaFiltrado ? '<span class="badge b-normal" style="padding:1px 6px; font-size:10px;">Ativa Hoje</span>' : ''}</div>
-            <div class="lm"><i class="ti ti-clock"></i> Pesquisado em: ${fdt(rec.dt)}</div>
-          </div>
-          <div style="display:flex; gap:2px;">
-             <button class="ibtn" onclick="window.openEditCotation('${rec.id}')" title="Alterar Remédios/Preços"><i class="ti ti-edit" style="color:var(--blue)"></i></button>
-             <button class="ibtn" onclick="window.deleteCot('${rec.id}')" title="Excluir"><i class="ti ti-trash" style="color:var(--red)"></i></button>
-          </div>
-        </div>
-        <div style="margin-top:8px;">
-          ${rec.items.map(item => `
-            <div style="display:flex; justify-content:space-between; font-size:13px; padding: 4px 0; border-bottom: .5px solid var(--bd);">
-              <span>${item.nomeExibicao}</span>
-              <span>R$ ${item.preco.toFixed(2)}</span>
-            </div>
-          `).join('')}
-          <div style="display:flex; justify-content:space-between; font-size:14px; font-weight:800; margin-top:8px; padding-top:4px; color: var(--t1);">
-            <span>VALOR TOTAL:</span>
-            <span>R$ ${somaItens.toFixed(2)}</span>
-          </div>
-        </div>
+  historyEl.innerHTML = records.map(rec => {
+    const soma = rec.items.reduce((acc, cur) => acc + cur.preco, 0);
+    const ativa = rec.dt && rec.dt.split('T')[0] === dataFiltroAlvo;
+    return `<div class="card" style="${ativa ? 'border-left:4px solid var(--blue);':''}">
+      <div style="display:flex; justify-content:space-between;">
+        <div><b>🏪 ${rec.farmacia}</b><div class="lm">${fdt(rec.dt)}</div></div>
+        <div><button class="ibtn" onclick="window.openEditCotation('${rec.id}')"><i class="ti ti-edit"></i></button><button class="ibtn" onclick="window.deleteCot('${rec.id}')"><i class="ti ti-trash"></i></button></div>
       </div>
-    `;
+      <div style="margin-top:6px;">${rec.items.map(i => `<div style="display:flex; justify-content:space-between; font-size:13px;"><span>${i.nomeExibicao}</span><span>R$ ${i.preco.toFixed(2)}</span></div>`).join('')}<b>Total: R$ ${soma.toFixed(2)}</b></div>
+    </div>`;
   }).join('');
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   RECEITAS DE USO CONTÍNUO
-═══════════════════════════════════════════════════════════════════ */
+/* RECEITAS DE USO CONTÍNUO */
 function openRxModal(id) {
-  rxPhotosCache = [];
-  document.getElementById('rx-edit-id').value = id || '';
-  document.getElementById('rx-doctor').value = '';
-  document.getElementById('rx-crm').value = '';
-  document.getElementById('rx-meds-covered').value = '';
-  document.getElementById('rx-obs').value = '';
-  document.getElementById('rx-duration').value = '6';
-  
-  const hoje = new Date().toISOString().split('T')[0];
-  document.getElementById('rx-date-issued').value = hoje;
-  document.getElementById('rx-modal-title').textContent = id ? 'Editar Receita Médica' : 'Arquivar Receita Médica';
-  renderRxPhotos();
-
+  rxPhotosCache = []; document.getElementById('rx-edit-id').value = id || '';
+  ['rx-doctor','rx-crm','rx-meds-covered','rx-obs'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('rx-date-issued').value = new Date().toISOString().split('T')[0];
   if (id) {
     dbGet('receitas_uso_continuo', id).then(rx => {
       if (!rx) return;
-      document.getElementById('rx-doctor').value = rx.medico || '';
-      document.getElementById('rx-crm').value = rx.crm || '';
-      document.getElementById('rx-date-issued').value = rx.dataEmissao || hoje;
-      document.getElementById('rx-duration').value = rx.validadeMeses || '6';
-      document.getElementById('rx-meds-covered').value = rx.medicamentos || '';
-      document.getElementById('rx-obs').value = rx.obs || '';
-      rxPhotosCache = [...(rx.fotos || [])];
-      renderRxPhotos();
+      document.getElementById('rx-doctor').value = rx.medico; document.getElementById('rx-crm').value = rx.crm;
+      document.getElementById('rx-date-issued').value = rx.dataEmissao; document.getElementById('rx-duration').value = rx.validadeMeses;
+      document.getElementById('rx-meds-covered').value = rx.medicamentos; document.getElementById('rx-obs').value = rx.obs;
+      rxPhotosCache = [...(rx.fotos || [])]; renderRxPhotos();
     });
   }
   document.getElementById('rx-modal').classList.add('on');
 }
-
-function closeRxModal(evt) {
-  if (evt && evt.target !== document.getElementById('rx-modal')) return;
-  document.getElementById('rx-modal').classList.remove('on');
-}
-
-function addRxPhoto(input) {
-  const files = Array.from(input.files);
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      rxPhotosCache.push(e.target.result);
-      renderRxPhotos();
-    };
-    reader.readAsDataURL(file);
-  });
-  input.value = '';
-}
-
-function removeRxPhoto(idx) {
-  rxPhotosCache.splice(idx, 1);
-  renderRxPhotos();
-}
-
-function renderRxPhotos() {
-  const el = document.getElementById('rx-photos-preview');
-  if (!rxPhotosCache.length) { el.innerHTML = ''; return; }
-  el.innerHTML = rxPhotosCache.map((src, i) =>
-    `<div style="position:relative;display:inline-block">
-      <img class="med-img" src="${src}" alt="receita" onclick="window.openImgModal('${src}')">
-      <button onclick="window.removeRxPhoto(${i})" style="position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">×</button>
-    </div>`
-  ).join('');
-}
+function closeRxModal(evt) { if (evt && evt.target !== document.getElementById('rx-modal')) return; document.getElementById('rx-modal').classList.remove('on'); }
+function addRxPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { rxPhotosCache.push(e.target.result); renderRxPhotos(); }; r.readAsDataURL(f); }); input.value = ''; }
+function removeRxPhoto(idx) { rxPhotosCache.splice(idx,1); renderRxPhotos(); }
+function renderRxPhotos() { document.getElementById('rx-photos-preview').innerHTML = rxPhotosCache.map((s, i) => `<div style="position:relative;display:inline-block"><img class="med-img" src="${s}" onclick="window.openImgModal('${s}')"><button onclick="window.removeRxPhoto(${i})" style="position:absolute;top:-5px;right:-5px;background:var(--red);border:none;color:#fff;border-radius:50%;width:20px;height:20px;">×</button></div>`).join(''); }
 
 async function saveRx() {
-  const medico = document.getElementById('rx-doctor').value.trim();
-  const medicamentos = document.getElementById('rx-meds-covered').value.trim();
-  const dataEmissao = document.getElementById('rx-date-issued').value;
-  const validadeMeses = parseInt(document.getElementById('rx-duration').value);
-  
-  if (!medico || !medicamentos || !dataEmissao) { 
-    toast('⚠️ Nome do médico, data e medicamentos são obrigatórios', true); 
-    return; 
-  }
-
+  const m = document.getElementById('rx-doctor').value.trim();
+  const meds = document.getElementById('rx-meds-covered').value.trim();
+  const dE = document.getElementById('rx-date-issued').value;
+  const vM = parseInt(document.getElementById('rx-duration').value);
+  if(!m || !meds || !dE) { toast('⚠️ Campos obrigatórios vazios', true); return; }
+  const dV = new Date(dE + 'T12:00:00'); dV.setMonth(dV.getMonth() + vM);
   const editId = document.getElementById('rx-edit-id').value;
-  const dataVencimento = new Date(dataEmissao + 'T12:00:00');
-  dataVencimento.setMonth(dataVencimento.getMonth() + validadeMeses);
-
-  const payload = {
-    medico,
-    crm: document.getElementById('rx-crm').value.trim(),
-    dataEmissao,
-    validadeMeses,
-    dataVencimento: dataVencimento.toISOString().split('T')[0],
-    medicamentos,
-    obs: document.getElementById('rx-obs').value.trim(),
-    fotos: [...rxPhotosCache],
-    dt: getNow()
-  };
-
+  const payload = { medico: m, crm: document.getElementById('rx-crm').value.trim(), dataEmissao: dE, validadeMeses: vM, dataVencimento: dV.toISOString().split('T')[0], medicamentos: meds, obs: document.getElementById('rx-obs').value.trim(), fotos: [...rxPhotosCache], dt: getNow() };
   try {
-    if (editId) {
-      payload.id = editId;
-      await dbPut('receitas_uso_continuo', payload);
-      toast('✓ Receita atualizada com sucesso!');
-    } else {
-      await dbAdd('receitas_uso_continuo', payload);
-      toast('✓ Nova receita arquivada na nuvem!');
-    }
-    document.getElementById('rx-modal').classList.remove('on');
-    await renderRxList();
-  } catch(e) { toast('Erro ao salvar receita: ' + e.message, true); }
+    if(editId) { payload.id = editId; await dbPut('receitas_uso_continuo', payload); } else { await dbAdd('receitas_uso_continuo', payload); }
+    document.getElementById('rx-modal').classList.remove('on'); await renderRxList();
+  } catch(e) { toast('Erro: ' + e.message, true); }
 }
 
 function deleteRx(id) {
-  confirm2('Remover Receita Médica', 'Tem certeza? O documento físico e todas as fotos serão apagados.', async () => {
-    try {
-      await dbDelete('receitas_uso_continuo', id);
-      toast('✓ Receita excluída');
-      await renderRxList();
-    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
-  });
+  confirm2('Excluir?', 'Tem certeza?', async () => { try { await dbDelete('receitas_uso_continuo', id); toast('Excluído'); await renderRxList(); } catch(e) { toast('Erro: ' + e.message, true); } });
 }
 
 async function renderRxList() {
-  const rxs = await dbGetAll('receitas_uso_continuo');
-  const container = document.getElementById('rx-list-container');
-  const hojeStr = new Date().toISOString().split('T')[0];
-
-  if (!rxs.length) {
-    container.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma receita de uso contínuo arquivada.<br>Toque no botão azul acima para escanear.</p></div></div>';
-    return;
-  }
-
+  const rxs = await dbGetAll('receitas_uso_continuo'); const container = document.getElementById('rx-list-container'); const hojeStr = new Date().toISOString().split('T')[0];
+  if (!rxs.length) { container.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma receita.</p></div></div>'; return; }
   container.innerHTML = rxs.map(r => {
-    const expirada = hojeStr > r.dataVencimento;
-    return `
-      <div class="med-card" style="${expirada ? 'border: 1px solid var(--red); background: var(--red-bg);' : ''}">
-        <div class="med-header">
-          <div class="med-ico" style="background: var(--teal-bg); color: var(--teal);"><i class="ti ti-file-text"></i></div>
-          <div style="flex:1;">
-            <div class="med-name">🩺 ${r.medico} ${r.crm ? `<span style="font-size:12px; font-weight:400; color:var(--t2);">CRM: ${r.crm}</span>` : ''}</div>
-            <div class="med-dose" style="font-weight:700; color: var(--teal-t); margin-top:2px;">💊 ${r.medicamentos}</div>
-          </div>
-        </div>
-        <div style="font-size:13px; margin: 8px 2px; line-height:1.4; color: var(--t1);">
-          <div>📅 Emissão: <b>${fdt(r.dataEmissao)}</b></div>
-          <div style="${expirada ? 'color: var(--red); font-weight:bold;' : ''}">
-            ⚠️ Vencimento: <b>${fdt(r.dataVencimento)}</b> ${expirada ? ' (EXPIRADA / RENOVAR)' : ''}
-          </div>
-        </div>
-        ${r.fotos && r.fotos.length ? `
-          <div class="med-imgs" style="margin-bottom:10px;">
-            ${r.fotos.map(src => `<img class="med-img" src="${src}" alt="receita" onclick="window.openImgModal('${src}')">`).join('')}
-          </div>` : ''}
-        <div class="med-actions">
-          <button class="med-btn edit" onclick="window.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button>
-          <button class="med-btn del" onclick="window.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button>
-        </div>
-      </div>
-    `;
+    const exp = hojeStr > r.dataVencimento;
+    return `<div class="med-card" style="${exp ? 'border:1px solid var(--red); background:var(--red-bg);':''}">
+      <div><b>🩺 Dr(a). ${r.medico}</b></div><div style="color:var(--teal-t);">💊 ${r.medicamentos}</div>
+      <div style="font-size:12px;">Emissão: ${fdt(r.dataEmissao)} | <span style="${exp?'color:var(--red); font-weight:bold;':''}">Vence: ${fdt(r.dataVencimento)}</span></div>
+      <div class="med-imgs">${(r.fotos||[]).map(s => `<img class="med-img" src="${s}" onclick="window.openImgModal('${s}')">`).join('')}</div>
+      <div class="med-actions"><button class="med-btn edit" onclick="window.openRxModal('${r.id}')">Editar</button><button class="med-btn del" onclick="window.deleteRx('${r.id}')">Excluir</button></div>
+    </div>`;
   }).join('');
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   PAINEL PRINCIPAL (DASHBOARD)
-═══════════════════════════════════════════════════════════════════ */
-async function updateDash() {
-  try {
-    const [bps, gls, meds, wts] = await Promise.all([
-      dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('remedios'), dbGetAll('peso')
-    ]);
+/* ════════════════════════════════
+   HISTÓRICO GERAL
+════════════════════════════════ */
+function switchHist(type) { histTab = type; ['bp','gl','wt','cot'].forEach(t => { document.getElementById('hf-' + t).classList.toggle('on', t === type); document.getElementById('hist-' + t).style.display = t === type ? 'block' : 'none'; }); renderHist(); }
 
-    if (bps.length) {
-      const l = bps[0];
-      document.getElementById('d-sis').textContent = l.sis;
-      document.getElementById('d-dia').textContent = l.dia;
-      document.getElementById('d-bp-i').textContent = (l.moment || '') + (l.pos ? ' · ' + l.pos : '') + ' · ' + fdt(l.dt);
-    } else {
-      document.getElementById('d-sis').textContent = '—';
-      document.getElementById('d-dia').textContent = '—';
-      document.getElementById('d-bp-i').textContent = 'Nenhuma medição registrada';
-    }
+async function renderHist() {
+  const [bps, gls, wts, cots] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('cotacoes_farmacia')]);
+  document.getElementById('hist-bp').innerHTML = bps.map(r => `<div class="li"><div class="lb"><b>${r.sis}/${r.dia} mmHg</b><div class="lm">${fdt(r.dt)}</div></div><button class="ibtn" onclick="window.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div>`).join('');
+  document.getElementById('hist-gl').innerHTML = gls.map(r => `<div class="li"><div class="lb"><b>${r.val} mg/dL</b><div class="lm">${r.moment} · ${fdt(r.dt)}</div></div><button class="ibtn" onclick="window.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div>`).join('');
+  document.getElementById('hist-wt').innerHTML = wts.map(r => `<div class="li"><div class="lb"><b>${r.val} kg</b><div class="lm">IMC: ${r.imc || '—'} · ${fdt(r.dt)}</div></div><button class="ibtn" onclick="window.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div>`).join('');
+  
+  const mP = {}; cots.forEach(r => r.items.forEach(i => { if(!mP[i.nome] || i.preco < mP[i.nome].preco) mP[i.nome]={preco:i.preco, farmacia:r.farmacia, exibicao:i.nomeExibicao, dt:r.dt}; }));
+  document.getElementById('hist-cot').innerHTML = Object.values(mP).map(i => `<div class="li"><div class="lb"><b>${i.exibicao}</b><div>📍 ${i.farmacia} - <b>R$ ${i.preco.toFixed(2)}</b></div></div></div>`).join('');
+}
 
-    if (gls.length) {
-      const l = gls[0];
-      document.getElementById('d-gl').textContent = l.val;
-      document.getElementById('d-gl-i').textContent = (l.moment || '') + ' · ' + fdt(l.dt);
-    } else {
-      document.getElementById('d-gl').textContent = '—';
-      document.getElementById('d-gl-i').textContent = 'Nenhuma medição registrada';
-    }
-
-    document.getElementById('sum-bp').textContent = bps.length;
-    document.getElementById('sum-gl').textContent = gls.length;
-    document.getElementById('sum-wt').textContent = wts.length;
-    document.getElementById('sum-med').textContent = meds.length;
-
-    if (wts.length) {
-      const l = wts[0];
-      document.getElementById('d-wt').textContent = l.val;
-      document.getElementById('d-wt-i').textContent = (l.moment || '') + ' · ' + fdt(l.dt);
-      if (l.imc) {
-        const [lbl] = classifyIMC(l.imc);
-        document.getElementById('d-imc').textContent = l.imc;
-        document.getElementById('d-imc-class').textContent = lbl;
-      } else {
-        document.getElementById('d-imc').textContent = '—';
-        document.getElementById('d-imc-class').textContent = 'sem altura';
-      }
-    } else {
-      document.getElementById('d-wt').textContent = '—';
-      document.getElementById('d-imc').textContent = '—';
-      document.getElementById('d-imc-class').textContent = '';
-      document.getElementById('d-wt-i').textContent = 'Nenhuma medição registrada';
-    }
-
-    const todayEl = document.getElementById('d-meds-today');
-    if (!meds.length) {
-      todayEl.innerHTML = '<div class="empty" style="padding:10px"><p>Nenhum remédio cadastrado</p></div>';
-    } else {
-      const allTimes = [];
-      meds.forEach(m => {
-        (m.times || []).forEach(t => allTimes.push({ time: t, name: m.name, dose: m.dose }));
-      });
-      allTimes.sort((a, b) => a.time.localeCompare(b.time));
-      if (!allTimes.length) {
-        todayEl.innerHTML = '<div class="empty" style="padding:10px"><p>Nenhum horário cadastrado</p></div>';
-      } else {
-        todayEl.innerHTML = allTimes.map(t =>
-          `<div class="sched-row">
-            <div>
-              <div class="sched-time"><i class="ti ti-clock" style="font-size:14px;margin-right:4px"></i>${t.time}</div>
-              <div class="sched-info">${t.name}${t.dose ? ' — ' + t.dose : ''}</div>
-            </div>
-            <span style="font-size:20px">💊</span>
-          </div>`
-        ).join('');
-      }
-    }
-
-    renderChart('chart-bp', [...bps].slice(0,10).reverse(), r => r.sis, '#1a56a0', 80, 200);
-    renderChart('chart-gl', [...gls].slice(0,10).reverse(), r => r.val, '#1a7a3c', 50, 350);
-    renderChart('chart-wt', [...wts].slice(0,10).reverse(), r => r.val, '#0e7a6e', 40, 150);
-  } catch (error) {
-    console.error("Erro ao atualizar painel: ", error);
+/* ════════════════════════════════
+   CADASTRO DE REMÉDIOS
+════════════════════════════════ */
+function openMedModal(id) {
+  medTimes = []; medPhotos = []; document.getElementById('med-edit-id').value = id || '';
+  ['med-name','med-dose','med-instr','med-obs'].forEach(i => document.getElementById(i).value = '');
+  if(id) {
+    dbGet('remedios', id).then(m => {
+      document.getElementById('med-name').value = m.name; document.getElementById('med-dose').value = m.dose;
+      document.getElementById('med-instr').value = m.instr; document.getElementById('med-obs').value = m.obs;
+      medTimes = [...(m.times||[])]; medPhotos = [...(m.photos||[])]; renderMedTimes(); renderMedPhotos();
+    });
   }
+  document.getElementById('med-modal').classList.add('on');
+}
+function closeMedModal() { document.getElementById('med-modal').classList.remove('on'); }
+function addTime() { const t = document.getElementById('new-time').value; if(t && !medTimes.includes(t)) { medTimes.push(t); medTimes.sort(); renderMedTimes(); } }
+function removeTime(t) { medTimes = medTimes.filter(x => x !== t); renderMedTimes(); }
+function renderMedTimes() { document.getElementById('times-list').innerHTML = medTimes.map(t => `<span>⏱️ ${t} <button onclick="window.removeTime('${t}')">×</button></span>`).join(' '); }
+function addPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { medPhotos.push(e.target.result); renderMedPhotos(); }; r.readAsDataURL(f); }); }
+function removePhoto(i) { medPhotos.splice(i,1); renderMedPhotos(); }
+function renderMedPhotos() { document.getElementById('med-photos-preview').innerHTML = medPhotos.map((s,i) => `<div><img class="med-img" src="${s}"><button onclick="window.removePhoto(${i})">×</button></div>`).join(''); }
+
+async function saveMed() {
+  const n = document.getElementById('med-name').value.trim(); if(!n) return;
+  const editId = document.getElementById('med-edit-id').value;
+  const payload = { name: n, dose: document.getElementById('med-dose').value.trim(), instr: document.getElementById('med-instr').value.trim(), obs: document.getElementById('med-obs').value.trim(), times: [...medTimes], photos: [...medPhotos], dt: getNow() };
+  try { if(editId) { payload.id = editId; await dbPut('remedios', payload); } else { await dbAdd('remedios', payload); } closeMedModal(); await renderMeds(); } catch(e) { console.error(e); }
+}
+
+async function renderMeds() {
+  const meds = await dbGetAll('remedios');
+  document.getElementById('med-list').innerHTML = meds.map(m => `<div class="med-card"><b>💊 ${m.name}</b> (${m.dose})<div>⏱️ ${(m.times||[]).join(', ')}</div><div class="med-actions"><button onclick="window.openMedModal('${m.id}')">Editar</button><button onclick="window.deleteMed('${m.id}')">Excluir</button></div></div>`).join('');
+}
+
+/* PAINEL PRINCIPAL (DASHBOARD) */
+async function updateDash() {
+  const [bps, gls, meds, wts] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('remedios'), dbGetAll('peso')]);
+  if(bps.length) { document.getElementById('d-sis').textContent = bps[0].sis; document.getElementById('d-dia').textContent = bps[0].dia; }
+  if(gls.length) document.getElementById('d-gl').textContent = gls[0].val;
+  if(wts.length) { 
+    document.getElementById('d-wt').textContent = wts[0].val; 
+    document.getElementById('d-imc').textContent = wts[0].imc || '—';
+    if(wts[0].imc) { const [lbl] = classifyIMC(wts[0].imc); document.getElementById('d-imc-class').textContent = lbl; }
+  }
+  document.getElementById('sum-bp').textContent = bps.length; document.getElementById('sum-gl').textContent = gls.length;
+  document.getElementById('sum-wt').textContent = wts.length; document.getElementById('sum-med').textContent = meds.length;
+  
+  renderChart('chart-bp', [...bps].slice(0,10).reverse(), r => r.sis, '#1a56a0', 80, 200);
+  renderChart('chart-gl', [...gls].slice(0,10).reverse(), r => r.val, '#1a7a3c', 50, 350);
+  renderChart('chart-wt', [...wts].slice(0,10).reverse(), r => r.val, '#0e7a6e', 40, 150);
 }
 
 function renderChart(id, data, getter, color, mn, mx) {
   const wrap = document.getElementById(id);
+  if (!wrap) return;
   if (!data.length) {
     wrap.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--t3)">Sem dados ainda</div>';
     return;
@@ -1306,465 +984,25 @@ function renderChart(id, data, getter, color, mn, mx) {
   });
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   SISTEMA DE HISTÓRICO MÚLTIPLO
-═══════════════════════════════════════════════════════════════════ */
-function switchHist(type) {
-  histTab = type;
-  ['bp','gl','wt','cot'].forEach(t => {
-    document.getElementById('hf-' + t).classList.toggle('on', t === type);
-    document.getElementById('hist-' + t).style.display = t === type ? 'block' : 'none';
-  });
-  renderHist();
-}
-
-async function renderHist() {
-  const [bps, gls, wts, cots] = await Promise.all([
-    dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('cotacoes_farmacia')
-  ]);
-
-  const bpEl = document.getElementById('hist-bp');
-  if (!bps.length) {
-    bpEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-heart-off"></i><p>Nenhuma medição de pressão registrada</p></div></div>';
-  } else {
-    bpEl.innerHTML = '<div class="card">' + bps.map(r => {
-      const [lbl, cls] = classifyBP(r.sis, r.dia);
-      return `<div class="li">
-        <div class="ico bp"><i class="ti ti-heart"></i></div>
-        <div class="lb">
-          <div class="lv">${r.sis}/${r.dia} mmHg${r.pulse ? `<span style="font-size:12px;font-weight:400;color:var(--t2)"> · ${r.pulse} bpm</span>` : ''}</div>
-          <div class="lm">${r.moment || ''}${r.pos ? ' · ' + r.pos : ''} · ${fdt(r.dt)}</div>
-          ${r.note ? `<span class="ln">${r.note}</span>` : ''}
-        </div>
-        <div class="la">
-          <span class="badge ${cls}">${lbl}</span>
-          <button class="ibtn" onclick="window.deleteBP('${r.id}')" title="Excluir"><i class="ti ti-trash" style="color:var(--red)"></i></button>
-        </div>
-      </div>`;
-    }).join('') + '</div>';
-  }
-
-  const glEl = document.getElementById('hist-gl');
-  if (!gls.length) {
-    glEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-droplet-off"></i><p>Nenhuma medição de glicemia registrada</p></div></div>';
-  } else {
-    glEl.innerHTML = '<div class="card">' + gls.map(r => {
-      const [lbl, cls] = classifyGL(r.val, r.moment);
-      return `<div class="li">
-        <div class="ico gl"><i class="ti ti-droplet"></i></div>
-        <div class="lb">
-          <div class="lv">${r.val} mg/dL <span style="font-size:12px;font-weight:400;color:var(--t2)">· ${r.type || ''}</span></div>
-          <div class="lm">${r.moment || ''} · ${fdt(r.dt)}</div>
-          ${r.note ? `<span class="ln">${r.note}</span>` : ''}
-        </div>
-        <div class="la">
-          <span class="badge ${cls}">${lbl}</span>
-          <button class="ibtn" onclick="window.deleteGL('${r.id}')" title="Excluir"><i class="ti ti-trash" style="color:var(--red)"></i></button>
-        </div>
-      </div>`;
-    }).join('') + '</div>';
-  }
-
-  const wtEl = document.getElementById('hist-wt');
-  if (!wts.length) {
-    wtEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-scale"></i><p>Nenhum registro de peso encontrado</p></div></div>';
-  } else {
-    wtEl.innerHTML = '<div class="card">' + wts.map(r => {
-      const imcHtml = r.imc ? (() => { const [lbl,cls] = classifyIMC(r.imc); return `<span class="badge ${cls}">IMC ${r.imc} · ${lbl}</span>`; })() : '';
-      return `<div class="li">
-        <div class="ico wt"><i class="ti ti-scale"></i></div>
-        <div class="lb">
-          <div class="lv">${r.val} kg${r.alt ? `<span style="font-size:12px;font-weight:400;color:var(--t2)"> · ${r.alt} cm</span>` : ''}</div>
-          <div class="lm">${r.moment || ''} · ${fdt(r.dt)}</div>
-          ${imcHtml ? `<div style="margin-top:4px">${imcHtml}</div>` : ''}
-          ${r.note ? `<span class="ln">${r.note}</span>` : ''}
-        </div>
-        <div class="la">
-          <button class="ibtn" onclick="window.deleteWT('${r.id}')" title="Excluir"><i class="ti ti-trash" style="color:var(--red)"></i></button>
-        </div>
-      </div>`;
-    }).join('') + '</div>';
-  }
-
-  const cotEl = document.getElementById('hist-cot');
-  if (!cots.length) {
-    cotEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-search-off"></i><p>Nenhum registro de preço arquivado.</p></div></div>';
-  } else {
-    const melhoresPrecosGlobais = {};
-    cots.forEach(rec => {
-      rec.items.forEach(item => {
-        if (!melhoresPrecosGlobais[item.nome] || item.preco < melhoresPrecosGlobais[item.nome].preco) {
-          melhoresPrecosGlobais[item.nome] = {
-            preco: item.preco,
-            farmacia: rec.farmacia,
-            exibicao: item.nomeExibicao,
-            dt: rec.dt,
-            idCotaçao: rec.id
-          };
-        }
-      });
-    });
-
-    const arrayMelhoresItens = Object.values(melhoresPrecosGlobais).sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
-
-    if(!arrayMelhoresItens.length) {
-      cotEl.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-search-off"></i><p>Ainda processando índices de medicamentos...</p></div></div>';
-    } else {
-      cotEl.innerHTML = '<div class="card">' + arrayMelhoresItens.map(item => `
-        <div class="li">
-          <div class="ico cot"><i class="ti ti-pill"></i></div>
-          <div class="lb">
-            <div class="lv" style="color: var(--green-t); font-weight:800;">${item.exibicao}</div>
-            <div class="lm" style="font-weight:600; color:var(--t1); margin-top:2px;">
-              📍 Onde comprei: <span style="background:var(--green-bg); padding:2px 6px; border-radius:4px; font-size:12px;">${item.farmacia}</span>
-            </div>
-            <div class="lm" style="margin-top:4px;"><i class="ti ti-clock"></i> Cotação: ${fdt(item.dt)}</div>
-          </div>
-          <div class="la">
-            <span class="badge b-normal" style="font-size:12px; padding:4px 10px;">R$ ${item.preco.toFixed(2)}</span>
-            <button class="ibtn" onclick="window.deleteCot('${item.idCotaçao}')" title="Remover Cotação do Banco"><i class="ti ti-trash" style="color:var(--red)"></i></button>
-          </div>
-        </div>
-      `).join('') + '</div>';
-    }
+function goPage(name, btn) {
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById('pg-' + name).classList.add('on');
+  if (btn) btn.classList.add('on');
+  if (name === 'home') updateDash();
+  if (name === 'hist') renderHist();
+  if (name === 'med') renderMeds();
+  if (name === 'rx') renderRxList();
+  if (name === 'cot') {
+    window.resetCotForm();
+    sincronizarRemediosDropdowns().then(() => renderCotations());
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   SISTEMA DE REMÉDIOS
-═══════════════════════════════════════════════════════════════════ */
-function openMedModal(id) {
-  medTimes = []; medPhotos = [];
-  document.getElementById('med-edit-id').value = id || '';
-  document.getElementById('med-name').value = '';
-  document.getElementById('med-dose').value = '';
-  document.getElementById('med-instr').value = '';
-  document.getElementById('med-obs').value = '';
-  document.getElementById('med-form').value = 'Comprimido';
-  document.getElementById('med-modal-title').textContent = id ? 'Editar remédio' : 'Novo remédio';
-  renderMedTimes();
-  renderMedPhotos();
+function openImgModal(src) { document.getElementById('img-modal-src').src = src; document.getElementById('img-modal').classList.add('on'); }
+function closeImgModal() { document.getElementById('img-modal').classList.remove('on'); }
 
-  if (id) {
-    dbGet('remedios', id).then(med => {
-      if (!med) return;
-      document.getElementById('med-name').value = med.name || '';
-      document.getElementById('med-dose').value = med.dose || '';
-      document.getElementById('med-instr').value = med.instr || '';
-      document.getElementById('med-obs').value = med.obs || '';
-      document.getElementById('med-form').value = med.form || 'Comprimido';
-      medTimes = [...(med.times || [])];
-      medPhotos = [...(med.photos || [])];
-      renderMedTimes();
-      renderMedPhotos();
-    });
-  }
-  document.getElementById('med-modal').classList.add('on');
-}
-
-function closeMedModal(evt) {
-  if (evt && evt.target !== document.getElementById('med-modal')) return;
-  document.getElementById('med-modal').classList.remove('on');
-}
-
-function addTime() {
-  const t = document.getElementById('new-time').value;
-  if (!t) { toast('Escolha um horário', true); return; }
-  if (medTimes.includes(t)) { toast('Horário já adicionado', true); return; }
-  medTimes.push(t);
-  medTimes.sort();
-  document.getElementById('new-time').value = '';
-  renderMedTimes();
-}
-
-function removeTime(t) {
-  medTimes = medTimes.filter(x => x !== t);
-  renderMedTimes();
-}
-
-function renderMedTimes() {
-  const el = document.getElementById('times-list');
-  if (!medTimes.length) { el.innerHTML = '<div style="font-size:13px;color:var(--t3);margin-bottom:4px">Nenhum horário adicionado</div>'; return; }
-  el.innerHTML = medTimes.map(t =>
-    `<div style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-bg);color:var(--purple-t);border-radius:20px;padding:5px 10px 5px 12px;font-size:13px;font-weight:600;margin:3px">
-      <i class="ti ti-clock" style="font-size:13px"></i>${t}
-      <button onclick="window.removeTime('${t}')" style="background:none;border:none;cursor:pointer;color:var(--purple-t);font-size:15px;padding:0;line-height:1;margin-left:2px">×</button>
-    </div>`
-  ).join('');
-}
-
-function addPhoto(input) {
-  const files = Array.from(input.files);
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      medPhotos.push(e.target.result);
-      renderMedPhotos();
-    };
-    reader.readAsDataURL(file);
-  });
-  input.value = '';
-}
-
-function removePhoto(idx) {
-  medPhotos.splice(idx, 1);
-  renderMedPhotos();
-}
-
-function renderMedPhotos() {
-  const el = document.getElementById('med-photos-preview');
-  if (!medPhotos.length) { el.innerHTML = ''; return; }
-  el.innerHTML = medPhotos.map((src, i) =>
-    `<div style="position:relative;display:inline-block">
-      <img class="med-img" src="${src}" alt="foto" onclick="window.openImgModal('${src}')">
-      <button onclick="window.removePhoto(${i})" style="position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">×</button>
-    </div>`
-  ).join('');
-}
-
-async function saveMed() {
-  const name = document.getElementById('med-name').value.trim();
-  if (!name) { toast('⚠️ Informe o nome do remédio', true); return; }
-  const editId = document.getElementById('med-edit-id').value;
-  const rec = {
-    name,
-    dose: document.getElementById('med-dose').value.trim(),
-    form: document.getElementById('med-form').value,
-    instr: document.getElementById('med-instr').value.trim(),
-    obs: document.getElementById('med-obs').value.trim(),
-    times: [...medTimes],
-    photos: [...medPhotos],
-    dt: getNow()
-  };
-  try {
-    if (editId) {
-      rec.id = editId;
-      await dbPut('remedios', rec);
-      toast('✓ Remédio atualizado!');
-    } else {
-      await dbAdd('remedios', rec);
-      toast('✓ Remédio cadastrado!');
-    }
-    document.getElementById('med-modal').classList.remove('on');
-    await renderMeds();
-    await updateDash();
-  } catch(e) { toast('Erro ao salvar: ' + e.message, true); }
-}
-
-function deleteMed(id) {
-  confirm2('Excluir remédio', 'Tem certeza? O remédio e todas as fotos serão removidos permanentemente.', async () => {
-    try {
-      await dbDelete('remedios', id);
-      toast('✓ Remédio excluído');
-      await renderMeds();
-      await updateDash();
-    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
-  });
-}
-
-async function renderMeds() {
-  const meds = await dbGetAll('remedios');
-  const el = document.getElementById('med-list');
-  if (!meds.length) {
-    el.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum remédio cadastrado.<br>Toque em "+ Cadastrar novo remédio" para começar.</p></div></div>';
-    return;
-  }
-  el.innerHTML = meds.map(m => `
-    <div class="med-card">
-      <div class="med-header">
-        <div class="med-ico"><i class="ti ti-pill"></i></div>
-        <div>
-          <div class="med-name">${m.name}</div>
-          <div class="med-dose">${[m.dose, m.form].filter(Boolean).join(' · ')}</div>
-        </div>
-      </div>
-      ${m.times && m.times.length ? `
-        <div class="med-times">
-          ${m.times.map(t => `<span class="med-time"><i class="ti ti-clock" style="font-size:12px"></i>${t}</span>`).join('')}
-        </div>` : ''}
-      ${m.instr ? `<div style="font-size:13px;color:var(--t2);margin-bottom:6px"><i class="ti ti-info-circle" style="font-size:13px;margin-right:4px"></i>${m.instr}</div>` : ''}
-      ${m.obs ? `<div style="font-size:12px;color:var(--t3);margin-bottom:6px">${m.obs}</div>` : ''}
-      ${m.photos && m.photos.length ? `
-        <div class="med-imgs">
-          ${m.photos.map(src => `<img class="med-img" src="${src}" alt="foto" onclick="window.openImgModal('${src}')">`).join('')}
-        </div>` : ''}
-      <div class="med-actions">
-        <button class="med-btn edit" onclick="window.openMedModal('${m.id}')"><i class="ti ti-edit"></i> Editar</button>
-        <button class="med-btn del" onclick="window.deleteMed('${m.id}')"><i class="ti ti-trash"></i> Excluir</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function openImgModal(src) {
-  document.getElementById('img-modal-src').src = src;
-  document.getElementById('img-modal').classList.add('on');
-}
-function closeImgModal() {
-  document.getElementById('img-modal').classList.remove('on');
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   MÓDULO DE RECONHECIMENTO DE ARQUIVOS DE RECEITA
-═══════════════════════════════════════════════════════════════════ */
-function openRxModal(id) {
-  rxPhotosCache = [];
-  document.getElementById('rx-edit-id').value = id || '';
-  document.getElementById('rx-doctor').value = '';
-  document.getElementById('rx-crm').value = '';
-  document.getElementById('rx-meds-covered').value = '';
-  document.getElementById('rx-obs').value = '';
-  document.getElementById('rx-duration').value = '6';
-  
-  const hoje = new Date().toISOString().split('T')[0];
-  document.getElementById('rx-date-issued').value = hoje;
-  document.getElementById('rx-modal-title').textContent = id ? 'Editar Receita Médica' : 'Arquivar Receita Médica';
-  renderRxPhotos();
-
-  if (id) {
-    dbGet('receitas_uso_continuo', id).then(rx => {
-      if (!rx) return;
-      document.getElementById('rx-doctor').value = rx.medico || '';
-      document.getElementById('rx-crm').value = rx.crm || '';
-      document.getElementById('rx-date-issued').value = rx.dataEmissao || hoje;
-      document.getElementById('rx-duration').value = rx.validadeMeses || '6';
-      document.getElementById('rx-meds-covered').value = rx.medicamentos || '';
-      document.getElementById('rx-obs').value = rx.obs || '';
-      rxPhotosCache = [...(rx.fotos || [])];
-      renderRxPhotos();
-    });
-  }
-  document.getElementById('rx-modal').classList.add('on');
-}
-
-function closeRxModal(evt) {
-  if (evt && evt.target !== document.getElementById('rx-modal')) return;
-  document.getElementById('rx-modal').classList.remove('on');
-}
-
-function addRxPhoto(input) {
-  const files = Array.from(input.files);
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      rxPhotosCache.push(e.target.result);
-      renderRxPhotos();
-    };
-    reader.readAsDataURL(file);
-  });
-  input.value = '';
-}
-
-function removeRxPhoto(idx) {
-  rxPhotosCache.splice(idx, 1);
-  renderRxPhotos();
-}
-
-function renderRxPhotos() {
-  const el = document.getElementById('rx-photos-preview');
-  if (!rxPhotosCache.length) { el.innerHTML = ''; return; }
-  el.innerHTML = rxPhotosCache.map((src, i) =>
-    `<div style="position:relative;display:inline-block">
-      <img class="med-img" src="${src}" alt="receita" onclick="window.openImgModal('${src}')">
-      <button onclick="window.removeRxPhoto(${i})" style="position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700">×</button>
-    </div>`
-  ).join('');
-}
-
-async function saveRx() {
-  const medico = document.getElementById('rx-doctor').value.trim();
-  const medicamentos = document.getElementById('rx-meds-covered').value.trim();
-  const dataEmissao = document.getElementById('rx-date-issued').value;
-  const validadeMeses = parseInt(document.getElementById('rx-duration').value);
-  
-  if (!medico || !medicamentos || !dataEmissao) { 
-    toast('⚠️ Nome do médico, data e medicamentos são obrigatórios', true); 
-    return; 
-  }
-
-  const editId = document.getElementById('rx-edit-id').value;
-  const dataVencimento = new Date(dataEmissao + 'T12:00:00');
-  dataVencimento.setMonth(dataVencimento.getMonth() + validadeMeses);
-
-  const payload = {
-    medico,
-    crm: document.getElementById('rx-crm').value.trim(),
-    dataEmissao,
-    validadeMeses,
-    dataVencimento: dataVencimento.toISOString().split('T')[0],
-    medicamentos,
-    obs: document.getElementById('rx-obs').value.trim(),
-    fotos: [...rxPhotosCache],
-    dt: getNow()
-  };
-
-  try {
-    if (editId) {
-      payload.id = editId;
-      await dbPut('receitas_uso_continuo', payload);
-      toast('✓ Receita updated!');
-    } else {
-      await dbAdd('receitas_uso_continuo', payload);
-      toast('✓ Nova receita arquivada!');
-    }
-    document.getElementById('rx-modal').classList.remove('on');
-    await renderRxList();
-  } catch(e) { toast('Erro ao salvar receita: ' + e.message, true); }
-}
-
-function deleteRx(id) {
-  confirm2('Remover Receita Médica', 'Tem certeza? O documento físico e todas as fotos serão apagados.', async () => {
-    try {
-      await dbDelete('receitas_uso_continuo', id);
-      toast('✓ Receita excluída');
-      await renderRxList();
-    } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
-  });
-}
-
-async function renderRxList() {
-  const rxs = await dbGetAll('receitas_uso_continuo');
-  const container = document.getElementById('rx-list-container');
-  const hojeStr = new Date().toISOString().split('T')[0];
-
-  if (!rxs.length) {
-    container.innerHTML = '<div class="card"><div class="empty"><i class="ti ti-file-off"></i><p>Nenhuma receita de uso contínuo arquivada.</p></div></div>';
-    return;
-  }
-
-  container.innerHTML = rxs.map(r => {
-    const expirada = hojeStr > r.dataVencimento;
-    return `
-      <div class="med-card" style="${expirada ? 'border: 1px solid var(--red); background: var(--red-bg);' : ''}">
-        <div class="med-header">
-          <div class="med-ico" style="background: var(--teal-bg); color: var(--teal);"><i class="ti ti-file-text"></i></div>
-          <div style="flex:1;">
-            <div class="med-name">🩺 ${r.medico} ${r.crm ? `<span style="font-size:12px; font-weight:400; color:var(--t2);">CRM: ${r.crm}</span>` : ''}</div>
-            <div class="med-dose" style="font-weight:700; color: var(--teal-t); margin-top:2px;">💊 ${r.medicamentos}</div>
-          </div>
-        </div>
-        <div style="font-size:13px; margin: 8px 2px; line-height:1.4; color: var(--t1);">
-          <div>📅 Emissão: <b>${fdt(r.dataEmissao)}</b></div>
-          <div style="${expirada ? 'color: var(--red); font-weight:bold;' : ''}">
-            ⚠️ Vencimento: <b>${fdt(r.dataVencimento)}</b> ${expirada ? ' (EXPIRADA)' : ''}
-          </div>
-        </div>
-        ${r.fotos && r.fotos.length ? `
-          <div class="med-imgs" style="margin-bottom:10px;">
-            ${r.fotos.map(src => `<img class="med-img" src="${src}" alt="receita" onclick="window.openImgModal('${src}')">`).join('')}
-          </div>` : ''}
-        <div class="med-actions">
-          <button class="med-btn edit" onclick="window.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button>
-          <button class="med-btn del" onclick="window.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   VINCULAÇÃO DE MÉTODOS GLOBAL WINDOW
-═══════════════════════════════════════════════════════════════════ */
+/* GANCHOS DE INTERFACE DO ESCOPO WINDOW */
 window.goPage = goPage;
 window.switchHist = switchHist;
 window.saveBP = saveBP;
@@ -1781,12 +1019,6 @@ window.addPhoto = addPhoto;
 window.removePhoto = removePhoto;
 window.saveMed = saveMed;
 window.deleteMed = deleteMed;
-window.openImgModal = openImgModal;
-window.closeImgModal = closeImgModal;
-window.closeConfirm = closeConfirm;
-window.addMedInputRow = addMedInputRow;
-window.savePharmacyCotation = savePharmacyCotation;
-window.deleteCot = deleteCot;
 window.openRxModal = openRxModal;
 window.closeRxModal = closeRxModal;
 window.addRxPhoto = addRxPhoto;
@@ -1795,21 +1027,16 @@ window.saveRx = saveRx;
 window.deleteRx = deleteRx;
 window.resetCotForm = resetCotForm;
 window.renderCotations = renderCotations;
+window.openEditCotation = openEditCotation;
+window.savePharmacyCotation = savePharmacyCotation;
+window.addMedInputRow = addMedInputRow;
+window.deleteCot = deleteCot;
+window.openImgModal = openImgModal;
 
-document.getElementById('confirm-ok').onclick = () => {
-  if (confirmCallback) confirmCallback();
-  closeConfirm();
-};
+document.getElementById('confirm-ok').onclick = () => { if (window.confirmCallback) window.confirmCallback(); closeConfirm(); };
 
-/* ═══════════════════════════════════════════════════════════════════
-   INICIALIZAÇÃO DO ECOSSISTEMA
-═══════════════════════════════════════════════════════════════════ */
+/* INICIALIZAÇÃO AUTOMÁTICA EM MALHA COM FALLBACK RASTREÁVEL */
 (async () => {
-  document.getElementById('bp-dt').value = getNow();
-  document.getElementById('gl-dt').value = getNow();
-  document.getElementById('wt-dt').value = getNow();
-  document.getElementById('cot-dt').value = getNow();
-  
   setupChips('[data-bpm]', v => bpMoment = v);
   setupChips('[data-bpp]', v => bpPos = v);
   setupChips('[data-glm]', v => glMoment = v);
@@ -1817,7 +1044,9 @@ document.getElementById('confirm-ok').onclick = () => {
   setupChips('[data-wtm]', v => wtMoment = v);
 
   ['wt-val','wt-alt'].forEach(id => {
-    document.getElementById(id).addEventListener('input', () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('input', () => {
       const p = parseFloat(document.getElementById('wt-val').value);
       const a = parseFloat(document.getElementById('wt-alt').value);
       const prev = document.getElementById('wt-imc-preview');
@@ -1833,8 +1062,19 @@ document.getElementById('confirm-ok').onclick = () => {
     });
   });
 
+  document.getElementById('bp-dt').value = getNow();
+  document.getElementById('gl-dt').value = getNow();
+  document.getElementById('wt-dt').value = getNow();
+  document.getElementById('cot-dt').value = getNow();
+
   try {
-    await openDB();
+    if (!dbFirestore) throw new Error("O Firebase falhou na inicialização.");
+    
+    // Teste de conexão real puxando os dados de pressão
+    const colRef = collection(dbFirestore, 'pressao');
+    await getDocs(query(colRef));
+
+    // Se a leitura funcionar, ativa a luz verde
     document.getElementById('db-dot').style.background = '#1a7a3c';
     document.getElementById('db-txt').textContent = 'Conectado à Nuvem do Firebase ✓';
     
@@ -1844,7 +1084,13 @@ document.getElementById('confirm-ok').onclick = () => {
     await renderRxList();
   } catch(e) {
     document.getElementById('db-dot').style.background = '#b02020';
-    document.getElementById('db-txt').textContent = 'Erro de sincronização: ' + e.message;
+    if (e.message && e.message.includes('Missing or insufficient permissions')) {
+       document.getElementById('db-txt').textContent = 'Acesso Negado: Regras do Banco Bloqueadas';
+       toast('⚠️ O Firebase está bloqueando o acesso. Altere as regras para modo público.', true);
+    } else {
+       document.getElementById('db-txt').textContent = 'Erro de Sincronização: Chave de API Incorreta';
+       console.error("Firebase Error Trace:", e);
+    }
   }
 })();
 </script>
