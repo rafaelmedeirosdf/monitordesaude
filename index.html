@@ -447,13 +447,35 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/fireba
 import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B18**0**hXyPV4",
+  apiKey: "AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B180hXyPV4",
   authDomain: "monitordesaudedf.firebaseapp.com",
   projectId: "monitordesaudedf",
   storageBucket: "monitordesaudedf.firebasestorage.app",
   messagingSenderId: "116851967587",
   appId: "1:116851967587:web:871b7323325963f5391a56"
 };
+const app = initializeApp(firebaseConfig);
+const FS = getFirestore(app);
+
+async function dbAdd(col, rec) {
+  const r = await addDoc(collection(FS, col), rec); return r.id;
+}
+async function dbPut(col, rec) {
+  const { id, ...data } = rec;
+  await setDoc(doc(FS, col, String(id)), data, { merge: true }); return id;
+}
+async function dbGetAll(col) {
+  const snap = await getDocs(collection(FS, col));
+  const rows = []; snap.forEach(d => rows.push({ id: d.id, ...d.data() }));
+  return rows.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
+}
+async function dbGet(col, id) {
+  const snap = await getDoc(doc(FS, col, String(id)));
+  return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+}
+async function dbDelete(col, id) {
+  await deleteDoc(doc(FS, col, String(id))); return true;
+}
 
 const app = initializeApp(firebaseConfig);
 const dbFirestore = getFirestore(app);
