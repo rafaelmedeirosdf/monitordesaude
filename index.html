@@ -179,16 +179,56 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .wt-compare.perdeu{background:var(--green-bg);border:1px solid var(--green)}
 .wt-compare.igual{background:var(--bg2);border:1px solid var(--bd2)}
 .wt-compare-icon{font-size:32px;display:block;margin-bottom:4px}
-.wt-compare-val{font-size:22px;font-weight:700}
-.wt-compare-lbl{font-size:13px;margin-top:3px}
+/* TELA DE LOGIN */
+.login-screen{position:fixed;inset:0;background:linear-gradient(150deg,#0d3a7a,#1a56a0 55%,#1e6fc4);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{background:#fff;border-radius:24px;padding:32px 24px;width:100%;max-width:360px;box-shadow:0 8px 40px rgba(0,0,0,.25)}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-logo h1{font-size:26px;font-weight:800;color:#0d1117;margin-bottom:4px}
+.login-logo p{font-size:14px;color:#5a6375}
+.login-field{margin-bottom:14px}
+.login-field label{display:block;font-size:13px;font-weight:600;color:#5a6375;margin-bottom:5px}
+.login-field input{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid rgba(0,0,0,.16);background:#f4f6f8;font-size:15px;font-family:inherit;color:#0d1117;transition:border-color .15s}
+.login-field input:focus{outline:none;border-color:#1a56a0;box-shadow:0 0 0 3px rgba(26,86,160,.15)}
+.login-btn{width:100%;padding:14px;border-radius:12px;border:none;background:#1a56a0;color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:6px;transition:all .15s}
+.login-btn:active{transform:scale(.97);opacity:.9}
+.login-err{background:#fad8d8;color:#700f0f;border-radius:9px;padding:10px 14px;font-size:13px;margin-top:12px;display:none;text-align:center}
+.login-loading{text-align:center;font-size:14px;color:#5a6375;margin-top:10px;display:none}
+.logout-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.logout-btn:hover{background:rgba(255,255,255,.28)}
 </style>
 </head>
 <body>
+<!-- TELA DE LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <h1>❤️ Monitor de Saúde</h1>
+      <p>Rafael Medeiros — acesso privado</p>
+    </div>
+    <div class="login-field">
+      <label>E-mail</label>
+      <input type="email" id="login-email" placeholder="seu@email.com" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Senha</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="login-btn" onclick="W.doLogin()">
+      <i class="ti ti-lock"></i> Entrar
+    </button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-loading" id="login-loading">Verificando credenciais...</div>
+  </div>
+</div>
+
 <div id="app">
   <div class="hdr">
     <div class="hdr-row">
       <h1>❤️ Monitor de Saúde</h1>
-      <span class="hbadge" id="db-badge">☁️ Firebase</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="hbadge" id="db-badge">☁️ Firebase</span>
+        <button class="logout-btn" onclick="W.doLogout()" title="Sair"><i class="ti ti-logout"></i> Sair</button>
+      </div>
     </div>
     <div class="hdr-sub">Desenvolvido por Rafael Medeiros</div>
   </div>
@@ -484,6 +524,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 /* ══════════════════════════════════════
    FIREBASE — API KEY CORRIGIDA
@@ -500,6 +541,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const dbFirestore = getFirestore(app);
+const auth = getAuth(app);
 
 /* ── CRUD ── */
 async function dbAdd(col, rec) { const r = await addDoc(collection(dbFirestore, col), rec); return r.id; }
@@ -920,6 +962,58 @@ async function renderHist() {
 function openImg(src) { document.getElementById('img-src').src = src; document.getElementById('img-modal').classList.add('on'); }
 function closeImg() { document.getElementById('img-modal').classList.remove('on'); }
 
+/* ── LOGIN / LOGOUT ── */
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-err');
+  const loadEl = document.getElementById('login-loading');
+  const btn   = document.getElementById('login-btn');
+
+  errEl.style.display = 'none';
+  if (!email || !pass) { errEl.textContent = 'Preencha e-mail e senha.'; errEl.style.display = 'block'; return; }
+
+  btn.disabled = true; loadEl.style.display = 'block';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    // onAuthStateChanged cuida do resto
+  } catch(e) {
+    loadEl.style.display = 'none'; btn.disabled = false;
+    const msgs = {
+      'auth/invalid-credential': 'E-mail ou senha incorretos.',
+      'auth/user-not-found': 'Usuário não encontrado.',
+      'auth/wrong-password': 'Senha incorreta.',
+      'auth/too-many-requests': 'Muitas tentativas. Tente mais tarde.',
+      'auth/network-request-failed': 'Sem conexão com a internet.'
+    };
+    errEl.textContent = msgs[e.code] || 'Erro: ' + e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+async function doLogout() {
+  if (!confirm('Deseja sair do app?')) return;
+  await signOut(auth);
+}
+
+function showLoginScreen() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-err').style.display = 'none';
+  document.getElementById('login-loading').style.display = 'none';
+  document.getElementById('login-btn').disabled = false;
+}
+
+function showAppScreen(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('db-dot').style.background = '#1a7a3c';
+  document.getElementById('db-txt').textContent = `☁️ Conectado — ${user.email}`;
+  document.getElementById('db-badge').textContent = '✓ CONECTADO';
+}
+
 /* ── EXPOR WINDOW ── */
 const W = {
   goPage, switchHist,
@@ -930,46 +1024,65 @@ const W = {
   addRxPhoto, removeRxPhoto,
   addMedInputRow, savePharmacyCotation, deleteCot, renderCotations, resetCotForm, openEditCotation,
   registrarTomada, deleteIntake,
-  openImg, closeImg, closeConfirm
+  openImg, closeImg, closeConfirm,
+  doLogin, doLogout
 };
 window.W = W;
 
 /* ── INICIALIZAÇÃO ── */
-(async () => {
-  setupChips('[data-bpm]', v => bpMoment = v);
-  setupChips('[data-bpp]', v => bpPos = v);
-  setupChips('[data-glm]', v => glMoment = v);
-  setupChips('[data-glt]', v => glType = v);
-  setupChips('[data-wtm]', v => wtMoment = v);
+// Esconde o app até autenticar
+document.getElementById('app').style.display = 'none';
 
-  // IMC ao vivo
-  ['wt-val','wt-alt'].forEach(id => {
-    document.getElementById(id)?.addEventListener('input', () => {
-      const p = parseFloat(document.getElementById('wt-val').value);
-      const a = parseFloat(document.getElementById('wt-alt').value);
-      const prev = document.getElementById('wt-imc-preview');
-      if (p && a >= 100) { const imc = calcIMC(p,a); const [lbl] = classifyIMC(imc); document.getElementById('wt-imc-val').textContent = imc; document.getElementById('wt-imc-lbl').textContent = lbl; prev.style.display = 'block'; }
-      else { prev.style.display = 'none'; }
-    });
+// Enter no campo senha faz login
+document.getElementById('login-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') W.doLogin();
+});
+document.getElementById('login-email').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('login-pass').focus();
+});
+
+setupChips('[data-bpm]', v => bpMoment = v);
+setupChips('[data-bpp]', v => bpPos = v);
+setupChips('[data-glm]', v => glMoment = v);
+setupChips('[data-glt]', v => glType = v);
+setupChips('[data-wtm]', v => wtMoment = v);
+
+['wt-val','wt-alt'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', () => {
+    const p = parseFloat(document.getElementById('wt-val').value);
+    const a = parseFloat(document.getElementById('wt-alt').value);
+    const prev = document.getElementById('wt-imc-preview');
+    if (p && a >= 100) {
+      const imc = calcIMC(p,a); const [lbl] = classifyIMC(imc);
+      document.getElementById('wt-imc-val').textContent = imc;
+      document.getElementById('wt-imc-lbl').textContent = lbl;
+      prev.style.display = 'block';
+    } else { prev.style.display = 'none'; }
   });
+});
 
-  document.getElementById('bp-dt').value = getNow();
-  document.getElementById('gl-dt').value = getNow();
-  document.getElementById('wt-dt').value = getNow();
-  document.getElementById('confirm-ok').onclick = () => { if (confirmCb) confirmCb(); closeConfirm(); };
+document.getElementById('bp-dt').value = getNow();
+document.getElementById('gl-dt').value = getNow();
+document.getElementById('wt-dt').value = getNow();
+document.getElementById('confirm-ok').onclick = () => { if (confirmCb) confirmCb(); closeConfirm(); };
 
-  try {
-    await getDocs(query(collection(dbFirestore, 'pressao')));
-    document.getElementById('db-dot').style.background = '#1a7a3c';
-    document.getElementById('db-txt').textContent = '☁️ Conectado ao Firebase ✓ — dados sincronizados em todos os dispositivos';
-    document.getElementById('db-badge').textContent = '✓ CONECTADO';
-    await updateDash();
-  } catch(e) {
-    document.getElementById('db-dot').style.background = '#b02020';
-    document.getElementById('db-txt').textContent = '⚠️ Erro de conexão: ' + e.message;
-    console.error('Firebase error:', e);
+// Monitora estado de autenticação
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // Usuário logado — mostra app
+    showAppScreen(user);
+    try {
+      await updateDash();
+    } catch(e) {
+      document.getElementById('db-dot').style.background = '#b02020';
+      document.getElementById('db-txt').textContent = '⚠️ Erro ao carregar dados: ' + e.message;
+      console.error(e);
+    }
+  } else {
+    // Não logado — mostra tela de login
+    showLoginScreen();
   }
-})();
+});
 </script>
 </body>
 </html>
