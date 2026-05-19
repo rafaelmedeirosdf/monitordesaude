@@ -823,7 +823,26 @@ async function updateDash() {
   const [bps, gls, wts, meds] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('remedios')]);
   if (bps.length) { const l = bps[0]; document.getElementById('d-sis').textContent = l.sis; document.getElementById('d-dia').textContent = l.dia; document.getElementById('d-bp-i').textContent = fdt(l.dt); }
   if (gls.length) { const l = gls[0]; document.getElementById('d-gl').textContent = l.val; document.getElementById('d-gl-i').textContent = fdt(l.dt); }
-  if (wts.length) { const l = wts[0]; document.getElementById('d-wt').textContent = l.val; document.getElementById('d-imc').textContent = l.imc || '—'; if (l.imc) document.getElementById('d-imc-class').textContent = classifyIMC(l.imc)[0]; }
+  if (wts.length) {
+    const l = wts[0];
+    document.getElementById('d-wt').textContent = l.val;
+    document.getElementById('d-imc').textContent = l.imc || '—';
+    if (l.imc) document.getElementById('d-imc-class').textContent = classifyIMC(l.imc)[0];
+    // Comparação com penúltimo
+    if (wts.length >= 2) {
+      const diff = l.val - wts[1].val;
+      const dAbs = Math.abs(diff);
+      const kg2 = Math.floor(dAbs);
+      const g2 = Math.round((dAbs - kg2) * 1000);
+      let txt;
+      if (dAbs < 0.05) txt = '⚖️ Peso estável';
+      else if (diff > 0) txt = `📈 +${kg2 > 0 ? kg2 + ' kg' : ''}${g2 > 0 ? ' ' + g2 + 'g' : ''} desde ${wts[1].val} kg`;
+      else txt = `📉 -${kg2 > 0 ? kg2 + ' kg' : ''}${g2 > 0 ? ' ' + g2 + 'g' : ''} desde ${wts[1].val} kg`;
+      document.getElementById('d-wt-i').textContent = txt;
+    } else {
+      document.getElementById('d-wt-i').textContent = l.moment ? l.moment + ' · ' + fdt(l.dt) : fdt(l.dt);
+    }
+  }
   document.getElementById('sum-bp').textContent = bps.length; document.getElementById('sum-gl').textContent = gls.length; document.getElementById('sum-wt').textContent = wts.length; document.getElementById('sum-med').textContent = meds.length;
   const allTimes = []; meds.forEach(m => (m.times||[]).forEach(t => allTimes.push({time:t, name:m.name, dose:m.dose}))); allTimes.sort((a,b) => a.time.localeCompare(b.time));
   document.getElementById('d-meds-today').innerHTML = allTimes.length ? allTimes.map(t => `<div class="sched-row"><div><div style="font-size:15px;font-weight:700">⏱️ ${t.time} - ${t.name}</div><div style="font-size:12px;color:var(--t3)">Dose: ${t.dose || 'Não informada'}</div></div><button class="btn-take" onclick="W.registrarTomada('${t.name}','${t.dose||''}')"><i class="ti ti-check"></i> Tomar</button></div>`).join('') : '<div class="empty" style="padding:8px"><p>Nenhum remédio com horário cadastrado</p></div>';
@@ -837,7 +856,61 @@ async function renderHist() {
   const [bps, gls, wts, cots, intakes] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('cotacoes_farmacia'), dbGetAll('historico_tomadas')]);
   document.getElementById('hist-bp').innerHTML = bps.length ? '<div class="card">' + bps.map(r => `<div class="li"><div class="lb"><div class="lv">${r.sis}/${r.dia} mmHg</div><div class="lm">${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>' : '<div class="card"><div class="empty"><p>Nenhum registro</p></div></div>';
   document.getElementById('hist-gl').innerHTML = gls.length ? '<div class="card">' + gls.map(r => `<div class="li"><div class="lb"><div class="lv">${r.val} mg/dL</div><div class="lm">${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>' : '<div class="card"><div class="empty"><p>Nenhum registro</p></div></div>';
-  document.getElementById('hist-wt').innerHTML = wts.length ? '<div class="card">' + wts.map(r => `<div class="li"><div class="lb"><div class="lv">${r.val} kg</div><div class="lm">${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>' : '<div class="card"><div class="empty"><p>Nenhum registro</p></div></div>';
+  // HISTÓRICO DE PESO com comparação entre registros
+  if (!wts.length) {
+    document.getElementById('hist-wt').innerHTML = '<div class="card"><div class="empty"><p>Nenhum registro</p></div></div>';
+  } else {
+    // Card de comparação no topo
+    let compareHtml = '';
+    if (wts.length >= 2) {
+      const atual = wts[0].val;
+      const anterior = wts[1].val;
+      const diff = atual - anterior;
+      const diffAbs = Math.abs(diff);
+      const kg = Math.floor(diffAbs);
+      const g = Math.round((diffAbs - kg) * 1000);
+      let cls, icon, titulo, sub;
+      if (diffAbs < 0.05) {
+        cls = 'igual'; icon = '⚖️'; titulo = 'Peso estável';
+        sub = `Sem variação significativa entre os últimos registros`;
+      } else if (diff > 0) {
+        cls = 'ganhou'; icon = '📈';
+        titulo = `+${kg > 0 ? kg + ' kg' : ''}${g > 0 ? ' e ' + g + ' g' : ''}`;
+        sub = `Aumentou de ${anterior} kg para ${atual} kg`;
+      } else {
+        cls = 'perdeu'; icon = '📉';
+        titulo = `-${kg > 0 ? kg + ' kg' : ''}${g > 0 ? ' e ' + g + ' g' : ''}`;
+        sub = `Diminuiu de ${anterior} kg para ${atual} kg`;
+      }
+      compareHtml = `<div class="wt-compare ${cls}" style="margin-bottom:13px">
+        <span class="wt-compare-icon">${icon}</span>
+        <div class="wt-compare-val">${titulo}</div>
+        <div class="wt-compare-lbl">${sub}</div>
+      </div>`;
+    }
+    const listHtml = '<div class="card">' + wts.map((r, i) => {
+      let diffTag = '';
+      if (i < wts.length - 1) {
+        const d = r.val - wts[i+1].val;
+        const dAbs = Math.abs(d);
+        const kg2 = Math.floor(dAbs);
+        const g2 = Math.round((dAbs - kg2) * 1000);
+        const sinal = d > 0 ? '▲' : d < 0 ? '▼' : '=';
+        const cor = d > 0 ? 'var(--red)' : d < 0 ? 'var(--green)' : 'var(--t3)';
+        const txt = dAbs < 0.05 ? '= estável' : `${sinal} ${kg2 > 0 ? kg2 + ' kg' : ''}${g2 > 0 ? ' ' + g2 + 'g' : ''}`;
+        diffTag = `<span style="font-size:11px;font-weight:700;color:${cor};margin-left:6px">${txt}</span>`;
+      }
+      return `<div class="li">
+        <div class="lb">
+          <div class="lv">${r.val} kg${diffTag}</div>
+          <div class="lm">${r.moment ? r.moment + ' · ' : ''}${fdt(r.dt)}</div>
+          ${r.imc ? `<div class="lm">IMC: ${r.imc} · ${classifyIMC(r.imc)[0]}</div>` : ''}
+        </div>
+        <div class="la"><button class="ibtn" onclick="W.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div>
+      </div>`;
+    }).join('') + '</div>';
+    document.getElementById('hist-wt').innerHTML = compareHtml + listHtml;
+  }
   const cotEl = document.getElementById('hist-cot');
   if (!cots.length) { cotEl.innerHTML = '<div class="card"><div class="empty"><p>Nenhuma cotação arquivada.</p></div></div>'; }
   else { const mP = {}; cots.forEach(r => r.items.forEach(i => { if (!mP[i.nome] || i.preco < mP[i.nome].preco) mP[i.nome] = { preco: i.preco, farmacia: r.farmacia, exibicao: i.nomeExibicao, dt: r.dt, idC: r.id }; })); cotEl.innerHTML = '<div class="card">' + Object.values(mP).map(i => `<div class="li"><div class="lb"><div class="lv" style="color:var(--green)">${i.exibicao}</div><div class="lm">🏪 ${i.farmacia} · ${fdt(i.dt)}</div></div><div class="la"><span class="badge b-normal">R$ ${i.preco.toFixed(2)}</span><button class="ibtn" onclick="W.deleteCot('${i.idC}')"><i class="ti ti-trash"></i></button></div></div>`).join('') + '</div>'; }
