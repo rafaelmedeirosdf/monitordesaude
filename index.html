@@ -165,6 +165,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .smb{background:var(--bg2);border-radius:9px;padding:10px 8px;text-align:center}
 .smv{font-size:20px;font-weight:700;color:var(--t1)}
 .sml{font-size:10px;color:var(--t3);margin-top:2px}
+
+/* FOTOS NOS MODAIS */
+.photo-preview{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.photo-thumb-wrap{position:relative;display:inline-block}
+.photo-thumb{width:72px;height:72px;border-radius:10px;object-fit:cover;cursor:pointer;border:.5px solid var(--bd2);display:block}
+.photo-del{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1}
+.photo-add-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* COMPARAÇÃO DE PESO */
+.wt-compare{border-radius:12px;padding:14px 16px;margin-top:10px;text-align:center}
+.wt-compare.ganhou{background:var(--red-bg);border:1px solid var(--red)}
+.wt-compare.perdeu{background:var(--green-bg);border:1px solid var(--green)}
+.wt-compare.igual{background:var(--bg2);border:1px solid var(--bd2)}
+.wt-compare-icon{font-size:32px;display:block;margin-bottom:4px}
+.wt-compare-val{font-size:22px;font-weight:700}
+.wt-compare-lbl{font-size:13px;margin-top:3px}
 </style>
 </head>
 <body>
@@ -303,6 +319,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <div class="f"><label>Observação</label><input class="fi" id="wt-note" type="text" placeholder="Ex.: em jejum..."></div>
         <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
         <button class="btn teal" onclick="W.saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
+        <div id="wt-compare-box" style="display:none"></div>
       </div>
     </div>
 
@@ -396,6 +413,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       </div>
     </div>
     <div class="f"><label>Observação</label><input class="fi" id="med-obs" type="text" placeholder="Uso contínuo..."></div>
+    <div class="f">
+      <label>Fotos da caixa / bula</label>
+      <div class="photo-preview" id="med-photos-preview"></div>
+      <div class="photo-add-row">
+        <button class="btn ghost" onclick="document.getElementById('med-photo-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
+        <button class="btn ghost" onclick="document.getElementById('med-photo-gal').click()"><i class="ti ti-photo"></i> Galeria</button>
+      </div>
+      <input type="file" id="med-photo-cam" accept="image/*" capture="environment" style="display:none" onchange="W.addMedPhoto(this)">
+      <input type="file" id="med-photo-gal" accept="image/*" multiple style="display:none" onchange="W.addMedPhoto(this)">
+    </div>
     <button class="btn purple" onclick="W.saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
   </div>
 </div>
@@ -420,6 +447,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
     <div class="f"><label>Medicamentos inclusos *</label><input class="fi" id="rx-meds" type="text" placeholder="Ex.: Losartana, Metformina"></div>
     <div class="f"><label>Observações</label><input class="fi" id="rx-obs" type="text" placeholder="Ex.: via original retida..."></div>
+    <div class="f">
+      <label>Foto da receita</label>
+      <div class="photo-preview" id="rx-photos-preview"></div>
+      <div class="photo-add-row">
+        <button class="btn ghost" onclick="document.getElementById('rx-photo-cam').click()"><i class="ti ti-camera"></i> Câmera</button>
+        <button class="btn ghost" onclick="document.getElementById('rx-photo-gal').click()"><i class="ti ti-photo"></i> Galeria</button>
+      </div>
+      <input type="file" id="rx-photo-cam" accept="image/*" capture="environment" style="display:none" onchange="W.addRxPhoto(this)">
+      <input type="file" id="rx-photo-gal" accept="image/*" multiple style="display:none" onchange="W.addRxPhoto(this)">
+    </div>
     <button class="btn teal" onclick="W.saveRx()"><i class="ti ti-device-floppy"></i> Arquivar na Nuvem</button>
   </div>
 </div>
@@ -476,6 +513,8 @@ let bpMoment = 'Antes do café', bpPos = 'Sentado';
 let glMoment = 'Jejum', glType = 'Glicosímetro';
 let wtMoment = 'Manhã em jejum';
 let medTimes = [];
+let medPhotos = [];  // fotos dos remédios
+let rxPhotos  = [];  // fotos das receitas
 let confirmCb = null;
 let listagemRemediosCache = []; // ← variável que estava faltando
 
@@ -506,6 +545,7 @@ function goPage(name, btn) {
   if (name === 'hist') renderHist();
   if (name === 'med') renderMeds();
   if (name === 'rx') renderRx();
+  if (name === 'wt') { document.getElementById('wt-compare-box').style.display = 'none'; }
   if (name === 'cot') { resetCotForm(); sincronizarRemediosDropdowns().then(() => renderCotations()); }
 }
 function switchHist(type) { ['bp','gl','wt','cot','intake'].forEach(t => { const el = document.getElementById('hf-'+t); if(el) el.classList.toggle('on', t===type); const p = document.getElementById('hist-'+t); if(p) p.style.display = t===type ? 'block' : 'none'; }); renderHist(); }
@@ -531,7 +571,40 @@ async function saveWT() {
   const val = parseFloat(document.getElementById('wt-val').value); const alt = parseFloat(document.getElementById('wt-alt').value); const note = document.getElementById('wt-note').value.trim(); const dt = document.getElementById('wt-dt').value || getNow();
   if (!val||val<20||val>300) { toast('⚠️ Peso inválido', true); return; }
   const imc = calcIMC(val, alt);
-  try { await dbAdd('peso', {val, alt:alt||null, imc, moment:wtMoment, note, dt}); ['wt-val','wt-note'].forEach(id => document.getElementById(id).value=''); document.getElementById('wt-dt').value = getNow(); document.getElementById('wt-imc-preview').style.display = 'none'; toast('✓ Peso salvo!'); updateDash(); } catch(e) { toast('Erro: '+e.message, true); }
+  try {
+    // Busca último peso para comparação
+    const wts = await dbGetAll('peso');
+    await dbAdd('peso', {val, alt:alt||null, imc, moment:wtMoment, note, dt});
+    ['wt-val','wt-note'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('wt-dt').value = getNow();
+    document.getElementById('wt-imc-preview').style.display = 'none';
+    toast('✓ Peso salvo!');
+    // Mostra comparação
+    const box = document.getElementById('wt-compare-box');
+    if (wts.length > 0) {
+      const anterior = wts[0].val;
+      const diff = val - anterior;
+      const diffAbs = Math.abs(diff);
+      const kg = Math.floor(diffAbs);
+      const g = Math.round((diffAbs - kg) * 1000);
+      let cls, icon, txt, sub;
+      if (Math.abs(diff) < 0.05) {
+        cls = 'igual'; icon = '⚖️'; txt = 'Peso estável';
+        sub = `Igual ao último registro (${anterior} kg)`;
+      } else if (diff > 0) {
+        cls = 'ganhou'; icon = '📈'; txt = `+${kg > 0 ? kg + ' kg' : ''}${g > 0 ? ' ' + g + ' g' : ''}`;
+        sub = `Aumentou em relação ao último (${anterior} kg)`;
+      } else {
+        cls = 'perdeu'; icon = '📉'; txt = `-${kg > 0 ? kg + ' kg' : ''}${g > 0 ? ' ' + g + ' g' : ''}`;
+        sub = `Diminuiu em relação ao último (${anterior} kg)`;
+      }
+      box.innerHTML = `<div class="wt-compare ${cls}"><span class="wt-compare-icon">${icon}</span><div class="wt-compare-val">${txt}</div><div class="wt-compare-lbl">${sub}</div></div>`;
+      box.style.display = 'block';
+    } else {
+      box.style.display = 'none';
+    }
+    updateDash();
+  } catch(e) { toast('Erro: '+e.message, true); }
 }
 function deleteWT(id) { confirm2('Excluir peso','Remover permanentemente?', async () => { await dbDelete('peso', id); toast('✓ Excluído'); renderHist(); updateDash(); }); }
 
@@ -596,10 +669,46 @@ async function registrarTomada(nome, dose) {
 function deleteIntake(id) { confirm2('Excluir histórico de tomada?', 'O registro será removido.', async () => { await dbDelete('historico_tomadas', id); toast('✓ Registro removido'); renderHist(); }); }
 
 /* ── RECEITAS ── */
+/* ── FOTOS DAS RECEITAS ── */
+function addRxPhoto(input) {
+  Array.from(input.files).forEach(f => {
+    const reader = new FileReader();
+    reader.onload = e => { rxPhotos.push(e.target.result); renderRxPhotos(); };
+    reader.readAsDataURL(f);
+  });
+  input.value = '';
+}
+function removeRxPhoto(i) { rxPhotos.splice(i, 1); renderRxPhotos(); }
+function renderRxPhotos() {
+  document.getElementById('rx-photos-preview').innerHTML = rxPhotos.map((src, i) =>
+    `<div class="photo-thumb-wrap">
+      <img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')">
+      <button class="photo-del" onclick="W.removeRxPhoto(${i})">×</button>
+    </div>`
+  ).join('');
+}
+
 function openRxModal(id) {
-  document.getElementById('rx-edit-id').value = id || ''; document.getElementById('rx-modal-title').textContent = id ? 'Editar receita' : 'Arquivar Receita';
-  ['rx-doctor','rx-crm','rx-meds','rx-obs'].forEach(i => document.getElementById(i).value=''); document.getElementById('rx-date').value = new Date().toISOString().split('T')[0]; document.getElementById('rx-months').value = '6';
-  if (id) { dbGet('receitas_uso_continuo', id).then(r => { if (!r) return; document.getElementById('rx-doctor').value = r.medico||''; document.getElementById('rx-crm').value = r.crm||''; document.getElementById('rx-date').value = r.dataEmissao||''; document.getElementById('rx-months').value = r.validadeMeses||'6'; document.getElementById('rx-meds').value = r.medicamentos||''; document.getElementById('rx-obs').value = r.obs||''; }); }
+  rxPhotos = [];
+  document.getElementById('rx-edit-id').value = id || '';
+  document.getElementById('rx-modal-title').textContent = id ? 'Editar receita' : 'Arquivar Receita';
+  ['rx-doctor','rx-crm','rx-meds','rx-obs'].forEach(i => document.getElementById(i).value='');
+  document.getElementById('rx-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('rx-months').value = '6';
+  renderRxPhotos();
+  if (id) {
+    dbGet('receitas_uso_continuo', id).then(r => {
+      if (!r) return;
+      document.getElementById('rx-doctor').value = r.medico||'';
+      document.getElementById('rx-crm').value = r.crm||'';
+      document.getElementById('rx-date').value = r.dataEmissao||'';
+      document.getElementById('rx-months').value = r.validadeMeses||'6';
+      document.getElementById('rx-meds').value = r.medicamentos||'';
+      document.getElementById('rx-obs').value = r.obs||'';
+      rxPhotos = [...(r.fotos||[])];
+      renderRxPhotos();
+    });
+  }
   document.getElementById('rx-modal').classList.add('on');
 }
 function closeRxModal() { document.getElementById('rx-modal').classList.remove('on'); }
@@ -607,21 +716,75 @@ async function saveRx() {
   const doctor = document.getElementById('rx-doctor').value.trim(); const meds = document.getElementById('rx-meds').value.trim(); const dE = document.getElementById('rx-date').value;
   if (!doctor||!meds||!dE) { toast('⚠️ Preencha os campos obrigatórios', true); return; }
   const vM = parseInt(document.getElementById('rx-months').value); const dV = new Date(dE+'T12:00:00'); dV.setMonth(dV.getMonth()+vM); const editId = document.getElementById('rx-edit-id').value;
-  const rec = { medico: doctor, crm:document.getElementById('rx-crm').value.trim(), dataEmissao: dE, validadeMeses: vM, dataVencimento: dV.toISOString().split('T')[0], medicamentos: meds, obs:document.getElementById('rx-obs').value.trim(), dt:getNow() };
+  const rec = { medico: doctor, crm:document.getElementById('rx-crm').value.trim(), dataEmissao: dE, validadeMeses: vM, dataVencimento: dV.toISOString().split('T')[0], medicamentos: meds, obs:document.getElementById('rx-obs').value.trim(), fotos:[...rxPhotos], dt:getNow() };
   try { if (editId) { rec.id=editId; await dbPut('receitas_uso_continuo',rec); toast('✓ Receita alterada!'); } else { await dbAdd('receitas_uso_continuo',rec); toast('✓ Receita salva!'); } closeRxModal(); renderRx(); } catch(e) { toast('Erro: '+e.message, true); }
 }
 function deleteRx(id) { confirm2('Excluir receita','Remover permanentemente?', async () => { await dbDelete('receitas_uso_continuo',id); toast('✓ Receita excluída'); renderRx(); }); }
 async function renderRx() {
   const rxs = await dbGetAll('receitas_uso_continuo'); const el = document.getElementById('rx-list'); const hoje = new Date().toISOString().split('T')[0];
   if (!rxs.length) { el.innerHTML='<div class="card"><div class="empty"><p>Nenhuma receita arquivada na nuvem.</p></div></div>'; return; }
-  el.innerHTML = rxs.map(r => { const exp = hoje > (r.dataVencimento||''); return `<div class="med-card" style="${exp?'border:1.5px solid var(--red);background:var(--red-bg);':''}"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div><div style="font-size:16px;font-weight:700">🩺 Dr(a). ${r.medico}</div>${r.crm?`<div style="font-size:12px;color:var(--t3)">CRM: ${r.crm}</div>`:''}</div>${exp?`<span class="badge b-alto">Vencida</span>`:`<span class="badge b-normal">Válida</span>`}</div><div style="font-size:13px;color:var(--teal);margin-bottom:4px;font-weight:700">💊 ${r.medicamentos}</div><div style="font-size:12px;color:var(--t3)">Emissão: ${fdt(r.dataEmissao)} · Vence: <b style="${exp?'color:var(--red)':''}">${fdt(r.dataVencimento)}</b></div>${r.obs?`<div style="font-size:12px;color:var(--t3);margin-top:4px">${r.obs}</div>`:''}<div class="med-actions"><button class="med-btn edit" onclick="W.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button><button class="med-btn del" onclick="W.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button></div></div>`; }).join('');
+  el.innerHTML = rxs.map(r => {
+    const exp = hoje > (r.dataVencimento||'');
+    const fotosHtml = r.fotos&&r.fotos.length
+      ? `<div class="photo-preview" style="margin-top:8px">${r.fotos.map(src=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"></div>`).join('')}</div>`
+      : '';
+    return `<div class="med-card" style="${exp?'border:1.5px solid var(--red);background:var(--red-bg);':''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div><div style="font-size:16px;font-weight:700">🩺 Dr(a). ${r.medico}</div>${r.crm?`<div style="font-size:12px;color:var(--t3)">CRM: ${r.crm}</div>`:''}</div>
+        ${exp?`<span class="badge b-alto">Vencida</span>`:`<span class="badge b-normal">Válida</span>`}
+      </div>
+      <div style="font-size:13px;color:var(--teal);margin-bottom:4px;font-weight:700">💊 ${r.medicamentos}</div>
+      <div style="font-size:12px;color:var(--t3)">Emissão: ${fdt(r.dataEmissao)} · Vence: <b style="${exp?'color:var(--red)':''}">${fdt(r.dataVencimento)}</b></div>
+      ${r.obs?`<div style="font-size:12px;color:var(--t3);margin-top:4px">${r.obs}</div>`:''}
+      ${fotosHtml}
+      <div class="med-actions">
+        <button class="med-btn edit" onclick="W.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button>
+        <button class="med-btn del" onclick="W.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ── REMÉDIOS ── */
+/* ── FOTOS DOS REMÉDIOS ── */
+function addMedPhoto(input) {
+  Array.from(input.files).forEach(f => {
+    const reader = new FileReader();
+    reader.onload = e => { medPhotos.push(e.target.result); renderMedPhotos(); };
+    reader.readAsDataURL(f);
+  });
+  input.value = '';
+}
+function removeMedPhoto(i) { medPhotos.splice(i, 1); renderMedPhotos(); }
+function renderMedPhotos() {
+  document.getElementById('med-photos-preview').innerHTML = medPhotos.map((src, i) =>
+    `<div class="photo-thumb-wrap">
+      <img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')">
+      <button class="photo-del" onclick="W.removeMedPhoto(${i})">×</button>
+    </div>`
+  ).join('');
+}
+
 function openMedModal(id) {
-  medTimes = []; document.getElementById('med-edit-id').value = id || ''; document.getElementById('med-modal-title').textContent = id ? 'Editar remédio' : 'Novo remédio';
-  ['med-name','med-dose','med-instr','med-obs'].forEach(i => document.getElementById(i).value=''); document.getElementById('med-form').value = 'Comprimido'; renderMedTimes();
-  if (id) { dbGet('remedios', id).then(m => { if (!m) return; document.getElementById('med-name').value = m.name||''; document.getElementById('med-dose').value = m.dose||''; document.getElementById('med-instr').value = m.instr||''; document.getElementById('med-obs').value = m.obs||''; document.getElementById('med-form').value = m.form||'Comprimido'; medTimes = [...(m.times||[])]; renderMedTimes(); }); }
+  medTimes = []; medPhotos = [];
+  document.getElementById('med-edit-id').value = id || '';
+  document.getElementById('med-modal-title').textContent = id ? 'Editar remédio' : 'Novo remédio';
+  ['med-name','med-dose','med-instr','med-obs'].forEach(i => document.getElementById(i).value='');
+  document.getElementById('med-form').value = 'Comprimido';
+  renderMedTimes(); renderMedPhotos();
+  if (id) {
+    dbGet('remedios', id).then(m => {
+      if (!m) return;
+      document.getElementById('med-name').value = m.name||'';
+      document.getElementById('med-dose').value = m.dose||'';
+      document.getElementById('med-instr').value = m.instr||'';
+      document.getElementById('med-obs').value = m.obs||'';
+      document.getElementById('med-form').value = m.form||'Comprimido';
+      medTimes = [...(m.times||[])];
+      medPhotos = [...(m.photos||[])];
+      renderMedTimes(); renderMedPhotos();
+    });
+  }
   document.getElementById('med-modal').classList.add('on');
 }
 function closeMedModal() { document.getElementById('med-modal').classList.remove('on'); }
@@ -630,14 +793,29 @@ function removeTime(t) { medTimes = medTimes.filter(x => x !== t); renderMedTime
 function renderMedTimes() { document.getElementById('times-list').innerHTML = medTimes.map(t => `<span class="med-time-tag"><i class="ti ti-clock" style="font-size:12px;margin-right:3px"></i>${t}<button onclick="W.removeTime('${t}')" style="background:none;border:none;cursor:pointer;color:inherit;font-size:14px;margin-left:4px;padding:0;line-height:1">×</button></span>`).join(''); }
 async function saveMed() {
   const name = document.getElementById('med-name').value.trim(); if (!name) { toast('⚠️ Nome obrigatório', true); return; }
-  const editId = document.getElementById('med-edit-id').value; const rec = { name, dose:document.getElementById('med-dose').value.trim(), form:document.getElementById('med-form').value, instr:document.getElementById('med-instr').value.trim(), obs:document.getElementById('med-obs').value.trim(), times:[...medTimes], dt:getNow() };
+  const editId = document.getElementById('med-edit-id').value;
+  const rec = { name, dose:document.getElementById('med-dose').value.trim(), form:document.getElementById('med-form').value, instr:document.getElementById('med-instr').value.trim(), obs:document.getElementById('med-obs').value.trim(), times:[...medTimes], photos:[...medPhotos], dt:getNow() };
   try { if (editId) { rec.id = editId; await dbPut('remedios',rec); toast('✓ Atualizado!'); } else { await dbAdd('remedios',rec); toast('✓ Cadastrado!'); } closeMedModal(); renderMeds(); updateDash(); } catch(e) { toast('Erro: '+e.message, true); }
 }
 async function deleteMed(id) { confirm2('Excluir remédio','Remover?', async () => { await dbDelete('remedios',id); toast('✓ Excluído'); renderMeds(); updateDash(); }); }
 async function renderMeds() {
   const meds = await dbGetAll('remedios'); const el = document.getElementById('med-list');
   if (!meds.length) { el.innerHTML='<div class="card"><div class="empty"><p>Nenhum remédio cadastrado</p></div></div>'; return; }
-  el.innerHTML = meds.map(m => `<div class="med-card"><div class="med-header"><div class="med-ico"><i class="ti ti-pill"></i></div><div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose,m.form].filter(Boolean).join(' · ')}</div></div></div>${m.times&&m.times.length?`<div class="med-times">${m.times.map(t=>`<span class="med-time-tag">${t}</span>`).join('')}</div>`:''}<div class="med-actions"><button class="med-btn edit" onclick="W.openMedModal('${m.id}')">Editar</button><button class="med-btn del" onclick="W.deleteMed('${m.id}')">Excluir</button></div></div>`).join('');
+  el.innerHTML = meds.map(m => `
+    <div class="med-card">
+      <div class="med-header">
+        <div class="med-ico"><i class="ti ti-pill"></i></div>
+        <div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose,m.form].filter(Boolean).join(' · ')}</div></div>
+      </div>
+      ${m.times&&m.times.length ? `<div class="med-times">${m.times.map(t=>`<span class="med-time-tag"><i class="ti ti-clock" style="font-size:11px;margin-right:3px"></i>${t}</span>`).join('')}</div>` : ''}
+      ${m.instr ? `<div style="font-size:13px;color:var(--t2);margin-bottom:6px"><i class="ti ti-info-circle" style="font-size:12px;margin-right:4px"></i>${m.instr}</div>` : ''}
+      ${m.obs ? `<div style="font-size:12px;color:var(--t3);margin-bottom:6px">${m.obs}</div>` : ''}
+      ${m.photos&&m.photos.length ? `<div class="photo-preview">${m.photos.map(src=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"></div>`).join('')}</div>` : ''}
+      <div class="med-actions">
+        <button class="med-btn edit" onclick="W.openMedModal('${m.id}')"><i class="ti ti-edit"></i> Editar</button>
+        <button class="med-btn del" onclick="W.deleteMed('${m.id}')"><i class="ti ti-trash"></i> Excluir</button>
+      </div>
+    </div>`).join('');
 }
 
 /* ── DASHBOARD ── */
@@ -674,7 +852,9 @@ const W = {
   goPage, switchHist,
   saveBP, deleteBP, saveGL, deleteGL, saveWT, deleteWT,
   openMedModal, closeMedModal, addTime, removeTime, saveMed, deleteMed,
+  addMedPhoto, removeMedPhoto,
   openRxModal, closeRxModal, saveRx, deleteRx,
+  addRxPhoto, removeRxPhoto,
   addMedInputRow, savePharmacyCotation, deleteCot, renderCotations, resetCotForm, openEditCotation,
   registrarTomada, deleteIntake,
   openImg, closeImg, closeConfirm
