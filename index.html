@@ -647,9 +647,15 @@ function renderChart(id, data, getter, color, mn, mx) { const wrap = document.ge
 
 /* ══ AUTH ══ */
 function showLogin() {
-  document.getElementById('screen-login').style.display  = 'flex';
+  document.getElementById('screen-login').style.display   = 'flex';
   document.getElementById('screen-register').style.display = 'none';
   document.getElementById('app').style.display = 'none';
+  // Limpa campos e erros
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value  = '';
+  document.getElementById('login-err').style.display = 'none';
+  // Foca no e-mail
+  setTimeout(() => document.getElementById('login-email').focus(), 200);
 }
 function showRegister() {
   document.getElementById('screen-login').style.display  = 'none';
@@ -937,8 +943,9 @@ document.getElementById('confirm-ok').onclick = () => { if(confirmCb) confirmCb(
 // Botão sair — listener direto sem depender do W
 document.getElementById('logout-btn').addEventListener('click', async () => {
   try {
+    // Mostra login ANTES de chamar signOut para evitar delay visual
+    showLogin();
     await signOut(auth);
-    toast('Sessão encerrada');
   } catch(e) {
     toast('Erro ao sair: ' + e.message, true);
   }
