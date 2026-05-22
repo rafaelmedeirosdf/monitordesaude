@@ -850,7 +850,38 @@ async function renderRx() {
   }).join('');
 }
 
-/* ══ DASHBOARD ══ */
+/* ══ MIGRAÇÃO DE DADOS ANTIGOS ══ */
+async function migrarDadosAntigos() {
+  const colecoes = ['pressao','glicemia','peso','remedios','receitas_uso_continuo','historico_tomadas','cotacoes_farmacia'];
+  const map = {'receitas_uso_continuo':'receitas'};
+  let total = 0;
+
+  for (const nomeAntigo of colecoes) {
+    try {
+      const nomeNovo = map[nomeAntigo] || nomeAntigo;
+      // Verifica se já tem dados no novo caminho
+      const novoSnap = await getDocs(col(nomeNovo));
+      if (novoSnap.size > 0) continue; // já migrado, pula
+
+      // Busca dados antigos
+      const antigoSnap = await getDocs(collection(FS, nomeAntigo));
+      if (antigoSnap.empty) continue;
+
+      // Copia para o novo caminho
+      for (const d of antigoSnap.docs) {
+        await addDoc(col(nomeNovo), d.data());
+        total++;
+      }
+    } catch(e) {
+      console.warn('Migração falhou para', nomeAntigo, e.message);
+    }
+  }
+
+  if (total > 0) {
+    toast(`✓ ${total} registros migrados para sua conta!`);
+    await updateDash();
+  }
+}
 async function updateDash() {
   const [bps, gls, wts, meds] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('remedios')]);
   if (bps.length) { const l=bps[0]; document.getElementById('d-sis').textContent=l.sis; document.getElementById('d-dia').textContent=l.dia; document.getElementById('d-bp-i').textContent=(l.moment||'')+' · '+fdt(l.dt); }
