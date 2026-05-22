@@ -38,7 +38,7 @@ html{font-size:16px;-webkit-text-size-adjust:100%}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg0);color:var(--t1);min-height:100vh;padding-bottom:100px}
 #app{max-width:430px;margin:0 auto;min-height:100vh;display:none}
 
-/* ── AUTH SCREENS ── */
+/* AUTH */
 .auth-screen{position:fixed;inset:0;background:linear-gradient(150deg,#0d3a7a,#1a56a0 55%,#1e6fc4);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto}
 .auth-box{background:var(--bg1);border-radius:24px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.25)}
 .auth-logo{text-align:center;margin-bottom:24px}
@@ -54,20 +54,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .auth-err{background:var(--red-bg);color:var(--red-t);border-radius:9px;padding:10px 14px;font-size:13px;margin-top:10px;display:none;text-align:center}
 .auth-ok{background:var(--green-bg);color:var(--green-t);border-radius:9px;padding:10px 14px;font-size:13px;margin-top:10px;display:none;text-align:center}
 .auth-switch{text-align:center;margin-top:16px;font-size:13px;color:var(--t2)}
-.auth-switch a{color:var(--blue);font-weight:600;cursor:pointer;text-decoration:none}
+.auth-switch a{color:var(--blue);font-weight:600;cursor:pointer}
 .auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--t3);font-size:12px}
 .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--bd2)}
 
-/* ── HEADER ── */
+/* HEADER */
 .hdr{background:linear-gradient(150deg,#0d3a7a,#1a56a0 55%,#1e6fc4);color:#fff;padding:52px 20px 22px;position:relative;overflow:hidden}
 .hdr::after{content:'';position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.05)}
 .hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
 .hdr h1{font-size:20px;font-weight:700;letter-spacing:-.3px}
 .hdr-sub{font-size:13px;opacity:.72}
 .hbadge{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:600}
-.logout-btn{background:rgba(255,255,255,.18);border:none;color:#fff;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px}
+.logout-btn{background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.35);color:#fff;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:all .15s}
+.logout-btn:active{background:rgba(255,255,255,.35)}
 
-/* ── NAV ── */
+/* NAV */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg1);border-top:.5px solid var(--bd2);display:flex;z-index:200;padding-bottom:max(env(safe-area-inset-bottom),4px);overflow-x:auto}
 .nb{flex:1;min-width:48px;border:none;background:transparent;cursor:pointer;padding:9px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:9px;font-weight:500;color:var(--t3);font-family:inherit;transition:color .15s}
 .nb i{font-size:20px}
@@ -76,12 +77,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .pg{display:none;padding:14px 13px 20px}
 .pg.on{display:block}
 
-/* ── CARDS ── */
+/* CARDS */
 .card{background:var(--bg1);border-radius:18px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:15px 17px;margin-bottom:13px}
 .ct{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);margin-bottom:13px;display:flex;align-items:center;gap:6px}
 .ct i{font-size:14px}
 
-/* ── STATS ── */
+/* STATS */
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .sg.one{grid-template-columns:1fr}
 .sb{background:var(--bg2);border-radius:13px;padding:13px 10px;text-align:center}
@@ -93,19 +94,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .smv{font-size:20px;font-weight:700;color:var(--t1)}
 .sml{font-size:10px;color:var(--t3);margin-top:2px}
 
-/* ── FORMS ── */
+/* FORMS */
 .f{margin-bottom:12px}
 .f label{display:block;font-size:13px;font-weight:500;color:var(--t2);margin-bottom:4px}
 .fi,.fs{width:100%;padding:11px 13px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:15px;color:var(--t1);font-family:inherit;appearance:none;-webkit-appearance:none}
 .fi:focus,.fs:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,160,.15)}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 
-/* ── CHIPS ── */
+/* CHIPS */
 .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:4px}
 .chip{padding:7px 13px;border-radius:30px;border:1px solid var(--bd2);background:var(--bg2);font-size:13px;font-weight:500;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s}
 .chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* ── BUTTONS ── */
+/* BUTTONS */
 .btn{width:100%;padding:13px;border-radius:14px;border:none;background:var(--blue);color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .15s}
 .btn:active{transform:scale(.97);opacity:.9}
 .btn.green{background:var(--green)}
@@ -115,14 +116,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .btn.ghost{background:var(--bg2);color:var(--t2);border:1px solid var(--bd2)}
 .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 
-/* ── BADGES ── */
+/* BADGES */
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;flex-shrink:0;white-space:nowrap}
 .b-normal{background:var(--green-bg);color:var(--green-t)}
 .b-alerta{background:var(--amber-bg);color:var(--amber-t)}
 .b-alto{background:var(--red-bg);color:var(--red-t)}
 .b-baixo{background:var(--blue-bg);color:var(--blue-t)}
 
-/* ── LIST ── */
+/* LIST */
 .li{display:flex;align-items:flex-start;padding:11px 0;border-bottom:.5px solid var(--bd)}
 .li:last-child{border-bottom:none;padding-bottom:0}
 .li:first-child{padding-top:0}
@@ -131,7 +132,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ico.gl{background:var(--green-bg);color:var(--green)}
 .ico.wt{background:var(--teal-bg);color:var(--teal)}
 .ico.med{background:var(--purple-bg);color:var(--purple)}
-.ico.cot{background:var(--amber-bg);color:var(--amber)}
 .lb{flex:1;min-width:0}
 .lv{font-size:15px;font-weight:700;color:var(--t1)}
 .lm{font-size:12px;color:var(--t3);margin-top:1px}
@@ -140,38 +140,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .ibtn{background:none;border:none;cursor:pointer;padding:5px;border-radius:7px;color:var(--red);font-size:18px;display:flex;align-items:center;justify-content:center}
 .ibtn:active{background:var(--red-bg)}
 
-/* ── CHART ── */
+/* CHART */
 .mchart{display:flex;align-items:flex-end;gap:4px;height:58px;margin-top:9px}
 .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
 .bbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
 .blbl{font-size:9px;color:var(--t3)}
 
-/* ── MEDS TODAY ── */
+/* MEDS TODAY */
 .sched-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:.5px solid var(--bd)}
 .sched-row:last-child{border-bottom:none}
 .btn-take{background:var(--blue-bg);color:var(--blue-t);border:none;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1f2e;color:#e6eaf0;padding:11px 22px;border-radius:30px;font-size:14px;font-weight:500;opacity:0;transition:all .25s;z-index:9998;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── HIST FILTER ── */
+/* FILTER */
 .frow{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
 .fb{flex:1;min-width:70px;padding:9px 4px;border-radius:9px;border:1px solid var(--bd2);background:var(--bg2);font-size:12px;font-weight:600;cursor:pointer;color:var(--t2);font-family:inherit;transition:all .15s;text-align:center}
 .fb.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-/* ── DB STATUS ── */
+/* DB STATUS */
 .dbs{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t3);margin-bottom:13px;padding:8px 12px;background:var(--bg1);border-radius:9px;border:.5px solid var(--bd)}
 .dbd{width:8px;height:8px;border-radius:50%;background:var(--amber);flex-shrink:0;transition:background .4s}
 
-/* ── MODALS ── */
+/* MODALS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:none;align-items:flex-end;justify-content:center}
 .overlay.on{display:flex}
 .modal{background:var(--bg1);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),20px)}
 .modal-title{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
 .modal-close{background:var(--bg2);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--t2)}
 
-/* ── MED CARDS ── */
+/* MED CARDS */
 .med-card{background:var(--bg1);border-radius:16px;border:.5px solid var(--bd);box-shadow:var(--sh);padding:14px 16px;margin-bottom:12px}
 .med-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .med-ico{width:44px;height:44px;border-radius:12px;background:var(--purple-bg);color:var(--purple);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
@@ -184,14 +184,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .med-btn.edit{background:var(--blue-bg);color:var(--blue-t)}
 .med-btn.del{background:var(--red-bg);color:var(--red-t)}
 
-/* ── PHOTOS ── */
+/* PHOTOS */
 .photo-preview{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
 .photo-thumb-wrap{position:relative;display:inline-block}
 .photo-thumb{width:72px;height:72px;border-radius:10px;object-fit:cover;cursor:pointer;border:.5px solid var(--bd2);display:block}
-.photo-del{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1}
+.photo-del{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 .photo-add-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
-/* ── WEIGHT COMPARE ── */
+/* WEIGHT COMPARE */
 .wt-compare{border-radius:12px;padding:14px 16px;margin-top:10px;text-align:center}
 .wt-compare.ganhou{background:var(--red-bg);border:1px solid var(--red)}
 .wt-compare.perdeu{background:var(--green-bg);border:1px solid var(--green)}
@@ -200,7 +200,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .wt-compare-val{font-size:22px;font-weight:700}
 .wt-compare-lbl{font-size:13px;margin-top:3px}
 
-/* ── CONFIRM ── */
+/* CONFIRM */
 .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:600;display:none;align-items:center;justify-content:center;padding:20px}
 .confirm-overlay.on{display:flex}
 .confirm-box{background:var(--bg1);border-radius:18px;padding:22px 20px;width:100%;max-width:340px;text-align:center}
@@ -211,24 +211,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .cbtn.cancel{background:var(--bg2);color:var(--t2)}
 .cbtn.confirm{background:var(--red);color:#fff}
 
-/* ── IMAGE MODAL ── */
+/* IMAGE MODAL */
 .img-modal{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:700;display:none;align-items:center;justify-content:center}
 .img-modal.on{display:flex}
 .img-modal img{max-width:95vw;max-height:90vh;border-radius:10px;object-fit:contain}
 .img-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.2);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
-/* ── REF LIST ── */
+/* REF */
 .ri{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:13px;border-bottom:.5px solid var(--bd)}
 .ri:last-child{border-bottom:none}
 .rdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .empty{text-align:center;padding:28px 16px;color:var(--t3)}
 .empty i{font-size:42px;display:block;margin-bottom:9px;opacity:.3}
 .empty p{font-size:14px}
+
+/* MIGRAÇÃO */
+.migr-bar{background:var(--amber-bg);border:.5px solid var(--amber);border-radius:10px;padding:10px 14px;margin-bottom:13px;font-size:13px;color:var(--amber-t);display:none;align-items:center;gap:8px}
+.migr-bar i{font-size:16px;flex-shrink:0}
 </style>
 </head>
 <body>
 
-<!-- ══ TELA DE LOGIN ══ -->
+<!-- LOGIN -->
 <div class="auth-screen" id="screen-login">
   <div class="auth-box">
     <div class="auth-logo">
@@ -243,14 +247,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <label>Senha</label>
       <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password">
     </div>
-    <button class="auth-btn" onclick="W.doLogin()"><i class="ti ti-lock"></i> Entrar</button>
+    <button class="auth-btn" id="btn-login"><i class="ti ti-lock"></i> Entrar</button>
     <div class="auth-err" id="login-err"></div>
     <div class="auth-divider">ou</div>
-    <button class="auth-btn ghost" onclick="W.showRegister()"><i class="ti ti-user-plus"></i> Criar nova conta</button>
+    <button class="auth-btn ghost" id="btn-go-register"><i class="ti ti-user-plus"></i> Criar nova conta</button>
   </div>
 </div>
 
-<!-- ══ TELA DE CADASTRO ══ -->
+<!-- CADASTRO -->
 <div class="auth-screen" id="screen-register" style="display:none">
   <div class="auth-box">
     <div class="auth-logo">
@@ -273,14 +277,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       <label>Confirmar senha</label>
       <input type="password" id="reg-pass2" placeholder="••••••••" autocomplete="new-password">
     </div>
-    <button class="auth-btn" onclick="W.doRegister()"><i class="ti ti-user-plus"></i> Criar conta</button>
+    <button class="auth-btn" id="btn-register"><i class="ti ti-user-plus"></i> Criar conta</button>
     <div class="auth-err" id="reg-err"></div>
-    <div class="auth-ok" id="reg-ok"></div>
-    <div class="auth-switch">Já tem conta? <a onclick="W.showLogin()">Fazer login</a></div>
+    <div class="auth-ok"  id="reg-ok"></div>
+    <div class="auth-switch">Já tem conta? <a id="btn-go-login">Fazer login</a></div>
   </div>
 </div>
 
-<!-- ══ APP PRINCIPAL ══ -->
+<!-- APP -->
 <div id="app">
   <div class="hdr">
     <div class="hdr-row">
@@ -297,6 +301,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     <!-- INÍCIO -->
     <div id="pg-home" class="pg on">
       <div class="dbs"><div class="dbd" id="db-dot"></div><span id="db-txt">Conectando...</span></div>
+      <div class="migr-bar" id="migr-bar"><i class="ti ti-refresh"></i><span id="migr-txt">Migrando seus dados...</span></div>
 
       <div class="card">
         <div class="ct"><i class="ti ti-heart"></i> Última pressão</div>
@@ -567,7 +572,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
-<!-- IMAGEM AMPLIADA -->
+<!-- IMAGEM -->
 <div class="img-modal" id="img-modal" onclick="W.closeImg()">
   <img id="img-src" src="" alt="">
   <button class="img-close" onclick="W.closeImg()"><i class="ti ti-x"></i></button>
@@ -577,7 +582,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc, query } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, setDoc, doc, getDocs, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 /* ══ FIREBASE ══ */
@@ -593,396 +598,357 @@ const fbApp = initializeApp(firebaseConfig);
 const FS    = getFirestore(fbApp);
 const auth  = getAuth(fbApp);
 
-/* ══ CRUD — dados isolados por usuário ══
-   Caminho: /usuarios/{uid}/pressao, /usuarios/{uid}/glicemia, etc.
-*/
+/* ══ CRUD por usuário ══ */
 let currentUID = null;
+const colUser  = name => collection(FS, 'usuarios', currentUID, name);
+const docUser  = (name, id) => doc(FS, 'usuarios', currentUID, name, String(id));
 
-function col(name) {
-  return collection(FS, 'usuarios', currentUID, name);
-}
-function docRef(name, id) {
-  return doc(FS, 'usuarios', currentUID, name, String(id));
-}
+async function dbAdd(name, rec)    { return (await addDoc(colUser(name), rec)).id; }
+async function dbPut(name, rec)    { const {id,...d}=rec; await setDoc(docUser(name,id),d,{merge:true}); return id; }
+async function dbGetAll(name)      { const s=await getDocs(colUser(name)); const r=[]; s.forEach(d=>r.push({id:d.id,...d.data()})); return r.sort((a,b)=>(b.dt||'').localeCompare(a.dt||'')); }
+async function dbGet(name, id)     { const s=await getDoc(docUser(name,id)); return s.exists()?{id:s.id,...s.data()}:null; }
+async function dbDelete(name, id)  { await deleteDoc(docUser(name,id)); }
 
-async function dbAdd(name, rec) {
-  const r = await addDoc(col(name), rec); return r.id;
-}
-async function dbPut(name, rec) {
-  const { id, ...data } = rec;
-  await setDoc(docRef(name, id), data, { merge: true }); return id;
-}
-async function dbGetAll(name) {
-  const snap = await getDocs(col(name));
-  const rows = []; snap.forEach(d => rows.push({ id: d.id, ...d.data() }));
-  return rows.sort((a, b) => (b.dt || '').localeCompare(a.dt || ''));
-}
-async function dbGet(name, id) {
-  const snap = await getDoc(docRef(name, id));
-  return snap.exists() ? { id: snap.id, ...snap.data() } : null;
-}
-async function dbDelete(name, id) {
-  await deleteDoc(docRef(name, id)); return true;
+/* ══ MIGRAÇÃO — copia dados antigos para /usuarios/{uid}/ ══ */
+async function migrarDados() {
+  const mapa = [
+    ['pressao','pressao'],
+    ['glicemia','glicemia'],
+    ['peso','peso'],
+    ['remedios','remedios'],
+    ['receitas_uso_continuo','receitas'],
+    ['historico_tomadas','historico_tomadas'],
+  ];
+  const bar = document.getElementById('migr-bar');
+  const txt = document.getElementById('migr-txt');
+  let total = 0;
+
+  for (const [antigo, novo] of mapa) {
+    try {
+      // Se já tem dados no novo caminho, não migra
+      const novoSnap = await getDocs(colUser(novo));
+      if (novoSnap.size > 0) continue;
+
+      // Busca no caminho antigo (raiz)
+      const antigoSnap = await getDocs(collection(FS, antigo));
+      if (antigoSnap.empty) continue;
+
+      bar.style.display = 'flex';
+      txt.textContent = `Migrando ${antigo} (${antigoSnap.size} registros)...`;
+
+      for (const d of antigoSnap.docs) {
+        await addDoc(colUser(novo), d.data());
+        total++;
+      }
+    } catch(e) {
+      console.warn('Migração:', antigo, e.message);
+    }
+  }
+
+  bar.style.display = 'none';
+  if (total > 0) {
+    toast(`✓ ${total} registros migrados com sucesso!`);
+    return true;
+  }
+  return false;
 }
 
 /* ══ ESTADO ══ */
-let bpMoment = 'Antes do café', bpPos = 'Sentado';
-let glMoment = 'Jejum', glType = 'Glicosímetro';
-let wtMoment = 'Manhã em jejum';
-let medTimes = [], medPhotos = [], rxPhotos = [];
-let confirmCb = null;
+let bpMoment='Antes do café', bpPos='Sentado';
+let glMoment='Jejum', glType='Glicosímetro';
+let wtMoment='Manhã em jejum';
+let medTimes=[], medPhotos=[], rxPhotos=[];
+let confirmCb=null;
 
 /* ══ UTILS ══ */
-function getNow() { const n = new Date(), p = x => String(x).padStart(2,'0'); return `${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`; }
-function fdt(dt) { if (!dt) return '—'; try { const d = new Date(dt.includes('T') ? dt : dt + 'T12:00:00'); return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}) + (dt.includes('T') ? ' às ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}) : ''); } catch(e) { return dt; } }
-function toast(msg, err) { const t = document.getElementById('toast'); t.textContent = msg; t.style.background = err ? '#6e0e0e' : '#1a1f2e'; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 3000); }
-function classifyBP(s, d) { if (s<120&&d<80) return ['Normal','b-normal']; if (s<130&&d<80) return ['Elevada','b-alerta']; if (s<140||d<90) return ['Hipert. 1','b-alto']; return ['Hipert. 2','b-alto']; }
-function classifyGL(v, m) { if (v<70) return ['Hipoglicemia','b-baixo']; if (m==='Jejum') { if (v<100) return ['Normal','b-normal']; if (v<126) return ['Pré-diabetes','b-alerta']; return ['Diabetes','b-alto']; } if (v<140) return ['Normal','b-normal']; if (v<200) return ['Atenção','b-alerta']; return ['Alta','b-alto']; }
-function calcIMC(p, a) { return a>=100 ? +(p/((a/100)**2)).toFixed(1) : null; }
-function classifyIMC(imc) { if (imc<18.5) return ['Abaixo do peso','b-baixo']; if (imc<25) return ['Normal','b-normal']; if (imc<30) return ['Sobrepeso','b-alerta']; if (imc<35) return ['Obesidade 1','b-alto']; if (imc<40) return ['Obesidade 2','b-alto']; return ['Obesidade 3','b-alto']; }
-function setupChips(sel, setter) { document.querySelectorAll(sel).forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll(sel).forEach(b => b.classList.remove('on')); btn.classList.add('on'); setter(btn.dataset[Object.keys(btn.dataset)[0]]); })); }
-function confirm2(title, msg, cb) { document.getElementById('confirm-title').textContent = title; document.getElementById('confirm-msg').textContent = msg; confirmCb = cb; document.getElementById('confirm-overlay').classList.add('on'); }
-function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('on'); confirmCb = null; }
-function renderChart(id, data, getter, color, mn, mx) { const wrap = document.getElementById(id); if (!wrap) return; if (!data.length) { wrap.innerHTML = '<div style="flex:1;text-align:center;font-size:12px;color:var(--t3);align-self:center">Sem dados ainda</div>'; return; } wrap.innerHTML = ''; data.forEach(r => { const v = getter(r), pct = Math.max(5, Math.min(100, ((v-mn)/(mx-mn))*100)); const col2 = document.createElement('div'); col2.className = 'bc'; col2.innerHTML = `<div class="bbar" style="height:${pct}%;background:${color};opacity:.75"></div><div class="blbl">${v}</div>`; wrap.appendChild(col2); }); }
+function getNow(){const n=new Date(),p=x=>String(x).padStart(2,'0');return`${n.getFullYear()}-${p(n.getMonth()+1)}-${p(n.getDate())}T${p(n.getHours())}:${p(n.getMinutes())}`;}
+function fdt(dt){if(!dt)return'—';try{const d=new Date(dt.includes('T')?dt:dt+'T12:00:00');return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})+(dt.includes('T')?' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'');}catch(e){return dt;}}
+function toast(msg,err){const t=document.getElementById('toast');t.textContent=msg;t.style.background=err?'#6e0e0e':'#1a1f2e';t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
+function classifyBP(s,d){if(s<120&&d<80)return['Normal','b-normal'];if(s<130&&d<80)return['Elevada','b-alerta'];if(s<140||d<90)return['Hipert. 1','b-alto'];return['Hipert. 2','b-alto'];}
+function classifyGL(v,m){if(v<70)return['Hipoglicemia','b-baixo'];if(m==='Jejum'){if(v<100)return['Normal','b-normal'];if(v<126)return['Pré-diabetes','b-alerta'];return['Diabetes','b-alto'];}if(v<140)return['Normal','b-normal'];if(v<200)return['Atenção','b-alerta'];return['Alta','b-alto'];}
+function calcIMC(p,a){return a>=100?+(p/((a/100)**2)).toFixed(1):null;}
+function classifyIMC(imc){if(imc<18.5)return['Abaixo do peso','b-baixo'];if(imc<25)return['Normal','b-normal'];if(imc<30)return['Sobrepeso','b-alerta'];if(imc<35)return['Obesidade 1','b-alto'];if(imc<40)return['Obesidade 2','b-alto'];return['Obesidade 3','b-alto'];}
+function setupChips(sel,setter){document.querySelectorAll(sel).forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll(sel).forEach(b=>b.classList.remove('on'));btn.classList.add('on');setter(btn.dataset[Object.keys(btn.dataset)[0]]);;}));}
+function confirm2(title,msg,cb){document.getElementById('confirm-title').textContent=title;document.getElementById('confirm-msg').textContent=msg;confirmCb=cb;document.getElementById('confirm-overlay').classList.add('on');}
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('on');confirmCb=null;}
+function renderChart(id,data,getter,color,mn,mx){const w=document.getElementById(id);if(!w)return;if(!data.length){w.innerHTML='<div style="flex:1;text-align:center;font-size:12px;color:var(--t3);align-self:center">Sem dados ainda</div>';return;}w.innerHTML='';data.forEach(r=>{const v=getter(r),pct=Math.max(5,Math.min(100,((v-mn)/(mx-mn))*100));const c=document.createElement('div');c.className='bc';c.innerHTML=`<div class="bbar" style="height:${pct}%;background:${color};opacity:.75"></div><div class="blbl">${v}</div>`;w.appendChild(c);});}
 
-/* ══ AUTH ══ */
-function showLogin() {
-  document.getElementById('screen-login').style.display   = 'flex';
-  document.getElementById('screen-register').style.display = 'none';
-  document.getElementById('app').style.display = 'none';
-  // Limpa campos e erros
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-pass').value  = '';
-  document.getElementById('login-err').style.display = 'none';
-  // Foca no e-mail
-  setTimeout(() => document.getElementById('login-email').focus(), 200);
+/* ══ AUTH FUNCTIONS ══ */
+function showLogin(){
+  document.getElementById('screen-login').style.display='flex';
+  document.getElementById('screen-register').style.display='none';
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-email').value='';
+  document.getElementById('login-pass').value='';
+  document.getElementById('login-err').style.display='none';
+  setTimeout(()=>document.getElementById('login-email').focus(),200);
 }
-function showRegister() {
-  document.getElementById('screen-login').style.display  = 'none';
-  document.getElementById('screen-register').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
+function showRegister(){
+  document.getElementById('screen-login').style.display='none';
+  document.getElementById('screen-register').style.display='flex';
+  document.getElementById('app').style.display='none';
 }
-function showApp(user) {
-  document.getElementById('screen-login').style.display  = 'none';
-  document.getElementById('screen-register').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  const name = user.displayName || user.email;
-  document.getElementById('hdr-sub').textContent = `Olá, ${name}!`;
-  document.getElementById('db-badge').textContent = '✓ Conectado';
-  document.getElementById('db-dot').style.background = '#1a7a3c';
-  document.getElementById('db-txt').textContent = `☁️ Firebase — ${user.email}`;
+function showApp(user){
+  document.getElementById('screen-login').style.display='none';
+  document.getElementById('screen-register').style.display='none';
+  document.getElementById('app').style.display='block';
+  const name=user.displayName||user.email;
+  document.getElementById('hdr-sub').textContent=`Olá, ${name}!`;
+  document.getElementById('db-badge').textContent='✓ Conectado';
+  document.getElementById('db-dot').style.background='#1a7a3c';
+  document.getElementById('db-txt').textContent=`☁️ Firebase — ${user.email}`;
 }
 
-async function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-pass').value;
-  const errEl = document.getElementById('login-err');
-  errEl.style.display = 'none';
-  if (!email || !pass) { errEl.textContent = 'Preencha e-mail e senha.'; errEl.style.display = 'block'; return; }
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch(e) {
-    const msgs = { 'auth/invalid-credential':'E-mail ou senha incorretos.','auth/user-not-found':'Usuário não encontrado.','auth/wrong-password':'Senha incorreta.','auth/too-many-requests':'Muitas tentativas. Tente mais tarde.','auth/network-request-failed':'Sem conexão com a internet.' };
-    errEl.textContent = msgs[e.code] || 'Erro: ' + e.message;
-    errEl.style.display = 'block';
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const errEl=document.getElementById('login-err');
+  errEl.style.display='none';
+  if(!email||!pass){errEl.textContent='Preencha e-mail e senha.';errEl.style.display='block';return;}
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+  }catch(e){
+    const msgs={'auth/invalid-credential':'E-mail ou senha incorretos.','auth/user-not-found':'Usuário não encontrado.','auth/wrong-password':'Senha incorreta.','auth/too-many-requests':'Muitas tentativas. Tente mais tarde.','auth/network-request-failed':'Sem conexão com a internet.'};
+    errEl.textContent=msgs[e.code]||'Erro: '+e.message;
+    errEl.style.display='block';
   }
 }
 
-async function doRegister() {
-  const nome  = document.getElementById('reg-nome').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass  = document.getElementById('reg-pass').value;
-  const pass2 = document.getElementById('reg-pass2').value;
-  const errEl = document.getElementById('reg-err');
-  const okEl  = document.getElementById('reg-ok');
-  errEl.style.display = 'none'; okEl.style.display = 'none';
-  if (!nome || !email || !pass) { errEl.textContent = 'Preencha todos os campos.'; errEl.style.display = 'block'; return; }
-  if (pass.length < 6) { errEl.textContent = 'A senha deve ter pelo menos 6 caracteres.'; errEl.style.display = 'block'; return; }
-  if (pass !== pass2) { errEl.textContent = 'As senhas não coincidem.'; errEl.style.display = 'block'; return; }
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    await updateProfile(cred.user, { displayName: nome });
-    // onAuthStateChanged cuida do resto
-  } catch(e) {
-    const msgs = { 'auth/email-already-in-use':'Este e-mail já está cadastrado.','auth/invalid-email':'E-mail inválido.','auth/weak-password':'Senha muito fraca.','auth/network-request-failed':'Sem conexão.' };
-    errEl.textContent = msgs[e.code] || 'Erro: ' + e.message;
-    errEl.style.display = 'block';
-  }
-}
-
-async function doLogout() {
-  try {
-    await signOut(auth);
-    toast('Sessão encerrada');
-  } catch(e) {
-    toast('Erro ao sair: ' + e.message, true);
+async function doRegister(){
+  const nome=document.getElementById('reg-nome').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const pass2=document.getElementById('reg-pass2').value;
+  const errEl=document.getElementById('reg-err');
+  const okEl=document.getElementById('reg-ok');
+  errEl.style.display='none';okEl.style.display='none';
+  if(!nome||!email||!pass){errEl.textContent='Preencha todos os campos.';errEl.style.display='block';return;}
+  if(pass.length<6){errEl.textContent='A senha deve ter pelo menos 6 caracteres.';errEl.style.display='block';return;}
+  if(pass!==pass2){errEl.textContent='As senhas não coincidem.';errEl.style.display='block';return;}
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    await updateProfile(cred.user,{displayName:nome});
+  }catch(e){
+    const msgs={'auth/email-already-in-use':'Este e-mail já está cadastrado.','auth/invalid-email':'E-mail inválido.','auth/weak-password':'Senha muito fraca.','auth/network-request-failed':'Sem conexão.'};
+    errEl.textContent=msgs[e.code]||'Erro: '+e.message;
+    errEl.style.display='block';
   }
 }
 
 /* ══ NAVEGAÇÃO ══ */
-function goPage(name, btn) {
-  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-  const target = document.getElementById('pg-' + name); if (target) target.classList.add('on'); if (btn) btn.classList.add('on');
-  if (name === 'home') updateDash();
-  if (name === 'hist') renderHist();
-  if (name === 'med')  renderMeds();
-  if (name === 'rx')   renderRx();
-  if (name === 'wt')   document.getElementById('wt-compare-box').style.display = 'none';
+function goPage(name,btn){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const t=document.getElementById('pg-'+name);if(t)t.classList.add('on');if(btn)btn.classList.add('on');
+  if(name==='home')updateDash();
+  if(name==='hist')renderHist();
+  if(name==='med')renderMeds();
+  if(name==='rx')renderRx();
+  if(name==='wt')document.getElementById('wt-compare-box').style.display='none';
 }
-function switchHist(type) {
-  ['bp','gl','wt','intake'].forEach(t => {
-    const el = document.getElementById('hf-'+t); if(el) el.classList.toggle('on', t===type);
-    const p  = document.getElementById('hist-'+t); if(p) p.style.display = t===type ? 'block' : 'none';
+function switchHist(type){
+  ['bp','gl','wt','intake'].forEach(t=>{
+    const e=document.getElementById('hf-'+t);if(e)e.classList.toggle('on',t===type);
+    const p=document.getElementById('hist-'+t);if(p)p.style.display=t===type?'block':'none';
   });
   renderHist();
 }
 
 /* ══ PRESSÃO ══ */
-async function saveBP() {
-  const s = parseInt(document.getElementById('bp-sis').value), d = parseInt(document.getElementById('bp-dia').value);
-  const pulse = document.getElementById('bp-pulse').value, note = document.getElementById('bp-note').value.trim(), dt = document.getElementById('bp-dt').value || getNow();
-  if (!s||!d||s<60||d<40||s>260||d>160) { toast('⚠️ Valores inválidos de pressão', true); return; }
-  try { await dbAdd('pressao', {sis:s, dia:d, pulse:pulse?parseInt(pulse):null, moment:bpMoment, pos:bpPos, note, dt}); ['bp-sis','bp-dia','bp-pulse','bp-note'].forEach(id => document.getElementById(id).value=''); document.getElementById('bp-dt').value = getNow(); toast('✓ Pressão salva!'); updateDash(); } catch(e) { toast('Erro: '+e.message, true); }
+async function saveBP(){
+  const s=parseInt(document.getElementById('bp-sis').value),d=parseInt(document.getElementById('bp-dia').value);
+  const pulse=document.getElementById('bp-pulse').value,note=document.getElementById('bp-note').value.trim(),dt=document.getElementById('bp-dt').value||getNow();
+  if(!s||!d||s<60||d<40||s>260||d>160){toast('⚠️ Valores inválidos de pressão',true);return;}
+  try{await dbAdd('pressao',{sis:s,dia:d,pulse:pulse?parseInt(pulse):null,moment:bpMoment,pos:bpPos,note,dt});['bp-sis','bp-dia','bp-pulse','bp-note'].forEach(id=>document.getElementById(id).value='');document.getElementById('bp-dt').value=getNow();toast('✓ Pressão salva!');updateDash();}catch(e){toast('Erro: '+e.message,true);}
 }
-function deleteBP(id) { confirm2('Excluir pressão','Remover permanentemente?', async () => { await dbDelete('pressao', id); toast('✓ Excluído'); renderHist(); updateDash(); }); }
+function deleteBP(id){confirm2('Excluir pressão','Remover permanentemente?',async()=>{await dbDelete('pressao',id);toast('✓ Excluído');renderHist();updateDash();});}
 
 /* ══ GLICEMIA ══ */
-async function saveGL() {
-  const v = parseInt(document.getElementById('gl-val').value), note = document.getElementById('gl-note').value.trim(), dt = document.getElementById('gl-dt').value || getNow();
-  if (!v||v<20||v>700) { toast('⚠️ Valor inválido de glicemia', true); return; }
-  try { await dbAdd('glicemia', {val:v, moment:glMoment, type:glType, note, dt}); ['gl-val','gl-note'].forEach(id => document.getElementById(id).value=''); document.getElementById('gl-dt').value = getNow(); toast('✓ Glicemia salva!'); updateDash(); } catch(e) { toast('Erro: '+e.message, true); }
+async function saveGL(){
+  const v=parseInt(document.getElementById('gl-val').value),note=document.getElementById('gl-note').value.trim(),dt=document.getElementById('gl-dt').value||getNow();
+  if(!v||v<20||v>700){toast('⚠️ Valor inválido de glicemia',true);return;}
+  try{await dbAdd('glicemia',{val:v,moment:glMoment,type:glType,note,dt});['gl-val','gl-note'].forEach(id=>document.getElementById(id).value='');document.getElementById('gl-dt').value=getNow();toast('✓ Glicemia salva!');updateDash();}catch(e){toast('Erro: '+e.message,true);}
 }
-function deleteGL(id) { confirm2('Excluir glicemia','Remover permanentemente?', async () => { await dbDelete('glicemia', id); toast('✓ Excluído'); renderHist(); updateDash(); }); }
+function deleteGL(id){confirm2('Excluir glicemia','Remover permanentemente?',async()=>{await dbDelete('glicemia',id);toast('✓ Excluído');renderHist();updateDash();});}
 
 /* ══ PESO ══ */
-async function saveWT() {
-  const val = parseFloat(document.getElementById('wt-val').value), alt = parseFloat(document.getElementById('wt-alt').value);
-  const note = document.getElementById('wt-note').value.trim(), dt = document.getElementById('wt-dt').value || getNow();
-  if (!val||val<20||val>300) { toast('⚠️ Peso inválido', true); return; }
-  const imc = calcIMC(val, alt);
-  try {
-    const wts = await dbGetAll('peso');
-    await dbAdd('peso', {val, alt:alt||null, imc, moment:wtMoment, note, dt});
-    ['wt-val','wt-note'].forEach(id => document.getElementById(id).value='');
-    document.getElementById('wt-dt').value = getNow();
-    document.getElementById('wt-imc-preview').style.display = 'none';
+async function saveWT(){
+  const val=parseFloat(document.getElementById('wt-val').value),alt=parseFloat(document.getElementById('wt-alt').value);
+  const note=document.getElementById('wt-note').value.trim(),dt=document.getElementById('wt-dt').value||getNow();
+  if(!val||val<20||val>300){toast('⚠️ Peso inválido',true);return;}
+  const imc=calcIMC(val,alt);
+  try{
+    const wts=await dbGetAll('peso');
+    await dbAdd('peso',{val,alt:alt||null,imc,moment:wtMoment,note,dt});
+    ['wt-val','wt-note'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('wt-dt').value=getNow();
+    document.getElementById('wt-imc-preview').style.display='none';
     toast('✓ Peso salvo!');
-    const box = document.getElementById('wt-compare-box');
-    if (wts.length > 0) {
-      const ant = wts[0].val, diff = val - ant, dAbs = Math.abs(diff);
-      const kg2 = Math.floor(dAbs), g2 = Math.round((dAbs - kg2) * 1000);
-      let cls, icon, titulo, sub;
-      if (dAbs < 0.05) { cls='igual'; icon='⚖️'; titulo='Peso estável'; sub=`Sem variação significativa`; }
-      else if (diff > 0) { cls='ganhou'; icon='📈'; titulo=`+${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`; sub=`Aumentou de ${ant} kg para ${val} kg`; }
-      else { cls='perdeu'; icon='📉'; titulo=`-${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`; sub=`Diminuiu de ${ant} kg para ${val} kg`; }
-      box.innerHTML = `<div class="wt-compare ${cls}"><span class="wt-compare-icon">${icon}</span><div class="wt-compare-val">${titulo}</div><div class="wt-compare-lbl">${sub}</div></div>`;
-      box.style.display = 'block';
-    } else { box.style.display = 'none'; }
+    const box=document.getElementById('wt-compare-box');
+    if(wts.length>0){
+      const ant=wts[0].val,diff=val-ant,dAbs=Math.abs(diff),kg2=Math.floor(dAbs),g2=Math.round((dAbs-kg2)*1000);
+      let cls,icon,titulo,sub;
+      if(dAbs<0.05){cls='igual';icon='⚖️';titulo='Peso estável';sub='Sem variação significativa';}
+      else if(diff>0){cls='ganhou';icon='📈';titulo=`+${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`;sub=`Aumentou de ${ant} kg para ${val} kg`;}
+      else{cls='perdeu';icon='📉';titulo=`-${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`;sub=`Diminuiu de ${ant} kg para ${val} kg`;}
+      box.innerHTML=`<div class="wt-compare ${cls}"><span class="wt-compare-icon">${icon}</span><div class="wt-compare-val">${titulo}</div><div class="wt-compare-lbl">${sub}</div></div>`;
+      box.style.display='block';
+    }else{box.style.display='none';}
     updateDash();
-  } catch(e) { toast('Erro: '+e.message, true); }
+  }catch(e){toast('Erro: '+e.message,true);}
 }
-function deleteWT(id) { confirm2('Excluir peso','Remover permanentemente?', async () => { await dbDelete('peso', id); toast('✓ Excluído'); renderHist(); updateDash(); }); }
+function deleteWT(id){confirm2('Excluir peso','Remover permanentemente?',async()=>{await dbDelete('peso',id);toast('✓ Excluído');renderHist();updateDash();});}
 
 /* ══ REMÉDIOS ══ */
-function addMedPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { medPhotos.push(e.target.result); renderMedPhotos(); }; r.readAsDataURL(f); }); input.value=''; }
-function removeMedPhoto(i) { medPhotos.splice(i,1); renderMedPhotos(); }
-function renderMedPhotos() { document.getElementById('med-photos-preview').innerHTML = medPhotos.map((src,i) => `<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"><button class="photo-del" onclick="W.removeMedPhoto(${i})">×</button></div>`).join(''); }
-function openMedModal(id) {
-  medTimes=[]; medPhotos=[];
-  document.getElementById('med-edit-id').value = id||'';
-  document.getElementById('med-modal-title').textContent = id ? 'Editar remédio' : 'Novo remédio';
-  ['med-name','med-dose','med-instr','med-obs'].forEach(i => document.getElementById(i).value='');
-  document.getElementById('med-form').value = 'Comprimido';
-  renderMedTimes(); renderMedPhotos();
-  if (id) { dbGet('remedios',id).then(m => { if(!m) return; document.getElementById('med-name').value=m.name||''; document.getElementById('med-dose').value=m.dose||''; document.getElementById('med-instr').value=m.instr||''; document.getElementById('med-obs').value=m.obs||''; document.getElementById('med-form').value=m.form||'Comprimido'; medTimes=[...(m.times||[])]; medPhotos=[...(m.photos||[])]; renderMedTimes(); renderMedPhotos(); }); }
+function addMedPhoto(input){Array.from(input.files).forEach(f=>{const r=new FileReader();r.onload=e=>{medPhotos.push(e.target.result);renderMedPhotos();};r.readAsDataURL(f);});input.value='';}
+function removeMedPhoto(i){medPhotos.splice(i,1);renderMedPhotos();}
+function renderMedPhotos(){document.getElementById('med-photos-preview').innerHTML=medPhotos.map((src,i)=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"><button class="photo-del" onclick="W.removeMedPhoto(${i})">×</button></div>`).join('');}
+function openMedModal(id){
+  medTimes=[];medPhotos=[];
+  document.getElementById('med-edit-id').value=id||'';
+  document.getElementById('med-modal-title').textContent=id?'Editar remédio':'Novo remédio';
+  ['med-name','med-dose','med-instr','med-obs'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('med-form').value='Comprimido';
+  renderMedTimes();renderMedPhotos();
+  if(id){dbGet('remedios',id).then(m=>{if(!m)return;document.getElementById('med-name').value=m.name||'';document.getElementById('med-dose').value=m.dose||'';document.getElementById('med-instr').value=m.instr||'';document.getElementById('med-obs').value=m.obs||'';document.getElementById('med-form').value=m.form||'Comprimido';medTimes=[...(m.times||[])];medPhotos=[...(m.photos||[])];renderMedTimes();renderMedPhotos();});}
   document.getElementById('med-modal').classList.add('on');
 }
-function closeMedModal() { document.getElementById('med-modal').classList.remove('on'); }
-function addTime() { const t = document.getElementById('new-time').value; if(!t||medTimes.includes(t)) return; medTimes.push(t); medTimes.sort(); renderMedTimes(); document.getElementById('new-time').value=''; }
-function removeTime(t) { medTimes = medTimes.filter(x => x !== t); renderMedTimes(); }
-function renderMedTimes() { document.getElementById('times-list').innerHTML = medTimes.map(t => `<span class="med-time-tag"><i class="ti ti-clock" style="font-size:12px;margin-right:3px"></i>${t}<button onclick="W.removeTime('${t}')" style="background:none;border:none;cursor:pointer;color:inherit;font-size:14px;margin-left:4px;padding:0;line-height:1">×</button></span>`).join(''); }
-async function saveMed() {
-  const name = document.getElementById('med-name').value.trim(); if(!name) { toast('⚠️ Nome obrigatório',true); return; }
-  const editId = document.getElementById('med-edit-id').value;
-  const rec = { name, dose:document.getElementById('med-dose').value.trim(), form:document.getElementById('med-form').value, instr:document.getElementById('med-instr').value.trim(), obs:document.getElementById('med-obs').value.trim(), times:[...medTimes], photos:[...medPhotos], dt:getNow() };
-  try { if(editId){rec.id=editId;await dbPut('remedios',rec);toast('✓ Atualizado!');}else{await dbAdd('remedios',rec);toast('✓ Cadastrado!');} closeMedModal(); renderMeds(); updateDash(); } catch(e) { toast('Erro: '+e.message,true); }
+function closeMedModal(){document.getElementById('med-modal').classList.remove('on');}
+function addTime(){const t=document.getElementById('new-time').value;if(!t||medTimes.includes(t))return;medTimes.push(t);medTimes.sort();renderMedTimes();document.getElementById('new-time').value='';}
+function removeTime(t){medTimes=medTimes.filter(x=>x!==t);renderMedTimes();}
+function renderMedTimes(){document.getElementById('times-list').innerHTML=medTimes.map(t=>`<span class="med-time-tag"><i class="ti ti-clock" style="font-size:12px;margin-right:3px"></i>${t}<button onclick="W.removeTime('${t}')" style="background:none;border:none;cursor:pointer;color:inherit;font-size:14px;margin-left:4px;padding:0;line-height:1">×</button></span>`).join('');}
+async function saveMed(){
+  const name=document.getElementById('med-name').value.trim();if(!name){toast('⚠️ Nome obrigatório',true);return;}
+  const editId=document.getElementById('med-edit-id').value;
+  const rec={name,dose:document.getElementById('med-dose').value.trim(),form:document.getElementById('med-form').value,instr:document.getElementById('med-instr').value.trim(),obs:document.getElementById('med-obs').value.trim(),times:[...medTimes],photos:[...medPhotos],dt:getNow()};
+  try{if(editId){rec.id=editId;await dbPut('remedios',rec);toast('✓ Atualizado!');}else{await dbAdd('remedios',rec);toast('✓ Cadastrado!');}closeMedModal();renderMeds();updateDash();}catch(e){toast('Erro: '+e.message,true);}
 }
-async function deleteMed(id) { confirm2('Excluir remédio','Remover?', async () => { await dbDelete('remedios',id); toast('✓ Excluído'); renderMeds(); updateDash(); }); }
-async function renderMeds() {
-  const meds = await dbGetAll('remedios'); const el = document.getElementById('med-list');
-  if (!meds.length) { el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum remédio cadastrado</p></div></div>'; return; }
-  el.innerHTML = meds.map(m => `<div class="med-card"><div class="med-header"><div class="med-ico"><i class="ti ti-pill"></i></div><div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose,m.form].filter(Boolean).join(' · ')}</div></div></div>${m.times&&m.times.length?`<div class="med-times">${m.times.map(t=>`<span class="med-time-tag"><i class="ti ti-clock" style="font-size:11px;margin-right:3px"></i>${t}</span>`).join('')}</div>`:''} ${m.instr?`<div style="font-size:13px;color:var(--t2);margin-bottom:6px">${m.instr}</div>`:''} ${m.photos&&m.photos.length?`<div class="photo-preview">${m.photos.map(src=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"></div>`).join('')}</div>`:''}<div class="med-actions"><button class="med-btn edit" onclick="W.openMedModal('${m.id}')"><i class="ti ti-edit"></i> Editar</button><button class="med-btn del" onclick="W.deleteMed('${m.id}')"><i class="ti ti-trash"></i> Excluir</button></div></div>`).join('');
+async function deleteMed(id){confirm2('Excluir remédio','Remover?',async()=>{await dbDelete('remedios',id);toast('✓ Excluído');renderMeds();updateDash();});}
+async function renderMeds(){
+  const meds=await dbGetAll('remedios');const el=document.getElementById('med-list');
+  if(!meds.length){el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum remédio cadastrado</p></div></div>';return;}
+  el.innerHTML=meds.map(m=>`<div class="med-card"><div class="med-header"><div class="med-ico"><i class="ti ti-pill"></i></div><div><div class="med-name">${m.name}</div><div class="med-dose">${[m.dose,m.form].filter(Boolean).join(' · ')}</div></div></div>${m.times&&m.times.length?`<div class="med-times">${m.times.map(t=>`<span class="med-time-tag"><i class="ti ti-clock" style="font-size:11px;margin-right:3px"></i>${t}</span>`).join('')}</div>`:''}${m.instr?`<div style="font-size:13px;color:var(--t2);margin-bottom:6px">${m.instr}</div>`:''}${m.photos&&m.photos.length?`<div class="photo-preview">${m.photos.map(src=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"></div>`).join('')}</div>`:''}<div class="med-actions"><button class="med-btn edit" onclick="W.openMedModal('${m.id}')"><i class="ti ti-edit"></i> Editar</button><button class="med-btn del" onclick="W.deleteMed('${m.id}')"><i class="ti ti-trash"></i> Excluir</button></div></div>`).join('');
 }
 
 /* ══ RECEITAS ══ */
-function addRxPhoto(input) { Array.from(input.files).forEach(f => { const r = new FileReader(); r.onload = e => { rxPhotos.push(e.target.result); renderRxPhotos(); }; r.readAsDataURL(f); }); input.value=''; }
-function removeRxPhoto(i) { rxPhotos.splice(i,1); renderRxPhotos(); }
-function renderRxPhotos() { document.getElementById('rx-photos-preview').innerHTML = rxPhotos.map((src,i) => `<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"><button class="photo-del" onclick="W.removeRxPhoto(${i})">×</button></div>`).join(''); }
-function openRxModal(id) {
+function addRxPhoto(input){Array.from(input.files).forEach(f=>{const r=new FileReader();r.onload=e=>{rxPhotos.push(e.target.result);renderRxPhotos();};r.readAsDataURL(f);});input.value='';}
+function removeRxPhoto(i){rxPhotos.splice(i,1);renderRxPhotos();}
+function renderRxPhotos(){document.getElementById('rx-photos-preview').innerHTML=rxPhotos.map((src,i)=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"><button class="photo-del" onclick="W.removeRxPhoto(${i})">×</button></div>`).join('');}
+function openRxModal(id){
   rxPhotos=[];
-  document.getElementById('rx-edit-id').value = id||'';
-  document.getElementById('rx-modal-title').textContent = id ? 'Editar receita' : 'Arquivar Receita';
-  ['rx-doctor','rx-crm','rx-meds','rx-obs'].forEach(i => document.getElementById(i).value='');
-  document.getElementById('rx-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('rx-months').value = '6';
+  document.getElementById('rx-edit-id').value=id||'';
+  document.getElementById('rx-modal-title').textContent=id?'Editar receita':'Arquivar Receita';
+  ['rx-doctor','rx-crm','rx-meds','rx-obs'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('rx-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('rx-months').value='6';
   renderRxPhotos();
-  if (id) { dbGet('receitas',id).then(r => { if(!r) return; document.getElementById('rx-doctor').value=r.medico||''; document.getElementById('rx-crm').value=r.crm||''; document.getElementById('rx-date').value=r.dataEmissao||''; document.getElementById('rx-months').value=r.validadeMeses||'6'; document.getElementById('rx-meds').value=r.medicamentos||''; document.getElementById('rx-obs').value=r.obs||''; rxPhotos=[...(r.fotos||[])]; renderRxPhotos(); }); }
+  if(id){dbGet('receitas',id).then(r=>{if(!r)return;document.getElementById('rx-doctor').value=r.medico||'';document.getElementById('rx-crm').value=r.crm||'';document.getElementById('rx-date').value=r.dataEmissao||'';document.getElementById('rx-months').value=r.validadeMeses||'6';document.getElementById('rx-meds').value=r.medicamentos||'';document.getElementById('rx-obs').value=r.obs||'';rxPhotos=[...(r.fotos||[])];renderRxPhotos();});}
   document.getElementById('rx-modal').classList.add('on');
 }
-function closeRxModal() { document.getElementById('rx-modal').classList.remove('on'); }
-async function saveRx() {
-  const medico = document.getElementById('rx-doctor').value.trim(), meds = document.getElementById('rx-meds').value.trim(), dE = document.getElementById('rx-date').value;
-  if(!medico||!meds||!dE) { toast('⚠️ Preencha os campos obrigatórios',true); return; }
-  const vM = parseInt(document.getElementById('rx-months').value); const dV = new Date(dE+'T12:00:00'); dV.setMonth(dV.getMonth()+vM);
-  const editId = document.getElementById('rx-edit-id').value;
-  const rec = { medico, crm:document.getElementById('rx-crm').value.trim(), dataEmissao:dE, validadeMeses:vM, dataVencimento:dV.toISOString().split('T')[0], medicamentos:meds, obs:document.getElementById('rx-obs').value.trim(), fotos:[...rxPhotos], dt:getNow() };
-  try { if(editId){rec.id=editId;await dbPut('receitas',rec);toast('✓ Receita alterada!');}else{await dbAdd('receitas',rec);toast('✓ Receita salva!');} closeRxModal(); renderRx(); } catch(e) { toast('Erro: '+e.message,true); }
+function closeRxModal(){document.getElementById('rx-modal').classList.remove('on');}
+async function saveRx(){
+  const medico=document.getElementById('rx-doctor').value.trim(),meds=document.getElementById('rx-meds').value.trim(),dE=document.getElementById('rx-date').value;
+  if(!medico||!meds||!dE){toast('⚠️ Preencha os campos obrigatórios',true);return;}
+  const vM=parseInt(document.getElementById('rx-months').value);const dV=new Date(dE+'T12:00:00');dV.setMonth(dV.getMonth()+vM);
+  const editId=document.getElementById('rx-edit-id').value;
+  const rec={medico,crm:document.getElementById('rx-crm').value.trim(),dataEmissao:dE,validadeMeses:vM,dataVencimento:dV.toISOString().split('T')[0],medicamentos:meds,obs:document.getElementById('rx-obs').value.trim(),fotos:[...rxPhotos],dt:getNow()};
+  try{if(editId){rec.id=editId;await dbPut('receitas',rec);toast('✓ Receita alterada!');}else{await dbAdd('receitas',rec);toast('✓ Receita salva!');}closeRxModal();renderRx();}catch(e){toast('Erro: '+e.message,true);}
 }
-function deleteRx(id) { confirm2('Excluir receita','Remover permanentemente?', async () => { await dbDelete('receitas',id); toast('✓ Receita excluída'); renderRx(); }); }
-async function renderRx() {
-  const rxs = await dbGetAll('receitas'); const el = document.getElementById('rx-list'); const hoje = new Date().toISOString().split('T')[0];
-  if (!rxs.length) { el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-file-text"></i><p>Nenhuma receita arquivada</p></div></div>'; return; }
-  el.innerHTML = rxs.map(r => {
-    const exp = hoje > (r.dataVencimento||'');
-    const fotosHtml = r.fotos&&r.fotos.length ? `<div class="photo-preview" style="margin-top:8px">${r.fotos.map(src=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"></div>`).join('')}</div>` : '';
-    return `<div class="med-card" style="${exp?'border:1.5px solid var(--red);background:var(--red-bg);':''}"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div><div style="font-size:16px;font-weight:700">🩺 Dr(a). ${r.medico}</div>${r.crm?`<div style="font-size:12px;color:var(--t3)">CRM: ${r.crm}</div>`:''}</div>${exp?`<span class="badge b-alto">Vencida</span>`:`<span class="badge b-normal">Válida</span>`}</div><div style="font-size:13px;color:var(--teal);margin-bottom:4px;font-weight:700">💊 ${r.medicamentos}</div><div style="font-size:12px;color:var(--t3)">Emissão: ${fdt(r.dataEmissao)} · Vence: <b style="${exp?'color:var(--red)':''}">${fdt(r.dataVencimento)}</b></div>${r.obs?`<div style="font-size:12px;color:var(--t3);margin-top:4px">${r.obs}</div>`:''}${fotosHtml}<div class="med-actions"><button class="med-btn edit" onclick="W.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button><button class="med-btn del" onclick="W.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button></div></div>`;
-  }).join('');
+function deleteRx(id){confirm2('Excluir receita','Remover permanentemente?',async()=>{await dbDelete('receitas',id);toast('✓ Receita excluída');renderRx();});}
+async function renderRx(){
+  const rxs=await dbGetAll('receitas');const el=document.getElementById('rx-list');const hoje=new Date().toISOString().split('T')[0];
+  if(!rxs.length){el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-file-text"></i><p>Nenhuma receita arquivada</p></div></div>';return;}
+  el.innerHTML=rxs.map(r=>{const exp=hoje>(r.dataVencimento||'');const fH=r.fotos&&r.fotos.length?`<div class="photo-preview" style="margin-top:8px">${r.fotos.map(src=>`<div class="photo-thumb-wrap"><img class="photo-thumb" src="${src}" onclick="W.openImg('${src}')"></div>`).join('')}</div>`:'';return`<div class="med-card" style="${exp?'border:1.5px solid var(--red);background:var(--red-bg);':''}"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><div><div style="font-size:16px;font-weight:700">🩺 Dr(a). ${r.medico}</div>${r.crm?`<div style="font-size:12px;color:var(--t3)">CRM: ${r.crm}</div>`:''}</div>${exp?`<span class="badge b-alto">Vencida</span>`:`<span class="badge b-normal">Válida</span>`}</div><div style="font-size:13px;color:var(--teal);margin-bottom:4px;font-weight:700">💊 ${r.medicamentos}</div><div style="font-size:12px;color:var(--t3)">Emissão: ${fdt(r.dataEmissao)} · Vence: <b style="${exp?'color:var(--red)':''}">${fdt(r.dataVencimento)}</b></div>${r.obs?`<div style="font-size:12px;color:var(--t3);margin-top:4px">${r.obs}</div>`:''}${fH}<div class="med-actions"><button class="med-btn edit" onclick="W.openRxModal('${r.id}')"><i class="ti ti-edit"></i> Editar</button><button class="med-btn del" onclick="W.deleteRx('${r.id}')"><i class="ti ti-trash"></i> Excluir</button></div></div>`;}).join('');
 }
 
-/* ══ MIGRAÇÃO DE DADOS ANTIGOS ══ */
-async function migrarDadosAntigos() {
-  const colecoes = ['pressao','glicemia','peso','remedios','receitas_uso_continuo','historico_tomadas','cotacoes_farmacia'];
-  const map = {'receitas_uso_continuo':'receitas'};
-  let total = 0;
-
-  for (const nomeAntigo of colecoes) {
-    try {
-      const nomeNovo = map[nomeAntigo] || nomeAntigo;
-      // Verifica se já tem dados no novo caminho
-      const novoSnap = await getDocs(col(nomeNovo));
-      if (novoSnap.size > 0) continue; // já migrado, pula
-
-      // Busca dados antigos
-      const antigoSnap = await getDocs(collection(FS, nomeAntigo));
-      if (antigoSnap.empty) continue;
-
-      // Copia para o novo caminho
-      for (const d of antigoSnap.docs) {
-        await addDoc(col(nomeNovo), d.data());
-        total++;
-      }
-    } catch(e) {
-      console.warn('Migração falhou para', nomeAntigo, e.message);
-    }
+/* ══ DASHBOARD ══ */
+async function updateDash(){
+  const [bps,gls,wts,meds]=await Promise.all([dbGetAll('pressao'),dbGetAll('glicemia'),dbGetAll('peso'),dbGetAll('remedios')]);
+  if(bps.length){const l=bps[0];document.getElementById('d-sis').textContent=l.sis;document.getElementById('d-dia').textContent=l.dia;document.getElementById('d-bp-i').textContent=(l.moment||'')+' · '+fdt(l.dt);}
+  if(gls.length){const l=gls[0];document.getElementById('d-gl').textContent=l.val;document.getElementById('d-gl-i').textContent=(l.moment||'')+' · '+fdt(l.dt);}
+  if(wts.length){
+    const l=wts[0];document.getElementById('d-wt').textContent=l.val;document.getElementById('d-imc').textContent=l.imc||'—';
+    if(l.imc)document.getElementById('d-imc-class').textContent=classifyIMC(l.imc)[0];
+    if(wts.length>=2){const diff=l.val-wts[1].val,dAbs=Math.abs(diff),kg2=Math.floor(dAbs),g2=Math.round((dAbs-kg2)*1000);let txt;if(dAbs<0.05)txt='⚖️ Peso estável';else if(diff>0)txt=`📈 +${kg2>0?kg2+' kg':''}${g2>0?' '+g2+'g':''} desde ${wts[1].val} kg`;else txt=`📉 -${kg2>0?kg2+' kg':''}${g2>0?' '+g2+'g':''} desde ${wts[1].val} kg`;document.getElementById('d-wt-i').textContent=txt;}
+    else{document.getElementById('d-wt-i').textContent=fdt(l.dt);}
   }
-
-  if (total > 0) {
-    toast(`✓ ${total} registros migrados para sua conta!`);
-    await updateDash();
-  }
-}
-async function updateDash() {
-  const [bps, gls, wts, meds] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('remedios')]);
-  if (bps.length) { const l=bps[0]; document.getElementById('d-sis').textContent=l.sis; document.getElementById('d-dia').textContent=l.dia; document.getElementById('d-bp-i').textContent=(l.moment||'')+' · '+fdt(l.dt); }
-  if (gls.length) { const l=gls[0]; document.getElementById('d-gl').textContent=l.val; document.getElementById('d-gl-i').textContent=(l.moment||'')+' · '+fdt(l.dt); }
-  if (wts.length) {
-    const l=wts[0]; document.getElementById('d-wt').textContent=l.val; document.getElementById('d-imc').textContent=l.imc||'—';
-    if (l.imc) document.getElementById('d-imc-class').textContent=classifyIMC(l.imc)[0];
-    if (wts.length>=2) { const diff=l.val-wts[1].val, dAbs=Math.abs(diff), kg2=Math.floor(dAbs), g2=Math.round((dAbs-kg2)*1000); let txt; if(dAbs<0.05) txt='⚖️ Peso estável'; else if(diff>0) txt=`📈 +${kg2>0?kg2+' kg':''}${g2>0?' '+g2+'g':''} desde ${wts[1].val} kg`; else txt=`📉 -${kg2>0?kg2+' kg':''}${g2>0?' '+g2+'g':''} desde ${wts[1].val} kg`; document.getElementById('d-wt-i').textContent=txt; }
-    else { document.getElementById('d-wt-i').textContent=fdt(l.dt); }
-  }
-  document.getElementById('sum-bp').textContent=bps.length; document.getElementById('sum-gl').textContent=gls.length; document.getElementById('sum-wt').textContent=wts.length; document.getElementById('sum-med').textContent=meds.length;
-  const allTimes=[]; meds.forEach(m=>(m.times||[]).forEach(t=>allTimes.push({time:t,name:m.name,dose:m.dose}))); allTimes.sort((a,b)=>a.time.localeCompare(b.time));
-  document.getElementById('d-meds-today').innerHTML = allTimes.length ? allTimes.map(t=>`<div class="sched-row"><div><div style="font-size:15px;font-weight:700">⏱️ ${t.time} — ${t.name}</div><div style="font-size:12px;color:var(--t3)">${t.dose||'Dose não informada'}</div></div><button class="btn-take" onclick="W.registrarTomada('${t.name}','${t.dose||''}')"><i class="ti ti-check"></i> Tomar</button></div>`).join('') : '<div class="empty" style="padding:8px"><p>Nenhum remédio com horário</p></div>';
+  document.getElementById('sum-bp').textContent=bps.length;document.getElementById('sum-gl').textContent=gls.length;document.getElementById('sum-wt').textContent=wts.length;document.getElementById('sum-med').textContent=meds.length;
+  const allTimes=[];meds.forEach(m=>(m.times||[]).forEach(t=>allTimes.push({time:t,name:m.name,dose:m.dose})));allTimes.sort((a,b)=>a.time.localeCompare(b.time));
+  document.getElementById('d-meds-today').innerHTML=allTimes.length?allTimes.map(t=>`<div class="sched-row"><div><div style="font-size:15px;font-weight:700">⏱️ ${t.time} — ${t.name}</div><div style="font-size:12px;color:var(--t3)">${t.dose||'Dose não informada'}</div></div><button class="btn-take" onclick="W.registrarTomada('${t.name}','${t.dose||''}')"><i class="ti ti-check"></i> Tomar</button></div>`).join(''):'<div class="empty" style="padding:8px"><p>Nenhum remédio com horário</p></div>';
   renderChart('chart-bp',[...bps].slice(0,10).reverse(),r=>r.sis,'#1a56a0',80,200);
   renderChart('chart-gl',[...gls].slice(0,10).reverse(),r=>r.val,'#1a7a3c',50,350);
   renderChart('chart-wt',[...wts].slice(0,10).reverse(),r=>r.val,'#0e7a6e',40,150);
 }
 
 /* ══ HISTÓRICO ══ */
-async function renderHist() {
-  const [bps, gls, wts, intakes] = await Promise.all([dbGetAll('pressao'), dbGetAll('glicemia'), dbGetAll('peso'), dbGetAll('historico_tomadas')]);
-  document.getElementById('hist-bp').innerHTML = bps.length ? '<div class="card">'+bps.map(r=>{const[lbl,cls]=classifyBP(r.sis,r.dia);return`<div class="li"><div class="ico bp"><i class="ti ti-heart"></i></div><div class="lb"><div class="lv">${r.sis}/${r.dia} mmHg${r.pulse?` · ${r.pulse} bpm`:''}</div><div class="lm">${r.moment||''} · ${fdt(r.dt)}</div>${r.note?`<span class="ln">${r.note}</span>`:''}</div><div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`;}).join('')+'</div>' : '<div class="card"><div class="empty"><i class="ti ti-heart-off"></i><p>Nenhum registro</p></div></div>';
-  document.getElementById('hist-gl').innerHTML = gls.length ? '<div class="card">'+gls.map(r=>{const[lbl,cls]=classifyGL(r.val,r.moment);return`<div class="li"><div class="ico gl"><i class="ti ti-droplet"></i></div><div class="lb"><div class="lv">${r.val} mg/dL</div><div class="lm">${r.moment||''} · ${fdt(r.dt)}</div>${r.note?`<span class="ln">${r.note}</span>`:''}</div><div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`;}).join('')+'</div>' : '<div class="card"><div class="empty"><i class="ti ti-droplet-off"></i><p>Nenhum registro</p></div></div>';
+async function renderHist(){
+  const [bps,gls,wts,intakes]=await Promise.all([dbGetAll('pressao'),dbGetAll('glicemia'),dbGetAll('peso'),dbGetAll('historico_tomadas')]);
+  document.getElementById('hist-bp').innerHTML=bps.length?'<div class="card">'+bps.map(r=>{const[lbl,cls]=classifyBP(r.sis,r.dia);return`<div class="li"><div class="ico bp"><i class="ti ti-heart"></i></div><div class="lb"><div class="lv">${r.sis}/${r.dia} mmHg${r.pulse?` · ${r.pulse} bpm`:''}</div><div class="lm">${r.moment||''} · ${fdt(r.dt)}</div>${r.note?`<span class="ln">${r.note}</span>`:''}</div><div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteBP('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`;}).join('')+'</div>':'<div class="card"><div class="empty"><i class="ti ti-heart-off"></i><p>Nenhum registro</p></div></div>';
+  document.getElementById('hist-gl').innerHTML=gls.length?'<div class="card">'+gls.map(r=>{const[lbl,cls]=classifyGL(r.val,r.moment);return`<div class="li"><div class="ico gl"><i class="ti ti-droplet"></i></div><div class="lb"><div class="lv">${r.val} mg/dL</div><div class="lm">${r.moment||''} · ${fdt(r.dt)}</div>${r.note?`<span class="ln">${r.note}</span>`:''}</div><div class="la"><span class="badge ${cls}">${lbl}</span><button class="ibtn" onclick="W.deleteGL('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`;}).join('')+'</div>':'<div class="card"><div class="empty"><i class="ti ti-droplet-off"></i><p>Nenhum registro</p></div></div>';
 
-  if (!wts.length) {
-    document.getElementById('hist-wt').innerHTML = '<div class="card"><div class="empty"><i class="ti ti-scale"></i><p>Nenhum registro</p></div></div>';
-  } else {
-    let compareHtml = '';
-    if (wts.length >= 2) {
-      const atual=wts[0].val, ant=wts[1].val, diff=atual-ant, dAbs=Math.abs(diff), kg2=Math.floor(dAbs), g2=Math.round((dAbs-kg2)*1000);
-      let cls,icon,titulo,sub;
-      if(dAbs<0.05){cls='igual';icon='⚖️';titulo='Peso estável';sub='Sem variação significativa';}
-      else if(diff>0){cls='ganhou';icon='📈';titulo=`+${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`;sub=`Aumentou de ${ant} kg para ${atual} kg`;}
-      else{cls='perdeu';icon='📉';titulo=`-${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`;sub=`Diminuiu de ${ant} kg para ${atual} kg`;}
-      compareHtml=`<div class="wt-compare ${cls}" style="margin-bottom:13px"><span class="wt-compare-icon">${icon}</span><div class="wt-compare-val">${titulo}</div><div class="wt-compare-lbl">${sub}</div></div>`;
-    }
-    const listHtml = '<div class="card">'+wts.map((r,i)=>{
-      let diffTag='';
-      if(i<wts.length-1){const d=r.val-wts[i+1].val,dA=Math.abs(d),k=Math.floor(dA),g=Math.round((dA-k)*1000);const sinal=d>0?'▲':d<0?'▼':'=';const cor=d>0?'var(--red)':d<0?'var(--green)':'var(--t3)';const txt=dA<0.05?'= estável':`${sinal} ${k>0?k+' kg':''}${g>0?' '+g+'g':''}`;diffTag=`<span style="font-size:11px;font-weight:700;color:${cor};margin-left:6px">${txt}</span>`;}
-      return`<div class="li"><div class="ico wt"><i class="ti ti-scale"></i></div><div class="lb"><div class="lv">${r.val} kg${diffTag}</div><div class="lm">${r.moment?r.moment+' · ':''}${fdt(r.dt)}</div>${r.imc?`<div class="lm">IMC: ${r.imc} · ${classifyIMC(r.imc)[0]}</div>`:''}</div><div class="la"><button class="ibtn" onclick="W.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`;
-    }).join('')+'</div>';
-    document.getElementById('hist-wt').innerHTML = compareHtml + listHtml;
+  if(!wts.length){document.getElementById('hist-wt').innerHTML='<div class="card"><div class="empty"><i class="ti ti-scale"></i><p>Nenhum registro</p></div></div>';}
+  else{
+    let compareHtml='';
+    if(wts.length>=2){const atual=wts[0].val,ant=wts[1].val,diff=atual-ant,dAbs=Math.abs(diff),kg2=Math.floor(dAbs),g2=Math.round((dAbs-kg2)*1000);let cls,icon,titulo,sub;if(dAbs<0.05){cls='igual';icon='⚖️';titulo='Peso estável';sub='Sem variação significativa';}else if(diff>0){cls='ganhou';icon='📈';titulo=`+${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`;sub=`Aumentou de ${ant} kg para ${atual} kg`;}else{cls='perdeu';icon='📉';titulo=`-${kg2>0?kg2+' kg':''}${g2>0?' e '+g2+' g':''}`;sub=`Diminuiu de ${ant} kg para ${atual} kg`;}compareHtml=`<div class="wt-compare ${cls}" style="margin-bottom:13px"><span class="wt-compare-icon">${icon}</span><div class="wt-compare-val">${titulo}</div><div class="wt-compare-lbl">${sub}</div></div>`;}
+    const listHtml='<div class="card">'+wts.map((r,i)=>{let diffTag='';if(i<wts.length-1){const d=r.val-wts[i+1].val,dA=Math.abs(d),k=Math.floor(dA),g=Math.round((dA-k)*1000);const sinal=d>0?'▲':d<0?'▼':'=';const cor=d>0?'var(--red)':d<0?'var(--green)':'var(--t3)';const txt=dA<0.05?'= estável':`${sinal} ${k>0?k+' kg':''}${g>0?' '+g+'g':''}`;diffTag=`<span style="font-size:11px;font-weight:700;color:${cor};margin-left:6px">${txt}</span>`;}return`<div class="li"><div class="ico wt"><i class="ti ti-scale"></i></div><div class="lb"><div class="lv">${r.val} kg${diffTag}</div><div class="lm">${r.moment?r.moment+' · ':''}${fdt(r.dt)}</div>${r.imc?`<div class="lm">IMC: ${r.imc} · ${classifyIMC(r.imc)[0]}</div>`:''}</div><div class="la"><button class="ibtn" onclick="W.deleteWT('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`;}).join('')+'</div>';
+    document.getElementById('hist-wt').innerHTML=compareHtml+listHtml;
   }
-  document.getElementById('hist-intake').innerHTML = intakes.length ? '<div class="card">'+intakes.map(r=>`<div class="li"><div class="ico med"><i class="ti ti-pill"></i></div><div class="lb"><div class="lv" style="color:var(--blue)">✓ ${r.nome}</div><div class="lm">${r.dose||''} · ${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteIntake('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('')+'</div>' : '<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum histórico de tomadas</p></div></div>';
+  document.getElementById('hist-intake').innerHTML=intakes.length?'<div class="card">'+intakes.map(r=>`<div class="li"><div class="ico med"><i class="ti ti-pill"></i></div><div class="lb"><div class="lv" style="color:var(--blue)">✓ ${r.nome}</div><div class="lm">${r.dose||''} · ${fdt(r.dt)}</div></div><div class="la"><button class="ibtn" onclick="W.deleteIntake('${r.id}')"><i class="ti ti-trash"></i></button></div></div>`).join('')+'</div>':'<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum histórico de tomadas</p></div></div>';
 }
 
 /* ══ TOMADAS ══ */
-async function registrarTomada(nome, dose) {
-  try { await dbAdd('historico_tomadas', {nome, dose, dt:getNow()}); toast(`✓ ${nome} registrado como tomado!`); } catch(e) { toast('Erro: '+e.message,true); }
+async function registrarTomada(nome,dose){
+  try{await dbAdd('historico_tomadas',{nome,dose,dt:getNow()});toast(`✓ ${nome} registrado como tomado!`);}catch(e){toast('Erro: '+e.message,true);}
 }
-function deleteIntake(id) { confirm2('Excluir tomada?','Remover registro?', async () => { await dbDelete('historico_tomadas',id); toast('✓ Removido'); renderHist(); }); }
+function deleteIntake(id){confirm2('Excluir tomada?','Remover registro?',async()=>{await dbDelete('historico_tomadas',id);toast('✓ Removido');renderHist();});}
 
-/* ══ IMG ══ */
-function openImg(src) { document.getElementById('img-src').src=src; document.getElementById('img-modal').classList.add('on'); }
-function closeImg() { document.getElementById('img-modal').classList.remove('on'); }
+/* ══ IMAGEM ══ */
+function openImg(src){document.getElementById('img-src').src=src;document.getElementById('img-modal').classList.add('on');}
+function closeImg(){document.getElementById('img-modal').classList.remove('on');}
 
 /* ══ WINDOW ══ */
-const W = {
-  showLogin, showRegister, doLogin, doRegister, doLogout,
-  goPage, switchHist,
-  saveBP, deleteBP, saveGL, deleteGL, saveWT, deleteWT,
-  openMedModal, closeMedModal, addTime, removeTime, saveMed, deleteMed, addMedPhoto, removeMedPhoto,
-  openRxModal, closeRxModal, saveRx, deleteRx, addRxPhoto, removeRxPhoto,
-  registrarTomada, deleteIntake,
-  openImg, closeImg, closeConfirm
+const W={
+  goPage,switchHist,
+  saveBP,deleteBP,saveGL,deleteGL,saveWT,deleteWT,
+  openMedModal,closeMedModal,addTime,removeTime,saveMed,deleteMed,addMedPhoto,removeMedPhoto,
+  openRxModal,closeRxModal,saveRx,deleteRx,addRxPhoto,removeRxPhoto,
+  registrarTomada,deleteIntake,
+  openImg,closeImg,closeConfirm
 };
-window.W = W;
+window.W=W;
 
-/* ══ INICIALIZAÇÃO ══ */
-setupChips('[data-bpm]', v => bpMoment=v);
-setupChips('[data-bpp]', v => bpPos=v);
-setupChips('[data-glm]', v => glMoment=v);
-setupChips('[data-glt]', v => glType=v);
-setupChips('[data-wtm]', v => wtMoment=v);
+/* ══ EVENTOS DIRETOS ══ */
+setupChips('[data-bpm]',v=>bpMoment=v);
+setupChips('[data-bpp]',v=>bpPos=v);
+setupChips('[data-glm]',v=>glMoment=v);
+setupChips('[data-glt]',v=>glType=v);
+setupChips('[data-wtm]',v=>wtMoment=v);
 
-['wt-val','wt-alt'].forEach(id => {
-  document.getElementById(id)?.addEventListener('input', () => {
-    const p=parseFloat(document.getElementById('wt-val').value), a=parseFloat(document.getElementById('wt-alt').value);
+['wt-val','wt-alt'].forEach(id=>{
+  document.getElementById(id)?.addEventListener('input',()=>{
+    const p=parseFloat(document.getElementById('wt-val').value),a=parseFloat(document.getElementById('wt-alt').value);
     const prev=document.getElementById('wt-imc-preview');
     if(p&&a>=100){const imc=calcIMC(p,a);const[lbl]=classifyIMC(imc);document.getElementById('wt-imc-val').textContent=imc;document.getElementById('wt-imc-lbl').textContent=lbl;prev.style.display='block';}
     else{prev.style.display='none';}
   });
 });
 
-document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') W.doLogin(); });
-document.getElementById('login-email').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('login-pass').focus(); });
-document.getElementById('reg-pass2').addEventListener('keydown', e => { if(e.key==='Enter') W.doRegister(); });
-document.getElementById('confirm-ok').onclick = () => { if(confirmCb) confirmCb(); closeConfirm(); };
+document.getElementById('btn-login').addEventListener('click', doLogin);
+document.getElementById('btn-go-register').addEventListener('click', showRegister);
+document.getElementById('btn-register').addEventListener('click', doRegister);
+document.getElementById('btn-go-login').addEventListener('click', showLogin);
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
+document.getElementById('reg-pass2').addEventListener('keydown',e=>{if(e.key==='Enter')doRegister();});
+document.getElementById('confirm-ok').onclick=()=>{if(confirmCb)confirmCb();closeConfirm();};
 
-// Botão sair — listener direto sem depender do W
+// BOTÃO SAIR — listener direto no elemento
 document.getElementById('logout-btn').addEventListener('click', async () => {
-  try {
-    // Mostra login ANTES de chamar signOut para evitar delay visual
-    showLogin();
-    await signOut(auth);
-  } catch(e) {
-    toast('Erro ao sair: ' + e.message, true);
-  }
+  showLogin();
+  try { await signOut(auth); } catch(e) { console.error(e); }
 });
 
-// Monitora autenticação
+/* ══ AUTENTICAÇÃO ══ */
 onAuthStateChanged(auth, async user => {
   if (user) {
     currentUID = user.uid;
@@ -990,7 +956,15 @@ onAuthStateChanged(auth, async user => {
     document.getElementById('bp-dt').value = getNow();
     document.getElementById('gl-dt').value = getNow();
     document.getElementById('wt-dt').value = getNow();
-    try { await updateDash(); } catch(e) { console.error(e); }
+    try {
+      // Migra dados antigos automaticamente (só faz uma vez)
+      await migrarDados();
+      await updateDash();
+    } catch(e) {
+      console.error('Erro ao carregar:', e);
+      document.getElementById('db-dot').style.background = '#b02020';
+      document.getElementById('db-txt').textContent = '⚠️ Erro: ' + e.message;
+    }
   } else {
     currentUID = null;
     showLogin();
