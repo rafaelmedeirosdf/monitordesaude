@@ -578,7 +578,10 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
   <div id="pg-cpap" class="pg">
     <div class="page-title">CPAP — Registro Noturno</div>
     <div class="card">
-      <div class="card-title"><i class="ti ti-lungs" style="color:#f97316"></i> Registrar uso do CPAP</div>
+      <div class="card-title"><i class="ti ti-lungs" style="color:#f97316"></i> ResMed C-Series Tango</div>
+      <div style="font-size:12px;color:var(--c2);background:var(--o3);border-radius:10px;padding:10px 12px;margin-bottom:14px;line-height:1.5">
+        <i class="ti ti-info-circle" style="color:var(--o)"></i> Seu aparelho é <b>CPAP fixo</b> e mostra apenas as <b>horas de uso</b> no visor. O IAH vem da sua polissonografia.
+      </div>
       <div class="f"><label>Usou CPAP na noite anterior?</label>
         <div class="chips">
           <button class="chip on g" data-cpap-uso="Sim">✅ Sim</button>
@@ -586,33 +589,45 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
         </div>
       </div>
       <div id="cpap-fields">
-        <div class="fr f">
-          <div><label>Horas de uso</label><input class="fi" id="cpap-h" type="number" inputmode="decimal" placeholder="6.5" step="0.5"></div>
-          <div><label>IAH (apneias/h)</label><input class="fi" id="cpap-iah" type="number" inputmode="decimal" placeholder="1.2" step="0.1"></div>
-        </div>
-        <div class="f"><label>Vedação da máscara</label>
+        <div class="f"><label>Horas de uso (visor do aparelho)</label><input class="fi" id="cpap-h" type="number" inputmode="decimal" placeholder="6.5" step="0.5"></div>
+        <div class="f"><label>Qualidade do sono</label>
           <div class="chips">
-            <button class="chip on g" data-vedacao="Boa">✅ Boa</button>
-            <button class="chip r" data-vedacao="Alta Fuga">⚠️ Alta Fuga</button>
+            <button class="chip on g" data-sono="Boa">😴 Boa</button>
+            <button class="chip a" data-sono="Regular">😐 Regular</button>
+            <button class="chip r" data-sono="Ruim">😩 Ruim</button>
+          </div>
+        </div>
+        <div class="f"><label>Acordou descansado?</label>
+          <div class="chips">
+            <button class="chip on g" data-descanso="Sim">✅ Sim</button>
+            <button class="chip" data-descanso="Mais ou menos">😐 +/-</button>
+            <button class="chip r" data-descanso="Não">❌ Não</button>
           </div>
         </div>
       </div>
-      <div class="f"><label>Qualidade do sono</label>
-        <div class="chips">
-          <button class="chip on" data-sono="Boa">😴 Boa</button>
-          <button class="chip a" data-sono="Regular">😐 Regular</button>
-          <button class="chip r" data-sono="Ruim">😩 Ruim</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="cpap-n" type="text" placeholder="Ex.: acordei 2x..."></div>
+      <div class="f"><label>Observação</label><input class="fi" id="cpap-n" type="text" placeholder="Ex.: acordei 2x, máscara incomodou..."></div>
       <div class="f"><label>Data (noite de referência)</label><input class="fi" id="cpap-dt" type="date"></div>
       <button class="btn orange" onclick="saveCPAP()"><i class="ti ti-device-floppy"></i> Salvar registro CPAP</button>
     </div>
+
     <div class="card">
-      <div class="card-title"><i class="ti ti-info-circle"></i> Metas terapêuticas CPAP</div>
-      <div class="ref-item"><div class="ref-dot" style="background:#10b981"></div><span><b>IAH &lt; 5:</b> controle excelente</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#f59e0b"></div><span><b>Uso ≥ 6h/noite:</b> adesão adequada</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#ef4444"></div><span><b>Fuga &gt; 24 L/min:</b> alta fuga — revisar máscara</span></div>
+      <div class="card-title"><i class="ti ti-clipboard-text" style="color:#0ea5e9"></i> Dados da polissonografia</div>
+      <div style="font-size:12px;color:var(--c2);margin-bottom:12px;line-height:1.5">Registre os valores do seu exame de sono (fixos, atualize quando fizer novo exame).</div>
+      <div class="fr f">
+        <div><label>IAH do exame (apneias/h)</label><input class="fi" id="poli-iah" type="number" inputmode="decimal" placeholder="Ex.: 32" step="0.1"></div>
+        <div><label>Pressão CPAP (cmH₂O)</label><input class="fi" id="poli-pressao" type="number" inputmode="decimal" placeholder="Ex.: 10" step="0.5"></div>
+      </div>
+      <div class="f"><label>Data do exame</label><input class="fi" id="poli-dt" type="date"></div>
+      <button class="btn teal" onclick="savePoli()"><i class="ti ti-device-floppy"></i> Salvar dados do exame</button>
+      <div id="poli-atual" style="display:none;margin-top:12px;background:var(--t3);border-radius:11px;padding:12px;text-align:center;border:1.5px solid var(--t)"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-info-circle"></i> Metas terapêuticas</div>
+      <div class="ref-item"><div class="ref-dot" style="background:#10b981"></div><span><b>Uso ≥ 6h/noite:</b> adesão adequada</span></div>
+      <div class="ref-item"><div class="ref-dot" style="background:#f59e0b"></div><span><b>Uso 4–6h:</b> adesão parcial</span></div>
+      <div class="ref-item"><div class="ref-dot" style="background:#ef4444"></div><span><b>Uso &lt; 4h:</b> adesão insuficiente</span></div>
+      <div class="ref-item"><div class="ref-dot" style="background:#0ea5e9"></div><span><b>IAH &lt; 5</b> (exame com CPAP): controle eficaz</span></div>
     </div>
   </div>
 
@@ -882,7 +897,7 @@ async function migrar(){
 var bpM='Acordar/Manhã', bpP='Sentado', bpCafe='Não', bpTreino='Não', bpAdes='100% Rígida';
 var glM='Jejum', glT='Glicosímetro';
 var wtM='Manhã em jejum';
-var cpapUso='Sim', vedacao='Boa', sonoQ='Boa';
+var cpapUso='Sim', sonoQ='Boa', descanso='Sim';
 var medTimes=[], medPics=[], rxPics=[];
 var confirmCb=null;
 
@@ -1002,6 +1017,7 @@ function goPage(name,btn){
   if(name==='rx')renderRx();
   if(name==='lab')renderLabs();
   if(name==='sym')renderEpworth();
+  if(name==='cpap')renderPoli();
   if(name==='wt')document.getElementById('wt-cmp').style.display='none';
 }
 function switchHist(t){
@@ -1072,17 +1088,41 @@ function delWT(id){confirm2('Excluir peso','Remover?',async function(){await dbD
 /* ══ CPAP ══ */
 async function saveCPAP(){
   var horas=parseFloat(document.getElementById('cpap-h').value)||0;
-  var iah=parseFloat(document.getElementById('cpap-iah').value)||null;
   var note=document.getElementById('cpap-n').value.trim();
   var dt=document.getElementById('cpap-dt').value||today();
   try{
-    await dbAdd('cpap',{uso:cpapUso,horas:cpapUso==='Sim'?horas:0,iah:cpapUso==='Sim'?iah:null,vedacao:cpapUso==='Sim'?vedacao:null,sono:sonoQ,note:note,dt:dt});
-    ['cpap-h','cpap-iah','cpap-n'].forEach(function(id){document.getElementById(id).value='';});
+    await dbAdd('cpap',{uso:cpapUso,horas:cpapUso==='Sim'?horas:0,sono:sonoQ,descanso:descanso,note:note,dt:dt});
+    ['cpap-h','cpap-n'].forEach(function(id){document.getElementById(id).value='';});
     document.getElementById('cpap-dt').value=today();
     toast('✓ CPAP registrado!');updateDash();
   }catch(e){toast('Erro: '+e.message,true);}
 }
 function delCPAP(id){confirm2('Excluir registro CPAP','Remover?',async function(){await dbDel('cpap',id);toast('✓ Excluído');renderHist();updateDash();});}
+
+/* ══ POLISSONOGRAFIA (dados fixos do exame) ══ */
+async function savePoli(){
+  var iah=parseFloat(document.getElementById('poli-iah').value)||null;
+  var pressao=parseFloat(document.getElementById('poli-pressao').value)||null;
+  var dt=document.getElementById('poli-dt').value||today();
+  if(iah==null&&pressao==null){toast('⚠️ Preencha IAH ou pressão',true);return;}
+  try{
+    await dbAdd('polissono',{iah:iah,pressao:pressao,dt:dt+'T00:00',data:dt});
+    toast('✓ Dados do exame salvos!');
+    renderPoli();
+  }catch(e){toast('Erro: '+e.message,true);}
+}
+async function renderPoli(){
+  var polis=await dbAll('polissono');
+  var el=document.getElementById('poli-atual');
+  if(!el)return;
+  if(polis.length){
+    var p=polis[0];
+    var iahCls=p.iah!=null?(p.iah<5?'var(--g2)':p.iah<15?'var(--a2)':p.iah<30?'#ea580c':'var(--r2)'):'var(--c2)';
+    var iahLbl=p.iah!=null?(p.iah<5?'Normal':p.iah<15?'Leve':p.iah<30?'Moderada':'Grave'):'';
+    el.innerHTML='<div style="font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px">Exame atual ('+fdate(p.data)+')</div><div style="display:flex;justify-content:center;gap:20px"><div><div style="font-size:22px;font-weight:800;color:'+iahCls+'">'+(p.iah!=null?p.iah:'—')+'</div><div style="font-size:11px;color:var(--c3)">IAH '+(iahLbl?'· '+iahLbl:'')+'</div></div>'+(p.pressao!=null?'<div><div style="font-size:22px;font-weight:800;color:var(--c1)">'+p.pressao+'</div><div style="font-size:11px;color:var(--c3)">cmH₂O</div></div>':'')+'</div>';
+    el.style.display='block';
+  }else el.style.display='none';
+}
 
 /* ══ REMÉDIOS ══ */
 function addMedPhoto(inp){Array.from(inp.files).forEach(function(f){var r=new FileReader();r.onload=function(e){medPics.push(e.target.result);renderMedPhotos();};r.readAsDataURL(f);});inp.value='';}
@@ -1164,12 +1204,10 @@ async function updateDash(){
   // CPAP Dashboard
   if(cpaps.length){
     var lc=cpaps[0];
-    var cpapOk=lc.uso==='Sim'&&lc.horas>=6&&(lc.iah==null||lc.iah<5)&&lc.vedacao==='Boa';
-    var cpapParcial=lc.uso==='Sim'&&(lc.horas<6||(lc.iah&&lc.iah>=5)||lc.vedacao==='Alta Fuga');
-    var cls1=cpapOk?'good':cpapParcial?'':'bad';
-    var cls2=lc.iah!=null?(lc.iah<5?'good':'bad'):'';
-    var cls3=lc.vedacao==='Boa'?'good':lc.vedacao?'bad':'';
-    document.getElementById('d-cpap').innerHTML='<div class="cpap-stat"><div class="cpap-box '+cls1+'"><div class="cpap-lbl">Uso</div><div class="cpap-val">'+(lc.uso==='Sim'?lc.horas+'h':'—')+'</div></div><div class="cpap-box '+cls2+'"><div class="cpap-lbl">IAH</div><div class="cpap-val">'+(lc.iah!=null?lc.iah:'—')+'</div></div><div class="cpap-box '+cls3+'"><div class="cpap-lbl">Máscara</div><div class="cpap-val" style="font-size:13px">'+(lc.vedacao||'—')+'</div></div></div><div style="font-size:12px;color:var(--c3)">Noite de '+fdt(lc.dt)+'</div>';
+    var cls1=lc.uso==='Sim'?(lc.horas>=6?'good':lc.horas>=4?'':'bad'):'bad';
+    var cls2=lc.sono==='Boa'?'good':lc.sono==='Ruim'?'bad':'';
+    var cls3=lc.descanso==='Sim'?'good':lc.descanso==='Não'?'bad':'';
+    document.getElementById('d-cpap').innerHTML='<div class="cpap-stat"><div class="cpap-box '+cls1+'"><div class="cpap-lbl">Horas uso</div><div class="cpap-val">'+(lc.uso==='Sim'?lc.horas+'h':'Não usou')+'</div></div><div class="cpap-box '+cls2+'"><div class="cpap-lbl">Sono</div><div class="cpap-val" style="font-size:14px">'+(lc.sono||'—')+'</div></div><div class="cpap-box '+cls3+'"><div class="cpap-lbl">Descansou</div><div class="cpap-val" style="font-size:14px">'+(lc.descanso||'—')+'</div></div></div><div style="font-size:12px;color:var(--c3)">Noite de '+fdt(lc.dt)+'</div>';
   }
   document.getElementById('s-bp').textContent=bps.length;document.getElementById('s-gl').textContent=gls.length;document.getElementById('s-wt').textContent=wts.length;document.getElementById('s-med').textContent=meds.length;
   var allT=[];meds.forEach(function(m){(m.times||[]).forEach(function(t){allT.push({time:t,name:m.name,dose:m.dose});});});allT.sort(function(a,b){return a.time.localeCompare(b.time);});
@@ -1191,10 +1229,10 @@ async function renderHist(){
   document.getElementById('h-wt').innerHTML=cmp+'<div class="card">'+wts.map(function(r,i){var dt2='';if(i<wts.length-1){var d=r.val-wts[i+1].val,dA=Math.abs(d),k=Math.floor(dA),g=Math.round((dA-k)*1000);var s=d>0?'▲':d<0?'▼':'=';var c=d>0?'var(--r)':d<0?'var(--g)':'var(--c3)';dt2='<span style="font-size:11px;font-weight:700;color:'+c+';margin-left:6px">'+s+' '+(k>0?k+' kg':'')+(g>0?' '+g+'g':'')+'</span>';}return'<div class="li"><div class="li-icon wt"><i class="ti ti-scale"></i></div><div class="li-body"><div class="li-val">'+r.val+' kg'+dt2+'</div><div class="li-meta">'+(r.moment||'')+' · '+fdt(r.dt)+'</div>'+(r.imc?'<div class="li-meta">IMC: '+r.imc+' · '+clIMC(r.imc)[0]+'</div>':'')+'</div><div class="li-right"><button class="del-btn" onclick="delWT(\''+r.id+'\')"><i class="ti ti-trash"></i></button></div></div>';}).join('')+'</div>';}
   // CPAP
   document.getElementById('h-cp').innerHTML=cpaps.length?'<div class="card">'+cpaps.map(function(r){
-    var ok=r.uso==='Sim'&&r.horas>=6&&(r.iah==null||r.iah<5)&&r.vedacao==='Boa';
-    var parcial=r.uso==='Sim'&&(r.horas<6||(r.iah&&r.iah>=5)||r.vedacao==='Alta Fuga');
-    var badge=r.uso==='Não'?'<span class="badge b-bad">Não usou</span>':ok?'<span class="badge b-ok">Ótimo</span>':parcial?'<span class="badge b-warn">Parcial</span>':'<span class="badge b-gray">—</span>';
-    return'<div class="li"><div class="li-icon cpap"><i class="ti ti-lungs"></i></div><div class="li-body"><div class="li-val">'+(r.uso==='Sim'?r.horas+'h de uso':'Não usou CPAP')+'</div><div class="li-meta">IAH: '+(r.iah!=null?r.iah:'—')+' · Máscara: '+(r.vedacao||'—')+'</div><div class="li-meta">Noite de '+fdt(r.dt)+'</div>'+(r.note?'<span class="li-tag">'+r.note+'</span>':'')+'</div><div class="li-right">'+badge+'<button class="del-btn" onclick="delCPAP(\''+r.id+'\')"><i class="ti ti-trash"></i></button></div></div>';
+    var badge=r.uso==='Não'?'<span class="badge b-bad">Não usou</span>':r.horas>=6?'<span class="badge b-ok">Adesão ótima</span>':r.horas>=4?'<span class="badge b-warn">Parcial</span>':'<span class="badge b-bad">Insuficiente</span>';
+    var sonoTag=r.sono?'<span class="li-tag">Sono: '+r.sono+'</span>':'';
+    var descTag=r.descanso?'<span class="li-tag" style="margin-left:4px">Descansou: '+r.descanso+'</span>':'';
+    return'<div class="li"><div class="li-icon cpap"><i class="ti ti-lungs"></i></div><div class="li-body"><div class="li-val">'+(r.uso==='Sim'?r.horas+'h de uso':'Não usou CPAP')+'</div><div class="li-meta">Noite de '+fdt(r.dt)+'</div>'+sonoTag+descTag+(r.note?'<span class="li-tag" style="margin-left:4px">'+r.note+'</span>':'')+'</div><div class="li-right">'+badge+'<button class="del-btn" onclick="delCPAP(\''+r.id+'\')"><i class="ti ti-trash"></i></button></div></div>';
   }).join('')+'</div>':'<div class="card"><div class="empty"><i class="ti ti-lungs"></i><p>Nenhum registro CPAP</p></div></div>';
   // Exames
   document.getElementById('h-lab').innerHTML=labs.length?'<div class="card">'+labs.map(function(r){
@@ -1328,6 +1366,7 @@ async function calcKPIs(){
   var cpaps=await dbAll('cpap');
   var labs=await dbAll('exames');
   var epws=await dbAll('epworth');
+  var polis=await dbAll('polissono');
 
   var sisArr=bps.map(function(r){return r.sis;});
   var diaArr=bps.map(function(r){return r.dia;});
@@ -1337,8 +1376,8 @@ async function calcKPIs(){
   var cargaPAD=bps.length?Math.round(bps.filter(function(r){return r.dia>80;}).length/bps.length*100):null;
 
   // Correlação CPAP
-  var cpapBons=cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>=6&&(c.iah==null||c.iah<5)&&c.vedacao==='Boa';}).map(function(c){return c.dt;});
-  var cpapRuins=cpaps.filter(function(c){return c.uso==='Não'||(c.uso==='Sim'&&(c.horas<6||(c.iah&&c.iah>=5)||c.vedacao==='Alta Fuga'));}).map(function(c){return c.dt;});
+  var cpapBons=cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>=6;}).map(function(c){return c.dt;});
+  var cpapRuins=cpaps.filter(function(c){return c.uso==='Não'||(c.uso==='Sim'&&c.horas<4);}).map(function(c){return c.dt;});
 
   function bpsOnDays(days){
     return bps.filter(function(b){return days.some(function(d){return b.dt&&b.dt.startsWith(d);});});
@@ -1356,14 +1395,14 @@ async function calcKPIs(){
     if(r.sis>=140||r.dia>=90){
       var glDia=gls.filter(function(g){return g.dt&&g.dt.startsWith(r.dt.split('T')[0])&&g.moment==='Jejum';});
       var cpapDia=cpaps.filter(function(c){return c.dt&&(c.dt===r.dt.split('T')[0]||(r.dt&&r.dt.startsWith(c.dt)));});
-      excecoes.push({tipo:'PA',data:r.dt,val:r.sis+'/'+r.dia,cafe:r.cafe||'—',treino:r.treino||'—',adesao:r.adesao||'—',cpap:cpapDia.length?cpapDia[0].uso==='Sim'?cpapDia[0].horas+'h / IAH '+cpapDia[0].iah:'Não usou':'—',gl:glDia.length?glDia[0].val+' mg/dL':'—'});
+      excecoes.push({tipo:'PA',data:r.dt,val:r.sis+'/'+r.dia,cafe:r.cafe||'—',treino:r.treino||'—',adesao:r.adesao||'—',cpap:cpapDia.length?(cpapDia[0].uso==='Sim'?cpapDia[0].horas+'h':'Não usou'):'—',gl:glDia.length?glDia[0].val+' mg/dL':'—'});
     }
   });
   gls.filter(function(r){return r.moment==='Jejum'&&r.val>=126;}).forEach(function(r){
     excecoes.push({tipo:'GL',data:r.dt,val:r.val+' mg/dL',cafe:'—',treino:'—',adesao:'—',cpap:'—',gl:r.val+' mg/dL'});
   });
-  cpaps.filter(function(c){return c.uso==='Não'||(c.uso==='Sim'&&c.horas<6);}).forEach(function(c){
-    excecoes.push({tipo:'CPAP',data:c.dt+'T00:00',val:c.uso==='Não'?'Não usou':c.horas+'h (<6h)',cafe:'—',treino:'—',adesao:'—',cpap:c.uso==='Não'?'Não usou':c.horas+'h',gl:'—'});
+  cpaps.filter(function(c){return c.uso==='Não'||(c.uso==='Sim'&&c.horas<4);}).forEach(function(c){
+    excecoes.push({tipo:'CPAP',data:c.dt+'T00:00',val:c.uso==='Não'?'Não usou':c.horas+'h (<4h)',cafe:'—',treino:'—',adesao:'—',cpap:c.uso==='Não'?'Não usou':c.horas+'h',gl:'—'});
   });
   excecoes.sort(function(a,b){return b.data.localeCompare(a.data);});
 
@@ -1383,6 +1422,9 @@ async function calcKPIs(){
     ppMedio:r2(avg(bps.map(function(r){return r.sis-r.dia;}))),
     ultLab:labs.length?labs[0]:null,
     ultEpworth:epws.length?epws[0]:null,
+    ultPoli:polis.length?polis[0]:null,
+    horasMedia:r2(avg(cpaps.filter(function(c){return c.uso==='Sim';}).map(function(c){return c.horas;}))),
+    adesaoCpap:cpaps.length?Math.round(cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>=4;}).length/cpaps.length*100):null,
     excecoes:excecoes.slice(0,20)
   };
 }
@@ -1491,15 +1533,21 @@ async function gerarPDF(){
 
   // CORRELAÇÃO CPAP
   '<div class="pdf-section">'+
-    '<div class="pdf-section-title">Correlação Clínica — CPAP vs. Pressão Arterial</div>'+
-    '<table class="pdf-corr-table">'+
-      '<thead><tr><th>Cenário CPAP</th><th>Noites</th><th>PAS média</th><th>PAD média</th><th>Diferença</th></tr></thead>'+
+    '<div class="pdf-section-title">Apneia do Sono — CPAP ResMed C-Series Tango (pressão fixa)</div>'+
+    '<div class="pdf-cpap-grid">'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Adesão (noites ≥4h)</div><div class="pdf-cpap-val">'+(kpi.adesaoCpap!=null?kpi.adesaoCpap+'%':'—')+'</div><div class="pdf-cpap-sub">'+(kpi.adesaoCpap!=null?(kpi.adesaoCpap>=70?'Boa adesão':'Adesão a melhorar'):'meta ≥ 70%')+'</div></div>'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Uso médio/noite</div><div class="pdf-cpap-val">'+(kpi.horasMedia!=null?kpi.horasMedia+'h':'—')+'</div><div class="pdf-cpap-sub">meta ≥ 6h</div></div>'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">IAH (polissonografia)</div><div class="pdf-cpap-val">'+(kpi.ultPoli&&kpi.ultPoli.iah!=null?kpi.ultPoli.iah:'—')+'</div><div class="pdf-cpap-sub">'+(kpi.ultPoli&&kpi.ultPoli.iah!=null?(kpi.ultPoli.iah<5?'Normal':kpi.ultPoli.iah<15?'Leve':kpi.ultPoli.iah<30?'Moderada':'Grave'):'exame de sono')+'</div></div>'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Pressão configurada</div><div class="pdf-cpap-val">'+(kpi.ultPoli&&kpi.ultPoli.pressao!=null?kpi.ultPoli.pressao+'':'—')+'</div><div class="pdf-cpap-sub">cmH₂O (fixa)</div></div>'+
+    '</div>'+
+    '<table class="pdf-corr-table" style="margin-top:10px">'+
+      '<thead><tr><th>Cenário de uso</th><th>Noites</th><th>PAS média</th><th>PAD média</th><th>Diferença</th></tr></thead>'+
       '<tbody>'+
-        '<tr><td><span class="pdf-badge pdf-badge-ok">✓ Uso adequado (≥6h + IAH&lt;5 + boa vedação)</span></td><td>'+kpi.nCpapBons+'</td><td>'+(kpi.avgSisBom?'<b>'+kpi.avgSisBom+'</b>':'Sem dados')+'</td><td>'+(kpi.avgDiaBom?'<b>'+kpi.avgDiaBom+'</b>':'Sem dados')+'</td><td>'+(kpi.avgSisBom&&kpi.avgSisRuim?'<span class="pdf-ok">Δ '+(r2(kpi.avgSisRuim-kpi.avgSisBom))+'↓ PAS</span>':'—')+'</td></tr>'+
-        '<tr><td><span class="pdf-badge pdf-badge-bad">✗ Uso inadequado / não uso</span></td><td>'+kpi.nCpapRuins+'</td><td>'+(kpi.avgSisRuim?'<b>'+kpi.avgSisRuim+'</b>':'Sem dados')+'</td><td>'+(kpi.avgDiaRuim?'<b>'+kpi.avgDiaRuim+'</b>':'Sem dados')+'</td><td>—</td></tr>'+
+        '<tr><td><span class="pdf-badge pdf-badge-ok">✓ Uso adequado (≥6h)</span></td><td>'+kpi.nCpapBons+'</td><td>'+(kpi.avgSisBom?'<b>'+kpi.avgSisBom+'</b>':'Sem dados')+'</td><td>'+(kpi.avgDiaBom?'<b>'+kpi.avgDiaBom+'</b>':'Sem dados')+'</td><td>'+(kpi.avgSisBom&&kpi.avgSisRuim?'<span class="pdf-ok">Δ '+(r2(kpi.avgSisRuim-kpi.avgSisBom))+'↓ PAS</span>':'—')+'</td></tr>'+
+        '<tr><td><span class="pdf-badge pdf-badge-bad">✗ Uso insuficiente / não uso</span></td><td>'+kpi.nCpapRuins+'</td><td>'+(kpi.avgSisRuim?'<b>'+kpi.avgSisRuim+'</b>':'Sem dados')+'</td><td>'+(kpi.avgDiaRuim?'<b>'+kpi.avgDiaRuim+'</b>':'Sem dados')+'</td><td>—</td></tr>'+
       '</tbody>'+
     '</table>'+
-    '<div style="margin-top:7px;font-size:8pt;color:#64748b;font-style:italic">* Correlação baseada nas datas coincidentes entre registros de PA e CPAP. Dados insuficientes podem limitar a análise.</div>'+
+    '<div style="margin-top:7px;font-size:8pt;color:#64748b;font-style:italic">* O Tango é CPAP de pressão fixa e registra apenas horas de uso. O IAH provém da polissonografia. Correlação baseada nas datas coincidentes entre PA e uso do CPAP.</div>'+
   '</div>'+
 
   // BLOCO C — EXCEÇÕES
@@ -1553,8 +1601,8 @@ chips('[data-glm]',function(v){glM=v;});
 chips('[data-glt]',function(v){glT=v;});
 chips('[data-wtm]',function(v){wtM=v;});
 chips('[data-cpap-uso]',function(v){cpapUso=v;var f=document.getElementById('cpap-fields');if(f)f.style.display=v==='Sim'?'block':'none';});
-chips('[data-vedacao]',function(v){vedacao=v;});
 chips('[data-sono]',function(v){sonoQ=v;});
+chips('[data-descanso]',function(v){descanso=v;});
 chips('[data-intens]',function(v){symIntens=v;});
 
 // Sintomas — multi-seleção (toggle)
@@ -1675,6 +1723,7 @@ AUTH.onAuthStateChanged(function(user){
     document.getElementById('gl-dt').value=now();
     document.getElementById('wt-dt').value=now();
     document.getElementById('cpap-dt').value=today();
+    document.getElementById('poli-dt').value=today();
     document.getElementById('lab-dt').value=today();
     document.getElementById('sym-dt').value=now();
     migrar().then(function(){updateDash();}).catch(function(e){console.error(e);});
