@@ -2,1136 +2,421 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Saúde+">
-<meta name="theme-color" content="#6366f1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Saúde+</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --p:#6366f1;--p2:#4f46e5;--p3:#ede9fe;
-  --g:#10b981;--g2:#059669;--g3:#d1fae5;
-  --r:#ef4444;--r2:#dc2626;--r3:#fee2e2;
-  --a:#f59e0b;--a2:#d97706;--a3:#fef3c7;
-  --t:#0ea5e9;--t2:#0284c7;--t3:#e0f2fe;
-  --bg:#f8fafc;--bg2:#f1f5f9;--bg3:#e2e8f0;
-  --c1:#0f172a;--c2:#475569;--c3:#94a3b8;
-  --bd:#e2e8f0;--w:#fff;
-  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-  --sh2:0 4px 16px rgba(0,0,0,.1);
-  --r-sm:10px;--r-md:16px;--r-lg:20px;--r-xl:24px;
-}
-html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--c1);overflow-x:hidden}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:#1a1a2e;font-family:'DM Sans',sans-serif;}
+.app{background:#0D0B1A;width:390px;min-height:780px;border-radius:32px;overflow:hidden;position:relative;padding-bottom:24px;transition:background 0.4s;}
+.app.light{background:#f0eeff;}
+.orb{position:absolute;border-radius:50%;pointer-events:none;transition:opacity 0.4s;}
+.orb1{width:220px;height:220px;background:rgba(120,80,255,0.35);top:-70px;left:-50px;filter:blur(70px);}
+.orb2{width:160px;height:160px;background:rgba(60,200,170,0.2);top:100px;right:-50px;filter:blur(60px);}
+.orb3{width:130px;height:130px;background:rgba(200,100,255,0.15);bottom:180px;left:10px;filter:blur(55px);}
+.app.light .orb1{background:rgba(120,80,255,0.15);}
+.app.light .orb2{background:rgba(60,200,170,0.1);}
 
-/* ── SPLASH ── */
-#splash{position:fixed;inset:0;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:0}
-#splash-grid{position:absolute;inset:0;opacity:.08;background-image:linear-gradient(#6366f1 1px,transparent 1px),linear-gradient(90deg,#6366f1 1px,transparent 1px);background-size:32px 32px}
-#splash-glow{position:absolute;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.25) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-60%)}
-.splash-logo{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px}
-.splash-icon-wrap{width:96px;height:96px;border-radius:28px;background:#1e293b;border:1px solid rgba(99,102,241,.3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.splash-icon-grid{position:absolute;inset:0;opacity:.15;background-image:linear-gradient(#6366f1 1px,transparent 1px),linear-gradient(90deg,#6366f1 1px,transparent 1px);background-size:14px 14px}
-.splash-icon-inner{position:relative;z-index:1}
-.splash-title{color:#fff;font-size:32px;font-weight:800;letter-spacing:-1px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-.splash-title span{color:#6366f1}
-.splash-sub{color:rgba(255,255,255,.45);font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-.splash-dots{display:flex;gap:8px;margin-top:40px}
-.splash-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);animation:dotPulse 1.4s ease-in-out infinite}
-.splash-dot:nth-child(2){animation-delay:.2s}
-.splash-dot:nth-child(3){animation-delay:.4s}
-@keyframes dotPulse{0%,80%,100%{background:rgba(255,255,255,.2)}40%{background:#6366f1}}
+.header{padding:28px 22px 14px;position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;}
+.greeting{color:rgba(255,255,255,0.6);font-size:12px;letter-spacing:0.5px;margin-bottom:3px;}
+.name{color:#fff;font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;}
+.app.light .greeting{color:rgba(40,20,80,0.55);}
+.app.light .name{color:#1a0d3d;}
+.header-right{display:flex;gap:10px;align-items:center;}
+.theme-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background 0.2s;}
+.theme-btn:hover{background:rgba(255,255,255,0.22);}
+.app.light .theme-btn{background:rgba(100,60,200,0.12);border-color:rgba(100,60,200,0.25);}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#A78BFA,#60EDCC);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#2d1a6e;}
 
-/* ── AUTH ── */
-.auth-wrap{position:fixed;inset:0;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#06b6d4 100%);display:none;align-items:center;justify-content:center;padding:20px;z-index:1000;overflow-y:auto}
-.auth-card{background:#fff;border-radius:var(--r-xl);padding:32px 28px;width:100%;max-width:390px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.auth-brand{text-align:center;margin-bottom:28px}
-.auth-brand-icon{width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 12px}
-.auth-brand h1{font-size:22px;font-weight:800;color:var(--c1)}
-.auth-brand p{font-size:13px;color:var(--c2);margin-top:3px}
-.auth-tabs{display:flex;background:var(--bg2);border-radius:12px;padding:4px;margin-bottom:24px}
-.auth-tab{flex:1;padding:9px;border:none;background:transparent;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;color:var(--c3);font-family:inherit;transition:all .2s}
-.auth-tab.on{background:#fff;color:var(--p);box-shadow:var(--sh)}
-.auth-form{display:none}
-.auth-form.on{display:block}
-.field{margin-bottom:14px}
-.field label{display:block;font-size:12px;font-weight:700;color:var(--c2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
-.field input{width:100%;padding:13px 16px;border-radius:12px;border:2px solid var(--bd);background:var(--bg);font-size:15px;font-family:inherit;color:var(--c1);transition:all .15s;outline:none}
-.field input:focus{border-color:var(--p);background:#fff;box-shadow:0 0 0 3px rgba(99,102,241,.12)}
-.btn-primary{width:100%;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px;letter-spacing:.01em;box-shadow:0 4px 14px rgba(99,102,241,.4);transition:all .15s}
-.btn-primary:active{transform:scale(.97)}
-.btn-google{width:100%;padding:13px;border-radius:14px;border:1.5px solid #e2e8f0;background:#fff;color:#1f2937;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.btn-google:hover{background:#f8fafc;box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.btn-google:active{transform:scale(.97)}
-.btn-google svg{flex-shrink:0}
-.auth-divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:#9ca3af;font-size:12px;font-weight:600}
-.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:#e5e7eb}
-.auth-err{background:var(--r3);color:var(--r2);border-radius:10px;padding:10px 14px;font-size:13px;margin-top:12px;display:none;text-align:center;font-weight:500}
+.nav-tabs{display:flex;gap:0;margin:0 22px 16px;background:rgba(255,255,255,0.07);border-radius:16px;padding:4px;position:relative;z-index:2;}
+.app.light .nav-tabs{background:rgba(100,60,200,0.1);}
+.tab{flex:1;text-align:center;padding:8px 4px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);border-radius:12px;cursor:pointer;transition:all 0.2s;}
+.tab.active{background:rgba(255,255,255,0.15);color:#fff;}
+.app.light .tab{color:rgba(40,20,80,0.5);}
+.app.light .tab.active{background:rgba(100,60,200,0.2);color:#3a1a8a;}
 
-/* ── APP ── */
-#app{display:none;max-width:430px;margin:0 auto;min-height:100vh;position:relative}
+.screen{display:none;animation:fadeIn 0.3s ease;}
+.screen.visible{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── HEADER ── */
-.hdr{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:52px 20px 20px;position:relative;overflow:hidden}
-.hdr::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06)}
-.hdr::after{content:'';position:absolute;bottom:-60px;left:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.04)}
-.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;position:relative;z-index:1}
-.hdr-brand{display:flex;align-items:center;gap:10px}
-.hdr-brand-icon{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.hdr-brand h1{color:#fff;font-size:20px;font-weight:800}
-.btn-sair{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.3);color:#fff;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all .15s;backdrop-filter:blur(4px)}
-.btn-sair:hover{background:rgba(255,255,255,.25)}
-.btn-sair:active{transform:scale(.95)}
-.hdr-user{color:rgba(255,255,255,.75);font-size:13px;position:relative;z-index:1}
-.hdr-user span{color:#fff;font-weight:600}
+.score-card{margin:0 20px 16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:24px;padding:18px 20px;position:relative;z-index:2;backdrop-filter:blur(10px);}
+.app.light .score-card{background:rgba(255,255,255,0.7);border-color:rgba(100,60,200,0.2);}
+.score-label{color:rgba(255,255,255,0.6);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.app.light .score-label{color:rgba(40,20,80,0.55);}
+.score-row{display:flex;align-items:flex-end;gap:10px;margin-bottom:14px;}
+.score-number{font-family:'Space Grotesk',sans-serif;font-size:52px;font-weight:700;color:#fff;line-height:1;}
+.app.light .score-number{color:#1a0d3d;}
+.score-max{color:rgba(255,255,255,0.4);font-size:15px;margin-bottom:7px;}
+.app.light .score-max{color:rgba(40,20,80,0.4);}
+.score-badge{margin-left:auto;background:rgba(96,237,204,0.15);border:1px solid rgba(96,237,204,0.35);border-radius:20px;padding:5px 12px;color:#60EDCC;font-size:12px;font-weight:600;}
+.progress-bar{height:6px;background:rgba(255,255,255,0.12);border-radius:3px;overflow:hidden;margin-bottom:7px;}
+.app.light .progress-bar{background:rgba(100,60,200,0.12);}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#60EDCC,#A78BFA);border-radius:3px;transition:width 1.2s ease;}
+.progress-labels{display:flex;justify-content:space-between;}
+.progress-labels span{color:rgba(255,255,255,0.45);font-size:11px;}
+.app.light .progress-labels span{color:rgba(40,20,80,0.45);}
+.progress-labels span:last-child{color:#60EDCC;}
 
-/* ── NAV ── */
-.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--bd);display:flex;z-index:200;padding-bottom:max(env(safe-area-inset-bottom),6px);box-shadow:0 -4px 20px rgba(0,0,0,.06)}
-.nb{flex:1;border:none;background:transparent;cursor:pointer;padding:10px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;font-weight:600;color:var(--c3);font-family:inherit;transition:color .15s;position:relative}
-.nb i{font-size:21px;transition:transform .15s}
-.nb.on{color:var(--p)}
-.nb.on i{transform:scale(1.1)}
-.nb-dot{position:absolute;top:8px;right:calc(50% - 14px);width:6px;height:6px;border-radius:50%;background:var(--r);display:none}
+.metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:0 20px 16px;position:relative;z-index:2;}
+.metric-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:20px;padding:14px;backdrop-filter:blur(8px);cursor:pointer;transition:transform 0.15s,background 0.15s;}
+.metric-card:hover{transform:scale(1.03);background:rgba(255,255,255,0.14);}
+.app.light .metric-card{background:rgba(255,255,255,0.7);border-color:rgba(100,60,200,0.18);}
+.app.light .metric-card:hover{background:rgba(255,255,255,0.9);}
+.metric-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.metric-icon-wrap{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.m-green{background:rgba(96,237,204,0.15);}
+.m-red{background:rgba(255,100,100,0.15);}
+.m-blue{background:rgba(80,160,255,0.15);}
+.m-amber{background:rgba(255,180,60,0.15);}
+.m-purple{background:rgba(167,139,250,0.15);}
+.m-pink{background:rgba(255,120,180,0.15);}
+.metric-trend{font-size:11px;font-weight:600;padding:3px 8px;border-radius:10px;}
+.trend-up{color:#60EDCC;background:rgba(96,237,204,0.15);}
+.trend-down{color:#ff8a80;background:rgba(255,100,100,0.15);}
+.metric-val{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#fff;}
+.app.light .metric-val{color:#1a0d3d;}
+.metric-unit{font-size:12px;color:rgba(255,255,255,0.5);margin-left:3px;}
+.app.light .metric-unit{color:rgba(40,20,80,0.5);}
+.metric-name{font-size:12px;color:rgba(255,255,255,0.55);margin-top:2px;}
+.app.light .metric-name{color:rgba(40,20,80,0.55);}
+.spark{display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:8px;}
+.sp{width:6px;border-radius:2px;background:rgba(255,255,255,0.15);}
+.app.light .sp{background:rgba(100,60,200,0.12);}
+.sp.hi{background:#A78BFA;}
 
-/* ── PAGES ── */
-.pg{display:none;padding:16px 14px 100px;animation:fadeIn .2s ease}
-.pg.on{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.section-title{color:rgba(255,255,255,0.7);font-size:11px;font-weight:600;letter-spacing:1px;padding:0 24px 10px;position:relative;z-index:2;text-transform:uppercase;}
+.app.light .section-title{color:rgba(40,20,80,0.6);}
+.act-card{margin:0 20px 8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;position:relative;z-index:2;cursor:pointer;transition:background 0.15s;}
+.act-card:hover{background:rgba(255,255,255,0.14);}
+.app.light .act-card{background:rgba(255,255,255,0.7);border-color:rgba(100,60,200,0.18);}
+.act-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.act-info{flex:1;}
+.act-name{color:#fff;font-size:13px;font-weight:500;margin-bottom:2px;}
+.app.light .act-name{color:#1a0d3d;}
+.act-sub{color:rgba(255,255,255,0.5);font-size:11px;}
+.app.light .act-sub{color:rgba(40,20,80,0.5);}
+.act-stat-val{font-family:'Space Grotesk',sans-serif;color:#fff;font-weight:700;font-size:14px;text-align:right;}
+.app.light .act-stat-val{color:#1a0d3d;}
+.act-stat-unit{color:rgba(255,255,255,0.45);font-size:10px;text-align:right;}
+.app.light .act-stat-unit{color:rgba(40,20,80,0.4);}
 
-/* ── CARDS ── */
-.card{background:#fff;border-radius:var(--r-lg);border:1px solid var(--bd);box-shadow:var(--sh);padding:16px;margin-bottom:14px;transition:box-shadow .2s}
-.card-title{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c3);margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.card-title i{font-size:14px}
+.ai-pill{margin:14px 20px 6px;background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(96,237,204,0.12));border:1px solid rgba(167,139,250,0.35);border-radius:16px;padding:13px 16px;display:flex;align-items:center;gap:12px;position:relative;z-index:2;cursor:pointer;}
+.ai-dot{width:9px;height:9px;border-radius:50%;background:#A78BFA;animation:pulse 2s infinite;flex-shrink:0;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.75)}}
+.ai-text{color:rgba(255,255,255,0.85);font-size:12px;flex:1;}
+.app.light .ai-text{color:rgba(40,20,80,0.85);}
+.ai-text strong{color:#fff;}
+.app.light .ai-text strong{color:#1a0d3d;}
 
-/* ── STAT GRID ── */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat-grid.one{grid-template-columns:1fr}
-.stat-box{background:var(--bg);border-radius:var(--r-md);padding:14px 12px;text-align:center;border:1px solid var(--bd)}
-.stat-label{font-size:11px;color:var(--c3);margin-bottom:5px;font-weight:500}
-.stat-val{font-size:30px;font-weight:800;line-height:1;color:var(--c1);letter-spacing:-.5px}
-.stat-unit{font-size:11px;color:var(--c2);margin-top:3px}
-.stat-sub{font-size:12px;color:var(--c3);text-align:center;margin-top:8px}
-.stat-smb{background:var(--bg);border-radius:12px;padding:12px 8px;text-align:center;border:1px solid var(--bd)}
-.stat-smv{font-size:22px;font-weight:800;color:var(--c1)}
-.stat-sml{font-size:10px;color:var(--c3);margin-top:2px;font-weight:500}
+.hist-period{display:flex;gap:6px;margin:0 20px 16px;position:relative;z-index:2;}
+.period-btn{padding:6px 14px;border-radius:12px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:all 0.2s;}
+.period-btn.active{background:rgba(167,139,250,0.25);border-color:rgba(167,139,250,0.45);color:#A78BFA;}
+.app.light .period-btn{color:rgba(40,20,80,0.5);background:rgba(100,60,200,0.07);border-color:rgba(100,60,200,0.12);}
+.app.light .period-btn.active{background:rgba(100,60,200,0.18);color:#5a2db5;}
 
-/* ── FORM ── */
-.f{margin-bottom:13px}
-.f label{display:block;font-size:12px;font-weight:700;color:var(--c2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
-.fi,.fs{width:100%;padding:12px 14px;border-radius:12px;border:2px solid var(--bd);background:var(--bg);font-size:15px;color:var(--c1);font-family:inherit;appearance:none;transition:all .15s;outline:none}
-.fi:focus,.fs:focus{border-color:var(--p);background:#fff;box-shadow:0 0 0 3px rgba(99,102,241,.1)}
-.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.chart-card{margin:0 20px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:22px;padding:18px 16px;position:relative;z-index:2;}
+.app.light .chart-card{background:rgba(255,255,255,0.7);border-color:rgba(100,60,200,0.18);}
+.chart-title{color:rgba(255,255,255,0.7);font-size:11px;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;}
+.app.light .chart-title{color:rgba(40,20,80,0.55);}
+.chart-val{font-family:'Space Grotesk',sans-serif;color:#fff;font-size:26px;font-weight:700;margin-bottom:14px;}
+.app.light .chart-val{color:#1a0d3d;}
+.chart-val span{font-size:14px;color:rgba(255,255,255,0.45);font-weight:400;}
+.app.light .chart-val span{color:rgba(40,20,80,0.45);}
+.bar-chart{display:flex;align-items:flex-end;gap:5px;height:80px;}
+.bc{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;}
+.bc-bar{width:100%;border-radius:6px 6px 2px 2px;}
+.bc-label{font-size:9px;color:rgba(255,255,255,0.4);}
+.app.light .bc-label{color:rgba(40,20,80,0.4);}
 
-/* ── CHIPS ── */
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:5px}
-.chip{padding:7px 14px;border-radius:20px;border:2px solid var(--bd);background:var(--bg);font-size:13px;font-weight:600;cursor:pointer;color:var(--c2);font-family:inherit;transition:all .15s}
-.chip.on{background:var(--p);color:#fff;border-color:var(--p)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 20px 14px;position:relative;z-index:2;}
+.stat-box{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:12px 10px;text-align:center;}
+.app.light .stat-box{background:rgba(255,255,255,0.7);border-color:rgba(100,60,200,0.15);}
+.stat-box-val{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#fff;}
+.app.light .stat-box-val{color:#1a0d3d;}
+.stat-box-lbl{font-size:10px;color:rgba(255,255,255,0.5);margin-top:2px;}
+.app.light .stat-box-lbl{color:rgba(40,20,80,0.45);}
 
-/* ── BUTTONS ── */
-.btn{width:100%;padding:14px;border-radius:14px;border:none;background:var(--p);color:#fff;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;transition:all .15s;box-shadow:0 4px 12px rgba(99,102,241,.3)}
-.btn:active{transform:scale(.97)}
-.btn.green{background:var(--g);box-shadow:0 4px 12px rgba(16,185,129,.3)}
-.btn.teal{background:var(--t);box-shadow:0 4px 12px rgba(14,165,233,.3)}
-.btn.purple{background:#8b5cf6;box-shadow:0 4px 12px rgba(139,92,246,.3)}
-.btn.red{background:var(--r);box-shadow:0 4px 12px rgba(239,68,68,.3)}
-.btn.ghost{background:var(--bg);color:var(--c2);border:2px solid var(--bd);box-shadow:none}
-.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.trend-card{margin:0 20px 10px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;position:relative;z-index:2;}
+.app.light .trend-card{background:rgba(255,255,255,0.7);border-color:rgba(100,60,200,0.15);}
+.trend-icon{font-size:24px;}
+.trend-info{flex:1;}
+.trend-name{color:#fff;font-size:13px;font-weight:500;}
+.app.light .trend-name{color:#1a0d3d;}
+.trend-sub{color:rgba(255,255,255,0.5);font-size:11px;margin-top:2px;}
+.app.light .trend-sub{color:rgba(40,20,80,0.45);}
+.trend-chip{font-size:11px;font-weight:600;padding:4px 10px;border-radius:10px;}
 
-/* ── BADGES ── */
-.badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;flex-shrink:0}
-.b-ok{background:var(--g3);color:var(--g2)}
-.b-warn{background:var(--a3);color:var(--a2)}
-.b-bad{background:var(--r3);color:var(--r2)}
-.b-low{background:var(--t3);color:var(--t2)}
-
-/* ── LIST ITEMS ── */
-.li{display:flex;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--bd)}
-.li:last-child{border-bottom:none;padding-bottom:0}
-.li:first-child{padding-top:0}
-.li-icon{width:42px;height:42px;border-radius:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;margin-right:12px;margin-top:1px}
-.li-icon.bp{background:var(--p3);color:var(--p)}
-.li-icon.gl{background:var(--g3);color:var(--g)}
-.li-icon.wt{background:var(--t3);color:var(--t)}
-.li-icon.med{background:#ede9fe;color:#8b5cf6}
-.li-body{flex:1;min-width:0}
-.li-val{font-size:15px;font-weight:700;color:var(--c1)}
-.li-meta{font-size:12px;color:var(--c3);margin-top:2px}
-.li-tag{font-size:11px;color:var(--c2);background:var(--bg2);border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
-.li-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;margin-left:8px}
-.del-btn{background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;color:var(--c3);font-size:18px;display:flex;align-items:center;transition:all .15s}
-.del-btn:hover{color:var(--r);background:var(--r3)}
-
-/* ── CHARTS ── */
-.chart-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px;padding-bottom:2px}
-.chart-empty{text-align:center;padding:28px;font-size:13px;color:var(--c3);font-weight:500}
-.chart-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--c2)}
-.legend-dot{width:8px;height:8px;border-radius:50%}
-
-/* ── MEDS TODAY ── */
-.med-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--bd)}
-.med-row:last-child{border-bottom:none}
-.take-btn{background:var(--p3);color:var(--p);border:none;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;font-family:inherit;transition:all .15s}
-.take-btn:active{transform:scale(.95)}
-.take-btn.done{background:var(--g3);color:var(--g2)}
-
-/* ── DB STATUS ── */
-.db-bar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--c3);margin-bottom:14px;padding:10px 14px;background:#fff;border-radius:12px;border:1px solid var(--bd);font-weight:500}
-.db-dot{width:8px;height:8px;border-radius:50%;background:var(--a);flex-shrink:0;transition:background .3s}
-.db-dot.on{background:var(--g)}
-
-/* ── MODALS ── */
-.overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:500;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px)}
-.overlay.on{display:flex}
-.modal{background:#fff;border-radius:24px 24px 0 0;padding:24px 20px;width:100%;max-width:430px;max-height:92vh;overflow-y:auto;padding-bottom:max(env(safe-area-inset-bottom),24px)}
-.modal-handle{width:40px;height:4px;background:var(--bg3);border-radius:2px;margin:0 auto 20px}
-.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.modal-title{font-size:18px;font-weight:800;color:var(--c1)}
-.modal-close{background:var(--bg2);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--c2)}
-
-/* ── MED CARDS ── */
-.med-card{background:#fff;border-radius:16px;border:1px solid var(--bd);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
-.med-card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.med-card-icon{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-.med-card-name{font-size:16px;font-weight:700;color:var(--c1)}
-.med-card-dose{font-size:13px;color:var(--c2);margin-top:1px}
-.time-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.time-tag{background:var(--p3);color:var(--p);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:4px}
-.med-actions{display:flex;gap:8px;margin-top:10px}
-.med-act{flex:1;padding:10px;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;font-family:inherit;transition:all .15s}
-.med-act.edit{background:var(--p3);color:var(--p)}
-.med-act.del{background:var(--r3);color:var(--r)}
-
-/* ── PHOTOS ── */
-.photos-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
-.photo-wrap{position:relative;display:inline-block}
-.photo-img{width:74px;height:74px;border-radius:12px;object-fit:cover;cursor:pointer;border:1px solid var(--bd);display:block}
-.photo-rm{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--r);border:none;color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.photos-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-
-/* ── WEIGHT COMPARE ── */
-.wt-cmp{border-radius:14px;padding:16px;margin-top:12px;text-align:center}
-.wt-cmp.up{background:var(--r3);border:1.5px solid var(--r)}
-.wt-cmp.down{background:var(--g3);border:1.5px solid var(--g)}
-.wt-cmp.eq{background:var(--bg2);border:1.5px solid var(--bd)}
-.wt-cmp-icon{font-size:36px;display:block;margin-bottom:5px}
-.wt-cmp-val{font-size:24px;font-weight:800;letter-spacing:-.5px}
-.wt-cmp-sub{font-size:13px;color:var(--c2);margin-top:4px}
-
-/* ── CONFIRM ── */
-.confirm-wrap{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
-.confirm-wrap.on{display:flex}
-.confirm-box{background:#fff;border-radius:20px;padding:24px 20px;width:100%;max-width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.confirm-box h3{font-size:18px;font-weight:800;margin-bottom:8px}
-.confirm-box p{font-size:14px;color:var(--c2);margin-bottom:22px;line-height:1.5}
-.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.cbtn{padding:13px;border-radius:13px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
-.cbtn.cancel{background:var(--bg2);color:var(--c2)}
-.cbtn.ok{background:var(--r);color:#fff}
-
-/* ── IMG VIEWER ── */
-.img-viewer{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:800;display:none;align-items:center;justify-content:center}
-.img-viewer.on{display:flex}
-.img-viewer img{max-width:95vw;max-height:90vh;border-radius:12px;object-fit:contain}
-.img-viewer-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--c1);color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ── FILTER TABS ── */
-.filter-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
-.ftab{padding:8px 16px;border-radius:20px;border:2px solid var(--bd);background:#fff;font-size:13px;font-weight:700;cursor:pointer;color:var(--c2);font-family:inherit;transition:all .15s;white-space:nowrap;flex-shrink:0}
-.ftab.on{background:var(--p);color:#fff;border-color:var(--p)}
-
-/* ── REF ITEMS ── */
-.ref-item{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;border-bottom:1px solid var(--bd)}
-.ref-item:last-child{border-bottom:none}
-.ref-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-
-/* ── EMPTY ── */
-.empty{text-align:center;padding:32px 16px;color:var(--c3)}
-.empty i{font-size:48px;display:block;margin-bottom:10px;opacity:.3}
-.empty p{font-size:14px;font-weight:500}
-
-/* ── PAGE TITLE ── */
-.page-title{font-size:22px;font-weight:800;color:var(--c1);margin-bottom:16px;letter-spacing:-.3px}
+.bottom-nav{margin:16px 20px 0;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:22px;padding:10px 6px;display:flex;justify-content:space-around;position:relative;z-index:2;}
+.app.light .bottom-nav{background:rgba(255,255,255,0.6);border-color:rgba(100,60,200,0.18);}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 10px;border-radius:14px;transition:background 0.15s;}
+.nav-item:hover{background:rgba(255,255,255,0.08);}
+.nav-item.active{background:rgba(255,255,255,0.14);}
+.app.light .nav-item.active{background:rgba(100,60,200,0.14);}
+.nav-ico{font-size:18px;}
+.nav-lbl{font-size:10px;color:rgba(255,255,255,0.5);}
+.nav-item.active .nav-lbl{color:#fff;}
+.app.light .nav-lbl{color:rgba(40,20,80,0.5);}
+.app.light .nav-item.active .nav-lbl{color:#3a1a8a;}
 </style>
 </head>
 <body>
+<div class="app" id="app">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
 
-<!-- SPLASH -->
-<div id="splash">
-  <div id="splash-grid"></div>
-  <div id="splash-glow"></div>
-  <div class="splash-logo">
-    <div class="splash-icon-wrap">
-      <div class="splash-icon-grid"></div>
-      <div class="splash-icon-inner">
-        <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-          <!-- ECG line -->
-          <path d="M4 32 L16 32 L20 18 L24 46 L28 26 L31 36 L34 32 L60 32"
-            fill="none" stroke="#6366f1" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <!-- Heart -->
-          <path d="M32 42 C32 42 14 28 14 17 C14 9 22 6 32 16 C42 6 50 9 50 17 C50 28 32 42 32 42Z"
-            fill="#ef4444" opacity="0.9"/>
-          <ellipse cx="24" cy="14" rx="5" ry="3" fill="#fff" opacity="0.2" transform="rotate(-25,24,14)"/>
-          <!-- Data dots -->
-          <circle cx="14" cy="12" r="2.5" fill="#6366f1" opacity="0.9"/>
-          <circle cx="52" cy="14" r="2" fill="#06b6d4" opacity="0.8"/>
-          <circle cx="52" cy="50" r="2" fill="#10b981" opacity="0.8"/>
-          <circle cx="12" cy="50" r="1.8" fill="#8b5cf6" opacity="0.7"/>
-          <!-- Connecting dots line top -->
-          <path d="M14 12 L32 8 L52 14" fill="none" stroke="#6366f1" stroke-width="0.8" opacity="0.4" stroke-dasharray="2,2"/>
-        </svg>
-      </div>
-    </div>
+  <div class="header">
     <div>
-      <div class="splash-title">Saúde<span>+</span></div>
-      <div class="splash-sub">monitor inteligente de saúde</div>
+      <div class="greeting">Bom dia, Rafael 👋</div>
+      <div class="name">Saúde+</div>
     </div>
-    <div class="splash-dots">
-      <div class="splash-dot"></div>
-      <div class="splash-dot"></div>
-      <div class="splash-dot"></div>
+    <div class="header-right">
+      <div class="theme-btn" id="themeBtn" title="Alternar modo claro/escuro">🌙</div>
+      <div class="avatar">RF</div>
     </div>
+  </div>
+
+  <div class="nav-tabs">
+    <div class="tab active" data-tab="home">Início</div>
+    <div class="tab" data-tab="history">Histórico</div>
+    <div class="tab" data-tab="metrics">Métricas</div>
+  </div>
+
+  <!-- HOME -->
+  <div class="screen visible" id="screen-home">
+    <div class="score-card">
+      <div class="score-label">Índice de Saúde Geral</div>
+      <div class="score-row">
+        <div class="score-number">87</div>
+        <div class="score-max">/100</div>
+        <div class="score-badge">▲ +4 pts</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="pbar"></div></div>
+      <div class="progress-labels"><span>0</span><span>Meta: 90</span><span>87 pts</span></div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-red">❤️</div><div class="metric-trend trend-up">Normal</div></div>
+        <div><span class="metric-val">72</span><span class="metric-unit">bpm</span></div>
+        <div class="metric-name">Frequência Cardíaca</div>
+        <div class="spark"><div class="sp" style="height:50%"></div><div class="sp" style="height:65%"></div><div class="sp hi" style="height:90%"></div><div class="sp hi" style="height:100%"></div><div class="sp" style="height:72%"></div><div class="sp" style="height:60%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-amber">🔥</div><div class="metric-trend trend-up">+120</div></div>
+        <div><span class="metric-val">1.840</span><span class="metric-unit">kcal</span></div>
+        <div class="metric-name">Calorias Queimadas</div>
+        <div class="spark"><div class="sp" style="height:40%"></div><div class="sp" style="height:55%"></div><div class="sp" style="height:70%"></div><div class="sp hi" style="height:85%"></div><div class="sp hi" style="height:100%"></div><div class="sp" style="height:80%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-blue">💧</div><div class="metric-trend trend-down">-0,4L</div></div>
+        <div><span class="metric-val">1,6</span><span class="metric-unit">L</span></div>
+        <div class="metric-name">Hidratação</div>
+        <div class="spark"><div class="sp hi" style="height:100%"></div><div class="sp hi" style="height:90%"></div><div class="sp" style="height:60%"></div><div class="sp" style="height:50%"></div><div class="sp" style="height:45%"></div><div class="sp" style="height:65%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-purple">😴</div><div class="metric-trend trend-up">Ótimo</div></div>
+        <div><span class="metric-val">7h35</span></div>
+        <div class="metric-name">Sono</div>
+        <div class="spark"><div class="sp" style="height:55%"></div><div class="sp hi" style="height:80%"></div><div class="sp hi" style="height:100%"></div><div class="sp hi" style="height:95%"></div><div class="sp" style="height:70%"></div><div class="sp" style="height:65%"></div></div>
+      </div>
+    </div>
+
+    <div class="section-title">Atividades de Hoje</div>
+    <div class="act-card">
+      <div class="act-icon m-green">🏃</div>
+      <div class="act-info"><div class="act-name">Corrida Matinal</div><div class="act-sub">07:14 · 32 min · 410 kcal</div></div>
+      <div><div class="act-stat-val">5,2</div><div class="act-stat-unit">km</div></div>
+    </div>
+    <div class="act-card">
+      <div class="act-icon m-blue">🧘</div>
+      <div class="act-info"><div class="act-name">Meditação</div><div class="act-sub">08:10 · Respiração guiada</div></div>
+      <div><div class="act-stat-val">10</div><div class="act-stat-unit">min</div></div>
+    </div>
+    <div class="act-card">
+      <div class="act-icon m-amber">💊</div>
+      <div class="act-info"><div class="act-name">Vitamina D</div><div class="act-sub">09:00 · Tomada ✓</div></div>
+      <div><div class="act-stat-val">1</div><div class="act-stat-unit">dose</div></div>
+    </div>
+
+    <div class="ai-pill">
+      <div class="ai-dot"></div>
+      <div class="ai-text"><strong>IA Saúde</strong> — Recomendações personalizadas para hoje ↗</div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="screen" id="screen-history">
+    <div class="hist-period">
+      <div class="period-btn active">7 dias</div>
+      <div class="period-btn">30 dias</div>
+      <div class="period-btn">3 meses</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Passos Diários</div>
+      <div class="chart-val">8.240 <span>média</span></div>
+      <div class="bar-chart">
+        <div class="bc"><div class="bc-bar" style="background:rgba(167,139,250,0.35);height:55%"></div><div class="bc-label">Seg</div></div>
+        <div class="bc"><div class="bc-bar" style="background:#A78BFA;height:78%"></div><div class="bc-label">Ter</div></div>
+        <div class="bc"><div class="bc-bar" style="background:rgba(167,139,250,0.35);height:45%"></div><div class="bc-label">Qua</div></div>
+        <div class="bc"><div class="bc-bar" style="background:#A78BFA;height:90%"></div><div class="bc-label">Qui</div></div>
+        <div class="bc"><div class="bc-bar" style="background:#60EDCC;height:100%"></div><div class="bc-label">Sex</div></div>
+        <div class="bc"><div class="bc-bar" style="background:rgba(167,139,250,0.35);height:60%"></div><div class="bc-label">Sáb</div></div>
+        <div class="bc"><div class="bc-bar" style="background:rgba(167,139,250,0.35);height:50%"></div><div class="bc-label">Dom</div></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Qualidade do Sono</div>
+      <div class="chart-val">7h12 <span>média</span></div>
+      <div class="bar-chart">
+        <div class="bc"><div class="bc-bar" style="background:rgba(96,237,204,0.35);height:80%"></div><div class="bc-label">Seg</div></div>
+        <div class="bc"><div class="bc-bar" style="background:#60EDCC;height:100%"></div><div class="bc-label">Ter</div></div>
+        <div class="bc"><div class="bc-bar" style="background:rgba(96,237,204,0.35);height:65%"></div><div class="bc-label">Qua</div></div>
+        <div class="bc"><div class="bc-bar" style="background:#60EDCC;height:88%"></div><div class="bc-label">Qui</div></div>
+        <div class="bc"><div class="bc-bar" style="background:rgba(96,237,204,0.35);height:55%"></div><div class="bc-label">Sex</div></div>
+        <div class="bc"><div class="bc-bar" style="background:#60EDCC;height:95%"></div><div class="bc-label">Sáb</div></div>
+        <div class="bc"><div class="bc-bar" style="background:rgba(96,237,204,0.35);height:75%"></div><div class="bc-label">Dom</div></div>
+      </div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-box-val">36,4</div><div class="stat-box-lbl">km corridos</div></div>
+      <div class="stat-box"><div class="stat-box-val">2.890</div><div class="stat-box-lbl">kcal queimadas</div></div>
+      <div class="stat-box"><div class="stat-box-val">5</div><div class="stat-box-lbl">dias ativos</div></div>
+    </div>
+
+    <div class="section-title">Tendências da Semana</div>
+    <div class="trend-card">
+      <div class="trend-icon">📈</div>
+      <div class="trend-info"><div class="trend-name">Atividade Física</div><div class="trend-sub">Melhor semana em 3 meses</div></div>
+      <div class="trend-chip trend-up">▲ 18%</div>
+    </div>
+    <div class="trend-card">
+      <div class="trend-icon">💤</div>
+      <div class="trend-info"><div class="trend-name">Consistência do Sono</div><div class="trend-sub">Horário irregular na quarta</div></div>
+      <div class="trend-chip trend-down">▼ 5%</div>
+    </div>
+    <div class="trend-card">
+      <div class="trend-icon">💧</div>
+      <div class="trend-info"><div class="trend-name">Hidratação</div><div class="trend-sub">Abaixo da meta nos fins de semana</div></div>
+      <div class="trend-chip trend-down">▼ 12%</div>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <div class="screen" id="screen-metrics">
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-red">❤️</div><div class="metric-trend trend-up">Normal</div></div>
+        <div><span class="metric-val">72</span><span class="metric-unit">bpm</span></div>
+        <div class="metric-name">Freq. Cardíaca</div>
+        <div class="spark"><div class="sp" style="height:50%"></div><div class="sp hi" style="height:80%"></div><div class="sp hi" style="height:100%"></div><div class="sp" style="height:70%"></div><div class="sp" style="height:60%"></div><div class="sp hi" style="height:90%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-purple">🫁</div><div class="metric-trend trend-up">Ótimo</div></div>
+        <div><span class="metric-val">98</span><span class="metric-unit">%</span></div>
+        <div class="metric-name">Oxigenação</div>
+        <div class="spark"><div class="sp hi" style="height:100%"></div><div class="sp hi" style="height:98%"></div><div class="sp hi" style="height:95%"></div><div class="sp hi" style="height:100%"></div><div class="sp" style="height:90%"></div><div class="sp hi" style="height:97%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-blue">🩺</div><div class="metric-trend trend-up">Normal</div></div>
+        <div><span class="metric-val">118</span><span class="metric-unit">/76</span></div>
+        <div class="metric-name">Pressão Arterial</div>
+        <div class="spark"><div class="sp" style="height:60%"></div><div class="sp hi" style="height:85%"></div><div class="sp" style="height:70%"></div><div class="sp hi" style="height:100%"></div><div class="sp" style="height:75%"></div><div class="sp" style="height:65%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-green">⚡</div><div class="metric-trend trend-up">+4</div></div>
+        <div><span class="metric-val">87</span><span class="metric-unit">pts</span></div>
+        <div class="metric-name">Score de Saúde</div>
+        <div class="spark"><div class="sp" style="height:70%"></div><div class="sp" style="height:75%"></div><div class="sp hi" style="height:80%"></div><div class="sp hi" style="height:88%"></div><div class="sp hi" style="height:95%"></div><div class="sp hi" style="height:100%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-amber">🔥</div><div class="metric-trend trend-up">+120</div></div>
+        <div><span class="metric-val">1.840</span><span class="metric-unit">kcal</span></div>
+        <div class="metric-name">Calorias</div>
+        <div class="spark"><div class="sp" style="height:40%"></div><div class="sp" style="height:60%"></div><div class="sp hi" style="height:80%"></div><div class="sp hi" style="height:100%"></div><div class="sp hi" style="height:90%"></div><div class="sp" style="height:70%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-pink">🧬</div><div class="metric-trend trend-up">Baixo</div></div>
+        <div><span class="metric-val">2,1</span><span class="metric-unit">mg/L</span></div>
+        <div class="metric-name">PCR (Inflamação)</div>
+        <div class="spark"><div class="sp hi" style="height:100%"></div><div class="sp hi" style="height:80%"></div><div class="sp" style="height:60%"></div><div class="sp" style="height:45%"></div><div class="sp" style="height:35%"></div><div class="sp" style="height:30%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-blue">💧</div><div class="metric-trend trend-down">-0,4L</div></div>
+        <div><span class="metric-val">1,6</span><span class="metric-unit">L</span></div>
+        <div class="metric-name">Hidratação</div>
+        <div class="spark"><div class="sp hi" style="height:100%"></div><div class="sp hi" style="height:90%"></div><div class="sp" style="height:60%"></div><div class="sp" style="height:50%"></div><div class="sp" style="height:65%"></div><div class="sp" style="height:70%"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-top"><div class="metric-icon-wrap m-purple">😴</div><div class="metric-trend trend-up">Ótimo</div></div>
+        <div><span class="metric-val">7h35</span></div>
+        <div class="metric-name">Sono</div>
+        <div class="spark"><div class="sp" style="height:55%"></div><div class="sp hi" style="height:80%"></div><div class="sp hi" style="height:100%"></div><div class="sp hi" style="height:95%"></div><div class="sp" style="height:70%"></div><div class="sp" style="height:65%"></div></div>
+      </div>
+    </div>
+
+    <div class="section-title">Biomarcadores Avançados</div>
+    <div class="act-card">
+      <div class="act-icon m-amber">🩸</div>
+      <div class="act-info"><div class="act-name">Glicemia em Jejum</div><div class="act-sub">Última medição: há 3 dias</div></div>
+      <div><div class="act-stat-val">94</div><div class="act-stat-unit">mg/dL</div></div>
+    </div>
+    <div class="act-card">
+      <div class="act-icon m-blue">🧪</div>
+      <div class="act-info"><div class="act-name">Vitamina D</div><div class="act-sub">Suplementação ativa</div></div>
+      <div><div class="act-stat-val">42</div><div class="act-stat-unit">ng/mL</div></div>
+    </div>
+    <div class="act-card">
+      <div class="act-icon m-green">🫀</div>
+      <div class="act-info"><div class="act-name">VFC (Variabilidade)</div><div class="act-sub">Monitorado durante o sono</div></div>
+      <div><div class="act-stat-val">68</div><div class="act-stat-unit">ms</div></div>
+    </div>
+
+    <div class="ai-pill">
+      <div class="ai-dot"></div>
+      <div class="ai-text"><strong>IA Saúde</strong> — Analisar meus biomarcadores ↗</div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" data-nav="home"><div class="nav-ico">🏠</div><div class="nav-lbl">Início</div></div>
+    <div class="nav-item" data-nav="history"><div class="nav-ico">📊</div><div class="nav-lbl">Histórico</div></div>
+    <div class="nav-item" data-nav="metrics"><div class="nav-ico">🧬</div><div class="nav-lbl">Métricas</div></div>
+    <div class="nav-item"><div class="nav-ico">💊</div><div class="nav-lbl">Plano</div></div>
+    <div class="nav-item"><div class="nav-ico">👤</div><div class="nav-lbl">Perfil</div></div>
   </div>
 </div>
-
-<!-- LOGIN / CADASTRO -->
-<div class="auth-wrap" id="auth-wrap">
-  <div class="auth-card">
-    <div class="auth-brand">
-      <div class="auth-brand-icon">
-        <svg width="30" height="30" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 32 L14 32 L18 20 L22 44 L26 28 L29 36 L32 32 L56 32" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M32 42 C32 42 16 29 16 18 C16 10 23 7 32 17 C41 7 48 10 48 18 C48 29 32 42 32 42Z" fill="#ef4444" opacity="0.95"/>
-        </svg>
-      </div>
-      <h1>Saúde+</h1>
-      <p>Seu monitor de saúde pessoal</p>
-    </div>
-    <div class="auth-tabs">
-      <button class="auth-tab on" onclick="authTab('login',this)">Entrar</button>
-      <button class="auth-tab" onclick="authTab('register',this)">Criar conta</button>
-    </div>
-
-    <!-- LOGIN -->
-    <div class="auth-form on" id="form-login">
-      <div class="field"><label>E-mail</label><input type="email" id="l-email" placeholder="seu@email.com" autocomplete="email"></div>
-      <div class="field"><label>Senha</label><input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password"></div>
-      <button class="btn-primary" onclick="doLogin()">Entrar na conta</button>
-      <div class="auth-divider">ou continue com</div>
-      <button class="btn-google" onclick="doLoginGoogle()">
-        <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          <path fill="none" d="M0 0h48v48H0z"/>
-        </svg>
-        Entrar com Google
-      </button>
-      <div class="auth-err" id="l-err"></div>
-    </div>
-
-    <!-- CADASTRO -->
-    <div class="auth-form" id="form-register">
-      <div class="field"><label>Nome completo</label><input type="text" id="r-nome" placeholder="Ex.: João Silva" autocomplete="name"></div>
-      <div class="field"><label>E-mail</label><input type="email" id="r-email" placeholder="seu@email.com" autocomplete="email"></div>
-      <div class="field"><label>Senha (mín. 6 caracteres)</label><input type="password" id="r-pass" placeholder="••••••••" autocomplete="new-password"></div>
-      <div class="field"><label>Confirmar senha</label><input type="password" id="r-pass2" placeholder="••••••••" autocomplete="new-password"></div>
-      <button class="btn-primary" onclick="doRegister()">Criar minha conta</button>
-      <div class="auth-divider">ou cadastre com</div>
-      <button class="btn-google" onclick="doLoginGoogle()">
-        <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          <path fill="none" d="M0 0h48v48H0z"/>
-        </svg>
-        Cadastrar com Google
-      </button>
-      <div class="auth-err" id="r-err"></div>
-    </div>
-  </div>
-</div>
-
-<!-- APP PRINCIPAL -->
-<div id="app">
-  <div class="hdr">
-    <div class="hdr-top">
-      <div class="hdr-brand">
-        <div class="hdr-brand-icon">
-          <svg width="22" height="22" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 32 L14 32 L18 20 L22 44 L26 28 L29 36 L32 32 L56 32" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M32 42 C32 42 16 29 16 18 C16 10 23 7 32 17 C41 7 48 10 48 18 C48 29 32 42 32 42Z" fill="#ef4444" opacity="0.95"/>
-          </svg>
-        </div>
-        <h1>Saúde+</h1>
-      </div>
-      <!-- BOTÃO SAIR: onclick direto em função global -->
-      <button class="btn-sair" onclick="doLogout()">
-        <i class="ti ti-logout"></i> Sair
-      </button>
-    </div>
-    <div class="hdr-user">Olá, <span id="hdr-nome">...</span></div>
-  </div>
-
-  <!-- INÍCIO -->
-  <div id="pg-home" class="pg on">
-    <div class="db-bar"><div class="db-dot" id="db-dot"></div><span id="db-txt">Conectando...</span></div>
-
-    <div class="card">
-      <div class="card-title"><i class="ti ti-heart-filled" style="color:#ef4444"></i> Pressão Arterial</div>
-      <div class="stat-grid">
-        <div class="stat-box"><div class="stat-label">Sistólica</div><div class="stat-val" id="d-sis">—</div><div class="stat-unit">mmHg</div></div>
-        <div class="stat-box"><div class="stat-label">Diastólica</div><div class="stat-val" id="d-dia">—</div><div class="stat-unit">mmHg</div></div>
-      </div>
-      <div class="stat-sub" id="d-bp-sub">Nenhuma medição</div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="ti ti-droplet-filled" style="color:#10b981"></i> Glicemia</div>
-      <div class="stat-grid one"><div class="stat-box"><div class="stat-label">Glicose</div><div class="stat-val" id="d-gl">—</div><div class="stat-unit">mg/dL</div></div></div>
-      <div class="stat-sub" id="d-gl-sub">Nenhuma medição</div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="ti ti-scale" style="color:#0ea5e9"></i> Peso & IMC</div>
-      <div class="stat-grid">
-        <div class="stat-box"><div class="stat-label">Peso</div><div class="stat-val" id="d-wt">—</div><div class="stat-unit">kg</div></div>
-        <div class="stat-box"><div class="stat-label">IMC</div><div class="stat-val" id="d-imc">—</div><div class="stat-unit" id="d-imc-cls"></div></div>
-      </div>
-      <div class="stat-sub" id="d-wt-sub">Nenhuma medição</div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="ti ti-pill" style="color:#8b5cf6"></i> Remédios de hoje</div>
-      <div id="d-meds"><div class="empty" style="padding:10px"><p>Nenhum remédio cadastrado</p></div></div>
-    </div>
-
-    <!-- GRÁFICO PRESSÃO -->
-    <div class="card">
-      <div class="card-title"><i class="ti ti-chart-line" style="color:#6366f1"></i> Evolução da pressão</div>
-      <div class="chart-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#6366f1"></div>Sistólica</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Diastólica</div>
-      </div>
-      <div id="chart-bp"><div class="chart-empty">Sem dados ainda</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="ti ti-chart-line" style="color:#10b981"></i> Evolução da glicemia</div>
-      <div id="chart-gl"><div class="chart-empty">Sem dados ainda</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="ti ti-chart-line" style="color:#0ea5e9"></i> Evolução do peso</div>
-      <div id="chart-wt"><div class="chart-empty">Sem dados ainda</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><i class="ti ti-database" style="color:#6366f1"></i> Resumo dos dados</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="stat-smb"><div class="stat-smv" id="s-bp">—</div><div class="stat-sml">Pressões</div></div>
-        <div class="stat-smb"><div class="stat-smv" id="s-gl">—</div><div class="stat-sml">Glicemias</div></div>
-        <div class="stat-smb"><div class="stat-smv" id="s-wt">—</div><div class="stat-sml">Pesos</div></div>
-        <div class="stat-smb"><div class="stat-smv" id="s-med">—</div><div class="stat-sml">Remédios</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PRESSÃO -->
-  <div id="pg-bp" class="pg">
-    <div class="page-title">Pressão Arterial</div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-plus-circle"></i> Nova medição</div>
-      <div class="fr f">
-        <div><label class="f">Sistólica *</label><input class="fi" id="bp-s" type="number" inputmode="numeric" placeholder="120"></div>
-        <div><label class="f">Diastólica *</label><input class="fi" id="bp-d" type="number" inputmode="numeric" placeholder="80"></div>
-      </div>
-      <div class="f"><label>Pulso (bpm)</label><input class="fi" id="bp-p" type="number" inputmode="numeric" placeholder="70"></div>
-      <div class="f"><label>Momento</label>
-        <div class="chips">
-          <button class="chip on" data-bpm="Antes do café">Antes café</button>
-          <button class="chip" data-bpm="Após café">Após café</button>
-          <button class="chip" data-bpm="Almoço">Almoço</button>
-          <button class="chip" data-bpm="Tarde">Tarde</button>
-          <button class="chip" data-bpm="Dormir">Dormir</button>
-        </div>
-      </div>
-      <div class="f"><label>Posição</label>
-        <div class="chips">
-          <button class="chip on" data-bpp="Sentado">Sentado</button>
-          <button class="chip" data-bpp="Deitado">Deitado</button>
-          <button class="chip" data-bpp="Em pé">Em pé</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="bp-n" type="text" placeholder="Ex.: em repouso..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="bp-dt" type="datetime-local"></div>
-      <button class="btn" onclick="saveBP()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-info-circle"></i> Classificação OMS</div>
-      <div class="ref-item"><div class="ref-dot" style="background:#10b981"></div><span><b>Normal:</b> abaixo de 120/80 mmHg</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#f59e0b"></div><span><b>Elevada:</b> 120–129 / &lt;80 mmHg</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#ef4444"></div><span><b>Hipert. 1:</b> 130–139 / 80–89 mmHg</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#dc2626"></div><span><b>Hipert. 2:</b> ≥140 / ≥90 mmHg</span></div>
-    </div>
-  </div>
-
-  <!-- GLICEMIA -->
-  <div id="pg-gl" class="pg">
-    <div class="page-title">Glicemia</div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-plus-circle"></i> Nova medição</div>
-      <div class="f"><label>Glicose (mg/dL) *</label><input class="fi" id="gl-v" type="number" inputmode="numeric" placeholder="100"></div>
-      <div class="f"><label>Momento</label>
-        <div class="chips">
-          <button class="chip on" data-glm="Jejum">Jejum</button>
-          <button class="chip" data-glm="Pré-refeição">Pré-refeição</button>
-          <button class="chip" data-glm="Pós-refeição">Pós-refeição</button>
-          <button class="chip" data-glm="Antes dormir">Antes dormir</button>
-        </div>
-      </div>
-      <div class="f"><label>Tipo</label>
-        <div class="chips">
-          <button class="chip on" data-glt="Glicosímetro">Glicosímetro</button>
-          <button class="chip" data-glt="Laboratório">Laboratório</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="gl-n" type="text" placeholder="Ex.: antes da insulina..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="gl-dt" type="datetime-local"></div>
-      <button class="btn green" onclick="saveGL()"><i class="ti ti-device-floppy"></i> Salvar medição</button>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-info-circle"></i> Classificação</div>
-      <div class="ref-item"><div class="ref-dot" style="background:#0ea5e9"></div><span><b>Hipoglicemia:</b> &lt; 70 mg/dL</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#10b981"></div><span><b>Jejum normal:</b> 70–99 mg/dL</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#f59e0b"></div><span><b>Pré-diabetes:</b> 100–125 mg/dL</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#ef4444"></div><span><b>Diabetes:</b> ≥126 mg/dL</span></div>
-    </div>
-  </div>
-
-  <!-- PESO -->
-  <div id="pg-wt" class="pg">
-    <div class="page-title">Peso & IMC</div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-plus-circle"></i> Registrar peso</div>
-      <div class="fr f">
-        <div><label>Peso (kg) *</label><input class="fi" id="wt-v" type="number" inputmode="decimal" placeholder="70.5" step="0.1"></div>
-        <div><label>Altura (cm)</label><input class="fi" id="wt-a" type="number" inputmode="numeric" placeholder="170"></div>
-      </div>
-      <div id="imc-prev" style="display:none;background:var(--p3);border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;border:1.5px solid var(--p)">
-        <div style="font-size:11px;font-weight:700;color:var(--p);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em">IMC calculado</div>
-        <div style="font-size:28px;font-weight:800;color:var(--p)" id="imc-val">—</div>
-        <div style="font-size:13px;color:var(--p2)" id="imc-lbl">—</div>
-      </div>
-      <div class="f"><label>Momento</label>
-        <div class="chips">
-          <button class="chip on" data-wtm="Manhã em jejum">Jejum manhã</button>
-          <button class="chip" data-wtm="Antes do almoço">Antes almoço</button>
-          <button class="chip" data-wtm="À noite">À noite</button>
-        </div>
-      </div>
-      <div class="f"><label>Observação</label><input class="fi" id="wt-n" type="text" placeholder="Ex.: em jejum..."></div>
-      <div class="f"><label>Data e hora</label><input class="fi" id="wt-dt" type="datetime-local"></div>
-      <button class="btn teal" onclick="saveWT()"><i class="ti ti-device-floppy"></i> Salvar peso</button>
-      <div id="wt-cmp" style="display:none"></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><i class="ti ti-info-circle"></i> Classificação IMC</div>
-      <div class="ref-item"><div class="ref-dot" style="background:#0ea5e9"></div><span><b>Abaixo do peso:</b> IMC &lt; 18,5</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#10b981"></div><span><b>Normal:</b> 18,5 – 24,9</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#f59e0b"></div><span><b>Sobrepeso:</b> 25 – 29,9</span></div>
-      <div class="ref-item"><div class="ref-dot" style="background:#ef4444"></div><span><b>Obesidade:</b> ≥ 30</span></div>
-    </div>
-  </div>
-
-  <!-- REMÉDIOS -->
-  <div id="pg-med" class="pg">
-    <div class="page-title">Remédios</div>
-    <button class="btn purple" onclick="openMedModal(null)" style="margin-bottom:16px"><i class="ti ti-plus"></i> Novo remédio</button>
-    <div id="med-list"></div>
-  </div>
-
-  <!-- RECEITAS -->
-  <div id="pg-rx" class="pg">
-    <div class="page-title">Receitas</div>
-    <button class="btn teal" onclick="openRxModal(null)" style="margin-bottom:16px"><i class="ti ti-file-text"></i> Arquivar receita</button>
-    <div id="rx-list"></div>
-  </div>
-
-  <!-- HISTÓRICO -->
-  <div id="pg-hist" class="pg">
-    <div class="page-title">Histórico</div>
-    <div class="filter-tabs">
-      <button class="ftab on" id="ft-bp" onclick="switchHist('bp')">❤️ Pressão</button>
-      <button class="ftab" id="ft-gl" onclick="switchHist('gl')">🩸 Glicemia</button>
-      <button class="ftab" id="ft-wt" onclick="switchHist('wt')">⚖️ Peso</button>
-      <button class="ftab" id="ft-in" onclick="switchHist('in')">💊 Tomadas</button>
-    </div>
-    <div id="h-bp"></div>
-    <div id="h-gl" style="display:none"></div>
-    <div id="h-wt" style="display:none"></div>
-    <div id="h-in" style="display:none"></div>
-  </div>
-
-  <nav class="bnav">
-    <button class="nb on" onclick="goPage('home',this)"><i class="ti ti-layout-dashboard"></i>Início</button>
-    <button class="nb" onclick="goPage('bp',this)"><i class="ti ti-heart"></i>Pressão</button>
-    <button class="nb" onclick="goPage('gl',this)"><i class="ti ti-droplet"></i>Glicemia</button>
-    <button class="nb" onclick="goPage('wt',this)"><i class="ti ti-scale"></i>Peso</button>
-    <button class="nb" onclick="goPage('med',this)"><i class="ti ti-pill"></i>Remédios</button>
-    <button class="nb" onclick="goPage('rx',this)"><i class="ti ti-file-text"></i>Receitas</button>
-    <button class="nb" onclick="goPage('hist',this)"><i class="ti ti-history"></i>Histórico</button>
-  </nav>
-</div>
-
-<!-- MODAL REMÉDIO -->
-<div class="overlay" id="med-modal" onclick="if(event.target===this)closeMedModal()">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-hdr"><div class="modal-title" id="med-modal-title">Novo remédio</div><button class="modal-close" onclick="closeMedModal()"><i class="ti ti-x"></i></button></div>
-    <input type="hidden" id="med-id">
-    <div class="f"><label>Nome *</label><input class="fi" id="med-nm" type="text" placeholder="Ex.: Losartana..."></div>
-    <div class="fr f">
-      <div><label>Dosagem</label><input class="fi" id="med-ds" type="text" placeholder="50mg"></div>
-      <div><label>Forma</label><select class="fs" id="med-fm"><option>Comprimido</option><option>Cápsula</option><option>Líquido</option><option>Injeção</option><option>Gotas</option></select></div>
-    </div>
-    <div class="f"><label>Instruções</label><input class="fi" id="med-in" type="text" placeholder="Ex.: tomar com água..."></div>
-    <div class="f">
-      <label>Horários</label>
-      <div id="times-list" style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0"></div>
-      <div style="display:flex;gap:8px"><input class="fi" id="new-time" type="time" style="flex:1"><button class="btn" style="width:auto;padding:12px 18px" onclick="addTime()"><i class="ti ti-plus"></i></button></div>
-    </div>
-    <div class="f"><label>Observação</label><input class="fi" id="med-ob" type="text" placeholder="Uso contínuo..."></div>
-    <div class="f">
-      <label>Fotos (caixa / bula)</label>
-      <div class="photos-row" id="med-photos"></div>
-      <div class="photos-btns">
-        <button class="btn ghost" onclick="document.getElementById('mc').click()"><i class="ti ti-camera"></i> Câmera</button>
-        <button class="btn ghost" onclick="document.getElementById('mg').click()"><i class="ti ti-photo"></i> Galeria</button>
-      </div>
-      <input type="file" id="mc" accept="image/*" capture="environment" style="display:none" onchange="addMedPhoto(this)">
-      <input type="file" id="mg" accept="image/*" multiple style="display:none" onchange="addMedPhoto(this)">
-    </div>
-    <button class="btn purple" onclick="saveMed()"><i class="ti ti-device-floppy"></i> Salvar remédio</button>
-  </div>
-</div>
-
-<!-- MODAL RECEITA -->
-<div class="overlay" id="rx-modal" onclick="if(event.target===this)closeRxModal()">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-hdr"><div class="modal-title" id="rx-modal-title">Arquivar Receita</div><button class="modal-close" onclick="closeRxModal()"><i class="ti ti-x"></i></button></div>
-    <input type="hidden" id="rx-id">
-    <div class="f"><label>Médico *</label><input class="fi" id="rx-doc" type="text" placeholder="Dr. Silva"></div>
-    <div class="f"><label>CRM</label><input class="fi" id="rx-crm" type="text" placeholder="12345-DF"></div>
-    <div class="fr f">
-      <div><label>Data Emissão *</label><input class="fi" id="rx-dt" type="date"></div>
-      <div><label>Validade</label><select class="fs" id="rx-val"><option value="6">6 meses</option><option value="12">1 ano</option><option value="1">1 mês</option></select></div>
-    </div>
-    <div class="f"><label>Medicamentos *</label><input class="fi" id="rx-meds" type="text" placeholder="Losartana, Metformina..."></div>
-    <div class="f"><label>Observações</label><input class="fi" id="rx-obs" type="text" placeholder="Via original retida..."></div>
-    <div class="f">
-      <label>Foto da receita</label>
-      <div class="photos-row" id="rx-photos"></div>
-      <div class="photos-btns">
-        <button class="btn ghost" onclick="document.getElementById('rc').click()"><i class="ti ti-camera"></i> Câmera</button>
-        <button class="btn ghost" onclick="document.getElementById('rg').click()"><i class="ti ti-photo"></i> Galeria</button>
-      </div>
-      <input type="file" id="rc" accept="image/*" capture="environment" style="display:none" onchange="addRxPhoto(this)">
-      <input type="file" id="rg" accept="image/*" multiple style="display:none" onchange="addRxPhoto(this)">
-    </div>
-    <button class="btn teal" onclick="saveRx()"><i class="ti ti-device-floppy"></i> Arquivar na nuvem</button>
-  </div>
-</div>
-
-<!-- CONFIRM -->
-<div class="confirm-wrap" id="confirm-wrap">
-  <div class="confirm-box">
-    <h3 id="c-title">Confirmar</h3>
-    <p id="c-msg">Tem certeza?</p>
-    <div class="confirm-btns">
-      <button class="cbtn cancel" onclick="closeConfirm()">Cancelar</button>
-      <button class="cbtn ok" onclick="execConfirm()">Confirmar</button>
-    </div>
-  </div>
-</div>
-
-<!-- IMG VIEWER -->
-<div class="img-viewer" id="img-viewer" onclick="closeImg()">
-  <img id="img-src" src="" alt="">
-  <button class="img-viewer-close" onclick="closeImg()"><i class="ti ti-x"></i></button>
-</div>
-
-<div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════════
-// FIREBASE COMPAT SDK — todas funções globais
-// ════════════════════════════════════════════
-firebase.initializeApp({
-  apiKey:"AIzaSyAn7jXQoB6y5_XgGSvLFcWw2B18OhXyPV4",
-  authDomain:"monitordesaudedf.firebaseapp.com",
-  projectId:"monitordesaudedf",
-  storageBucket:"monitordesaudedf.firebasestorage.app",
-  messagingSenderId:"116851967587",
-  appId:"1:116851967587:web:871b7323325963f5391a56"
+setTimeout(()=>{const p=document.getElementById('pbar');if(p)p.style.width='87%';},300);
+
+const app=document.getElementById('app');
+const themeBtn=document.getElementById('themeBtn');
+let dark=true;
+themeBtn.addEventListener('click',()=>{
+  dark=!dark;
+  app.classList.toggle('light',!dark);
+  themeBtn.textContent=dark?'🌙':'☀️';
 });
 
-var AUTH = firebase.auth();
-var FS   = firebase.firestore();
-var UID  = null;
-
-// CRUD por usuário
-function col(n){ return FS.collection('usuarios').doc(UID).collection(n); }
-async function dbAdd(n,r){ return (await col(n).add(r)).id; }
-async function dbPut(n,id,r){ await col(n).doc(String(id)).set(r,{merge:true}); }
-async function dbAll(n){ var s=await col(n).get(); var a=[]; s.forEach(function(d){a.push(Object.assign({id:d.id},d.data()));}); return a.sort(function(a,b){return(b.dt||'').localeCompare(a.dt||'');}); }
-async function dbGet(n,id){ var s=await col(n).doc(String(id)).get(); return s.exists?Object.assign({id:s.id},s.data()):null; }
-async function dbDel(n,id){ await col(n).doc(String(id)).delete(); }
-
-// Migração dados antigos
-async function migrar(){
-  var mapa=[['pressao','pressao'],['glicemia','glicemia'],['peso','peso'],['remedios','remedios'],['receitas_uso_continuo','receitas'],['historico_tomadas','historico_tomadas']];
-  var total=0;
-  for(var i=0;i<mapa.length;i++){
-    try{
-      var ant=mapa[i][0], nov=mapa[i][1];
-      var ns=await col(nov).limit(1).get();
-      if(!ns.empty) continue;
-      var as=await FS.collection(ant).get();
-      if(as.empty) continue;
-      for(var j=0;j<as.docs.length;j++){ await col(nov).add(as.docs[j].data()); total++; }
-    }catch(e){console.warn('migr',mapa[i][0],e.message);}
-  }
-  if(total>0) toast('✓ '+total+' registros migrados!');
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('visible'));
+  document.getElementById('screen-'+id).classList.add('visible');
+  document.querySelectorAll('.nav-item[data-nav]').forEach(n=>n.classList.toggle('active',n.dataset.nav===id));
 }
 
-// ── ESTADO ──
-var bpM='Antes do café', bpP='Sentado';
-var glM='Jejum', glT='Glicosímetro';
-var wtM='Manhã em jejum';
-var medTimes=[], medPics=[], rxPics=[];
-var confirmCb=null;
-
-// ── UTILS ──
-function now(){
-  var d=new Date(), p=function(x){return String(x).padStart(2,'0');};
-  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());
-}
-function fdt(dt){
-  if(!dt)return'—';
-  try{
-    var d=new Date(dt.includes('T')?dt:dt+'T12:00:00');
-    return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'})+(dt.includes('T')?' às '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}):'');
-  }catch(e){return dt;}
-}
-function fdate(dt){
-  if(!dt)return'';
-  try{return new Date(dt.includes('T')?dt:dt+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});}catch(e){return'';}
-}
-function toast(msg,err){
-  var t=document.getElementById('toast');
-  t.textContent=msg; t.style.background=err?'#dc2626':'#0f172a';
-  t.classList.add('on'); setTimeout(function(){t.classList.remove('on');},3000);
-}
-function clBP(s,d){
-  if(s<120&&d<80)return['Normal','b-ok'];
-  if(s<130&&d<80)return['Elevada','b-warn'];
-  if(s<140||d<90)return['Hipert.1','b-bad'];
-  return['Hipert.2','b-bad'];
-}
-function clGL(v,m){
-  if(v<70)return['Hipoglicemia','b-low'];
-  if(m==='Jejum'){if(v<100)return['Normal','b-ok'];if(v<126)return['Pré-diab.','b-warn'];return['Diabetes','b-bad'];}
-  if(v<140)return['Normal','b-ok'];if(v<200)return['Atenção','b-warn'];return['Alta','b-bad'];
-}
-function calcIMC(p,a){return a>=100?+(p/((a/100)**2)).toFixed(1):null;}
-function clIMC(i){
-  if(i<18.5)return['Abaixo do peso','b-low'];if(i<25)return['Normal','b-ok'];
-  if(i<30)return['Sobrepeso','b-warn'];if(i<35)return['Obesidade 1','b-bad'];
-  if(i<40)return['Obesidade 2','b-bad'];return['Obesidade 3','b-bad'];
-}
-function chips(sel,fn){
-  document.querySelectorAll(sel).forEach(function(b){
-    b.addEventListener('click',function(){
-      document.querySelectorAll(sel).forEach(function(x){x.classList.remove('on');});
-      b.classList.add('on'); fn(b.dataset[Object.keys(b.dataset)[0]]);
-    });
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+document.querySelectorAll('.nav-item[data-nav]').forEach(n=>n.addEventListener('click',()=>switchTab(n.dataset.nav)));
+document.querySelectorAll('.period-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.period-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
   });
-}
-function confirm2(t,m,cb){
-  document.getElementById('c-title').textContent=t;
-  document.getElementById('c-msg').textContent=m;
-  confirmCb=cb;
-  document.getElementById('confirm-wrap').classList.add('on');
-}
-function closeConfirm(){document.getElementById('confirm-wrap').classList.remove('on');confirmCb=null;}
-function execConfirm(){if(confirmCb)confirmCb();closeConfirm();}
-
-// ── GRÁFICOS SVG ──
-function drawBP(el, rows){
-  if(!rows.length){el.innerHTML='<div class="chart-empty">Sem dados ainda</div>';return;}
-  var pts=rows.slice(0,12).reverse(), n=pts.length;
-  var W=Math.max(n*70,300), H=130, pL=40,pR=14,pT=26,pB=34;
-  var cW=W-pL-pR, cH=H-pT-pB;
-  var all=pts.flatMap(function(r){return[r.sis,r.dia];});
-  var mn=Math.floor(Math.min.apply(null,all)/10)*10-10;
-  var mx=Math.ceil(Math.max.apply(null,all)/10)*10+10;
-  var rng=mx-mn;
-  var X=function(i){return pL+(n>1?i/(n-1):0.5)*cW;};
-  var Y=function(v){return pT+cH-((v-mn)/rng)*cH;};
-  var grid='';
-  for(var v=mn;v<=mx;v+=20){var yg=Y(v).toFixed(1);grid+='<line x1="'+pL+'" y1="'+yg+'" x2="'+(W-pR)+'" y2="'+yg+'" stroke="#e2e8f0" stroke-width="1"/><text x="'+(pL-5)+'" y="'+yg+'" text-anchor="end" dominant-baseline="middle" font-size="9" fill="#94a3b8">'+v+'</text>';}
-  var ps=pts.map(function(r,i){return(i===0?'M':'L')+X(i).toFixed(1)+','+Y(r.sis).toFixed(1);}).join(' ');
-  var pd=pts.map(function(r,i){return(i===0?'M':'L')+X(i).toFixed(1)+','+Y(r.dia).toFixed(1);}).join(' ');
-  var dots='';
-  pts.forEach(function(r,i){
-    var xi=X(i).toFixed(1), ys=Y(r.sis).toFixed(1), yd=Y(r.dia).toFixed(1);
-    dots+='<text x="'+xi+'" y="'+(parseFloat(ys)-9)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#6366f1">'+r.sis+'</text>';
-    dots+='<circle cx="'+xi+'" cy="'+ys+'" r="5" fill="#6366f1" stroke="#fff" stroke-width="2"/>';
-    dots+='<text x="'+xi+'" y="'+(parseFloat(yd)+17)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#ef4444">'+r.dia+'</text>';
-    dots+='<circle cx="'+xi+'" cy="'+yd+'" r="5" fill="#ef4444" stroke="#fff" stroke-width="2"/>';
-    dots+='<text x="'+xi+'" y="'+(H-5)+'" text-anchor="middle" font-size="9" fill="#94a3b8">'+fdate(r.dt)+'</text>';
-  });
-  el.innerHTML='<div class="chart-scroll"><svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="display:block;overflow:visible">'+grid+'<path d="'+ps+'" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><path d="'+pd+'" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'+dots+'</svg></div>';
-}
-
-function drawLine(el, rows, fn, color){
-  if(!rows.length){el.innerHTML='<div class="chart-empty">Sem dados ainda</div>';return;}
-  var pts=rows.slice(0,12).reverse(), n=pts.length;
-  var W=Math.max(n*70,300), H=110, pL=40,pR=14,pT=26,pB=34;
-  var cW=W-pL-pR, cH=H-pT-pB;
-  var vals=pts.map(fn);
-  var mn=Math.min.apply(null,vals)*0.95, mx=Math.max.apply(null,vals)*1.05, rng=mx-mn||1;
-  var X=function(i){return pL+(n>1?i/(n-1):0.5)*cW;};
-  var Y=function(v){return pT+cH-((v-mn)/rng)*cH;};
-  var step=rng>50?20:rng>10?5:1;
-  var grid='';
-  for(var v=Math.ceil(mn/step)*step;v<=mx;v+=step){var yg=Y(v).toFixed(1);grid+='<line x1="'+pL+'" y1="'+yg+'" x2="'+(W-pR)+'" y2="'+yg+'" stroke="#e2e8f0" stroke-width="1"/><text x="'+(pL-5)+'" y="'+yg+'" text-anchor="end" dominant-baseline="middle" font-size="9" fill="#94a3b8">'+v+'</text>';}
-  var path=pts.map(function(r,i){return(i===0?'M':'L')+X(i).toFixed(1)+','+Y(fn(r)).toFixed(1);}).join(' ');
-  var dots='';
-  pts.forEach(function(r,i){
-    var xi=X(i).toFixed(1), yi=Y(fn(r)).toFixed(1), v=fn(r);
-    dots+='<text x="'+xi+'" y="'+(parseFloat(yi)-9)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+color+'">'+v+'</text>';
-    dots+='<circle cx="'+xi+'" cy="'+yi+'" r="5" fill="'+color+'" stroke="#fff" stroke-width="2"/>';
-    dots+='<text x="'+xi+'" y="'+(H-5)+'" text-anchor="middle" font-size="9" fill="#94a3b8">'+fdate(r.dt)+'</text>';
-  });
-  el.innerHTML='<div class="chart-scroll"><svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="display:block;overflow:visible">'+grid+'<path d="'+path+'" fill="none" stroke="'+color+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'+dots+'</svg></div>';
-}
-
-// ══════════════════════════════
-// AUTH — funções completamente globais
-// ══════════════════════════════
-function authTab(tab, btn){
-  document.querySelectorAll('.auth-tab').forEach(function(b){b.classList.remove('on');});
-  document.querySelectorAll('.auth-form').forEach(function(f){f.classList.remove('on');});
-  btn.classList.add('on');
-  document.getElementById('form-'+tab).classList.add('on');
-}
-
-function doLogin(){
-  var email=document.getElementById('l-email').value.trim();
-  var pass=document.getElementById('l-pass').value;
-  var err=document.getElementById('l-err');
-  err.style.display='none';
-  if(!email||!pass){err.textContent='Preencha e-mail e senha.';err.style.display='block';return;}
-  AUTH.signInWithEmailAndPassword(email,pass).catch(function(e){
-    var m={'auth/invalid-credential':'E-mail ou senha incorretos.','auth/user-not-found':'Usuário não encontrado.','auth/wrong-password':'Senha incorreta.','auth/too-many-requests':'Muitas tentativas. Aguarde.'};
-    err.textContent=m[e.code]||'Erro: '+e.message; err.style.display='block';
-  });
-}
-
-function doRegister(){
-  var nome=document.getElementById('r-nome').value.trim();
-  var email=document.getElementById('r-email').value.trim();
-  var pass=document.getElementById('r-pass').value;
-  var pass2=document.getElementById('r-pass2').value;
-  var err=document.getElementById('r-err');
-  err.style.display='none';
-  if(!nome||!email||!pass){err.textContent='Preencha todos os campos.';err.style.display='block';return;}
-  if(pass.length<6){err.textContent='Senha mínimo 6 caracteres.';err.style.display='block';return;}
-  if(pass!==pass2){err.textContent='As senhas não coincidem.';err.style.display='block';return;}
-  AUTH.createUserWithEmailAndPassword(email,pass).then(function(c){
-    return c.user.updateProfile({displayName:nome});
-  }).catch(function(e){
-    var m={'auth/email-already-in-use':'E-mail já cadastrado.','auth/invalid-email':'E-mail inválido.','auth/weak-password':'Senha muito fraca.'};
-    err.textContent=m[e.code]||'Erro: '+e.message; err.style.display='block';
-  });
-}
-
-// ══════════════════════════════
-// LOGIN COM GOOGLE
-// ══════════════════════════════
-function doLoginGoogle(){
-  var provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({prompt:'select_account'});
-  AUTH.signInWithPopup(provider).catch(function(e){
-    var err = document.getElementById('l-err');
-    var m = {
-      'auth/popup-closed-by-user':'Login cancelado.',
-      'auth/popup-blocked':'Popup bloqueado. Permita popups para este site.',
-      'auth/network-request-failed':'Sem conexão com a internet.',
-      'auth/cancelled-popup-request':'Login cancelado.'
-    };
-    err.textContent = m[e.code] || 'Erro: '+e.message;
-    err.style.display = 'block';
-  });
-}
-// Usa AUTH.signOut() do Firebase Compat
-// ══════════════════════════════
-function doLogout(){
-  // Esconde app imediatamente
-  document.getElementById('app').style.display='none';
-  document.getElementById('auth-wrap').style.display='flex';
-  document.getElementById('l-email').value='';
-  document.getElementById('l-pass').value='';
-  document.getElementById('l-err').style.display='none';
-  // Executa logout no Firebase
-  AUTH.signOut().then(function(){
-    console.log('Logout ok');
-  }).catch(function(e){
-    console.error('Logout erro:',e);
-  });
-}
-
-// ── NAVEGAÇÃO ──
-function goPage(name,btn){
-  document.querySelectorAll('.pg').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');});
-  var t=document.getElementById('pg-'+name); if(t)t.classList.add('on');
-  if(btn)btn.classList.add('on');
-  if(name==='home')updateDash();
-  if(name==='hist')renderHist();
-  if(name==='med')renderMeds();
-  if(name==='rx')renderRx();
-  if(name==='wt')document.getElementById('wt-cmp').style.display='none';
-}
-function switchHist(t){
-  ['bp','gl','wt','in'].forEach(function(x){
-    var e=document.getElementById('ft-'+x); if(e)e.classList.toggle('on',x===t);
-    var p=document.getElementById('h-'+x); if(p)p.style.display=x===t?'block':'none';
-  });
-  renderHist();
-}
-
-// ── PRESSÃO ──
-async function saveBP(){
-  var s=parseInt(document.getElementById('bp-s').value), d=parseInt(document.getElementById('bp-d').value);
-  var pulse=document.getElementById('bp-p').value, note=document.getElementById('bp-n').value.trim(), dt=document.getElementById('bp-dt').value||now();
-  if(!s||!d||s<60||d<40||s>260||d>160){toast('⚠️ Valores inválidos',true);return;}
-  try{
-    await dbAdd('pressao',{sis:s,dia:d,pulse:pulse?parseInt(pulse):null,moment:bpM,pos:bpP,note:note,dt:dt});
-    ['bp-s','bp-d','bp-p','bp-n'].forEach(function(id){document.getElementById(id).value='';});
-    document.getElementById('bp-dt').value=now();
-    toast('✓ Pressão salva!'); updateDash();
-  }catch(e){toast('Erro: '+e.message,true);}
-}
-function delBP(id){confirm2('Excluir pressão','Remover permanentemente?',async function(){await dbDel('pressao',id);toast('✓ Excluído');renderHist();updateDash();});}
-
-// ── GLICEMIA ──
-async function saveGL(){
-  var v=parseInt(document.getElementById('gl-v').value), note=document.getElementById('gl-n').value.trim(), dt=document.getElementById('gl-dt').value||now();
-  if(!v||v<20||v>700){toast('⚠️ Valor inválido',true);return;}
-  try{
-    await dbAdd('glicemia',{val:v,moment:glM,type:glT,note:note,dt:dt});
-    ['gl-v','gl-n'].forEach(function(id){document.getElementById(id).value='';});
-    document.getElementById('gl-dt').value=now();
-    toast('✓ Glicemia salva!'); updateDash();
-  }catch(e){toast('Erro: '+e.message,true);}
-}
-function delGL(id){confirm2('Excluir glicemia','Remover permanentemente?',async function(){await dbDel('glicemia',id);toast('✓ Excluído');renderHist();updateDash();});}
-
-// ── PESO ──
-async function saveWT(){
-  var val=parseFloat(document.getElementById('wt-v').value), alt=parseFloat(document.getElementById('wt-a').value);
-  var note=document.getElementById('wt-n').value.trim(), dt=document.getElementById('wt-dt').value||now();
-  if(!val||val<20||val>300){toast('⚠️ Peso inválido',true);return;}
-  var imc=calcIMC(val,alt);
-  try{
-    var prev=await dbAll('peso');
-    await dbAdd('peso',{val:val,alt:alt||null,imc:imc,moment:wtM,note:note,dt:dt});
-    ['wt-v','wt-n'].forEach(function(id){document.getElementById(id).value='';});
-    document.getElementById('wt-dt').value=now();
-    document.getElementById('imc-prev').style.display='none';
-    toast('✓ Peso salvo!');
-    var box=document.getElementById('wt-cmp');
-    if(prev.length>0){
-      var ant=prev[0].val, diff=val-ant, dA=Math.abs(diff), k=Math.floor(dA), g=Math.round((dA-k)*1000);
-      var cls,icon,tit,sub;
-      if(dA<0.05){cls='eq';icon='⚖️';tit='Peso estável';sub='Sem variação significativa';}
-      else if(diff>0){cls='up';icon='📈';tit='+'+(k>0?k+' kg':'')+(g>0?' e '+g+' g':'');sub='Aumentou de '+ant+' kg para '+val+' kg';}
-      else{cls='down';icon='📉';tit='-'+(k>0?k+' kg':'')+(g>0?' e '+g+' g':'');sub='Diminuiu de '+ant+' kg para '+val+' kg';}
-      box.innerHTML='<div class="wt-cmp '+cls+'"><span class="wt-cmp-icon">'+icon+'</span><div class="wt-cmp-val">'+tit+'</div><div class="wt-cmp-sub">'+sub+'</div></div>';
-      box.style.display='block';
-    }else{box.style.display='none';}
-    updateDash();
-  }catch(e){toast('Erro: '+e.message,true);}
-}
-function delWT(id){confirm2('Excluir peso','Remover permanentemente?',async function(){await dbDel('peso',id);toast('✓ Excluído');renderHist();updateDash();});}
-
-// ── REMÉDIOS ──
-function addMedPhoto(inp){Array.from(inp.files).forEach(function(f){var r=new FileReader();r.onload=function(e){medPics.push(e.target.result);renderMedPhotos();};r.readAsDataURL(f);});inp.value='';}
-function rmMedPhoto(i){medPics.splice(i,1);renderMedPhotos();}
-function renderMedPhotos(){document.getElementById('med-photos').innerHTML=medPics.map(function(s,i){return'<div class="photo-wrap"><img class="photo-img" src="'+s+'" onclick="openImg(\''+s+'\')"><button class="photo-rm" onclick="rmMedPhoto('+i+')">×</button></div>';}).join('');}
-function openMedModal(id){
-  medTimes=[]; medPics=[];
-  document.getElementById('med-id').value=id||'';
-  document.getElementById('med-modal-title').textContent=id?'Editar remédio':'Novo remédio';
-  ['med-nm','med-ds','med-in','med-ob'].forEach(function(i){document.getElementById(i).value='';});
-  document.getElementById('med-fm').value='Comprimido';
-  renderTimes(); renderMedPhotos();
-  if(id){dbGet('remedios',id).then(function(m){if(!m)return;document.getElementById('med-nm').value=m.name||'';document.getElementById('med-ds').value=m.dose||'';document.getElementById('med-in').value=m.instr||'';document.getElementById('med-ob').value=m.obs||'';document.getElementById('med-fm').value=m.form||'Comprimido';medTimes=[].concat(m.times||[]);medPics=[].concat(m.photos||[]);renderTimes();renderMedPhotos();});}
-  document.getElementById('med-modal').classList.add('on');
-}
-function closeMedModal(){document.getElementById('med-modal').classList.remove('on');}
-function addTime(){var t=document.getElementById('new-time').value;if(!t||medTimes.includes(t))return;medTimes.push(t);medTimes.sort();renderTimes();document.getElementById('new-time').value='';}
-function removeTime(t){medTimes=medTimes.filter(function(x){return x!==t;});renderTimes();}
-function renderTimes(){document.getElementById('times-list').innerHTML=medTimes.map(function(t){return'<span class="time-tag"><i class="ti ti-clock" style="font-size:12px"></i> '+t+' <button onclick="removeTime(\''+t+'\')" style="background:none;border:none;cursor:pointer;color:inherit;font-size:13px;margin-left:3px;padding:0;line-height:1">×</button></span>';}).join('');}
-async function saveMed(){
-  var name=document.getElementById('med-nm').value.trim();if(!name){toast('⚠️ Nome obrigatório',true);return;}
-  var eid=document.getElementById('med-id').value;
-  var rec={name:name,dose:document.getElementById('med-ds').value.trim(),form:document.getElementById('med-fm').value,instr:document.getElementById('med-in').value.trim(),obs:document.getElementById('med-ob').value.trim(),times:medTimes.slice(),photos:medPics.slice(),dt:now()};
-  try{if(eid){await dbPut('remedios',eid,rec);toast('✓ Atualizado!');}else{await dbAdd('remedios',rec);toast('✓ Cadastrado!');}closeMedModal();renderMeds();updateDash();}catch(e){toast('Erro: '+e.message,true);}
-}
-function delMed(id){confirm2('Excluir remédio','Remover?',async function(){await dbDel('remedios',id);toast('✓ Excluído');renderMeds();updateDash();});}
-async function renderMeds(){
-  var meds=await dbAll('remedios'); var el=document.getElementById('med-list');
-  if(!meds.length){el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum remédio</p></div></div>';return;}
-  el.innerHTML=meds.map(function(m){
-    var times=m.times&&m.times.length?'<div class="time-tags">'+m.times.map(function(t){return'<span class="time-tag"><i class="ti ti-clock" style="font-size:11px"></i> '+t+'</span>';}).join('')+'</div>':'';
-    var photos=m.photos&&m.photos.length?'<div class="photos-row">'+m.photos.map(function(s){return'<div class="photo-wrap"><img class="photo-img" src="'+s+'" onclick="openImg(\''+s+'\')"></div>';}).join('')+'</div>':'';
-    return'<div class="med-card"><div class="med-card-hdr"><div class="med-card-icon"><i class="ti ti-pill"></i></div><div><div class="med-card-name">'+m.name+'</div><div class="med-card-dose">'+[m.dose,m.form].filter(Boolean).join(' · ')+'</div></div></div>'+times+(m.instr?'<div style="font-size:13px;color:var(--c2);margin-bottom:6px">'+m.instr+'</div>':'')+photos+'<div class="med-actions"><button class="med-act edit" onclick="openMedModal(\''+m.id+'\')"><i class="ti ti-edit"></i> Editar</button><button class="med-act del" onclick="delMed(\''+m.id+'\')"><i class="ti ti-trash"></i> Excluir</button></div></div>';
-  }).join('');
-}
-
-// ── RECEITAS ──
-function addRxPhoto(inp){Array.from(inp.files).forEach(function(f){var r=new FileReader();r.onload=function(e){rxPics.push(e.target.result);renderRxPhotos();};r.readAsDataURL(f);});inp.value='';}
-function rmRxPhoto(i){rxPics.splice(i,1);renderRxPhotos();}
-function renderRxPhotos(){document.getElementById('rx-photos').innerHTML=rxPics.map(function(s,i){return'<div class="photo-wrap"><img class="photo-img" src="'+s+'" onclick="openImg(\''+s+'\')"><button class="photo-rm" onclick="rmRxPhoto('+i+')">×</button></div>';}).join('');}
-function openRxModal(id){
-  rxPics=[];document.getElementById('rx-id').value=id||'';document.getElementById('rx-modal-title').textContent=id?'Editar receita':'Arquivar Receita';
-  ['rx-doc','rx-crm','rx-meds','rx-obs'].forEach(function(i){document.getElementById(i).value='';});
-  document.getElementById('rx-dt').value=new Date().toISOString().split('T')[0];document.getElementById('rx-val').value='6';renderRxPhotos();
-  if(id){dbGet('receitas',id).then(function(r){if(!r)return;document.getElementById('rx-doc').value=r.medico||'';document.getElementById('rx-crm').value=r.crm||'';document.getElementById('rx-dt').value=r.dataEmissao||'';document.getElementById('rx-val').value=r.validadeMeses||'6';document.getElementById('rx-meds').value=r.medicamentos||'';document.getElementById('rx-obs').value=r.obs||'';rxPics=[].concat(r.fotos||[]);renderRxPhotos();});}
-  document.getElementById('rx-modal').classList.add('on');
-}
-function closeRxModal(){document.getElementById('rx-modal').classList.remove('on');}
-async function saveRx(){
-  var medico=document.getElementById('rx-doc').value.trim(), meds=document.getElementById('rx-meds').value.trim(), dE=document.getElementById('rx-dt').value;
-  if(!medico||!meds||!dE){toast('⚠️ Preencha campos obrigatórios',true);return;}
-  var vM=parseInt(document.getElementById('rx-val').value);
-  var dV=new Date(dE+'T12:00:00'); dV.setMonth(dV.getMonth()+vM);
-  var eid=document.getElementById('rx-id').value;
-  var rec={medico:medico,crm:document.getElementById('rx-crm').value.trim(),dataEmissao:dE,validadeMeses:vM,dataVencimento:dV.toISOString().split('T')[0],medicamentos:meds,obs:document.getElementById('rx-obs').value.trim(),fotos:rxPics.slice(),dt:now()};
-  try{if(eid){await dbPut('receitas',eid,rec);toast('✓ Atualizado!');}else{await dbAdd('receitas',rec);toast('✓ Arquivado!');}closeRxModal();renderRx();}catch(e){toast('Erro: '+e.message,true);}
-}
-function delRx(id){confirm2('Excluir receita','Remover?',async function(){await dbDel('receitas',id);toast('✓ Excluído');renderRx();});}
-async function renderRx(){
-  var rxs=await dbAll('receitas'); var el=document.getElementById('rx-list'); var hoje=new Date().toISOString().split('T')[0];
-  if(!rxs.length){el.innerHTML='<div class="card"><div class="empty"><i class="ti ti-file-text"></i><p>Nenhuma receita</p></div></div>';return;}
-  el.innerHTML=rxs.map(function(r){
-    var exp=hoje>(r.dataVencimento||'');
-    var photos=r.fotos&&r.fotos.length?'<div class="photos-row" style="margin-top:8px">'+r.fotos.map(function(s){return'<div class="photo-wrap"><img class="photo-img" src="'+s+'" onclick="openImg(\''+s+'\')"></div>';}).join('')+'</div>':'';
-    return'<div class="med-card" style="'+(exp?'border:2px solid var(--r);background:var(--r3);':'')+'"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div><div style="font-size:16px;font-weight:800">🩺 Dr(a). '+r.medico+'</div>'+(r.crm?'<div style="font-size:12px;color:var(--c3)">CRM: '+r.crm+'</div>':'')+'</div>'+(exp?'<span class="badge b-bad">Vencida</span>':'<span class="badge b-ok">Válida</span>')+'</div><div style="font-size:13px;color:var(--t);font-weight:700;margin-bottom:5px">💊 '+r.medicamentos+'</div><div style="font-size:12px;color:var(--c3)">Emissão: '+fdt(r.dataEmissao)+' · Vence: <b style="'+(exp?'color:var(--r)':'')+'">'+fdt(r.dataVencimento)+'</b></div>'+(r.obs?'<div style="font-size:12px;color:var(--c3);margin-top:4px">'+r.obs+'</div>':'')+photos+'<div class="med-actions"><button class="med-act edit" onclick="openRxModal(\''+r.id+'\')"><i class="ti ti-edit"></i> Editar</button><button class="med-act del" onclick="delRx(\''+r.id+'\')"><i class="ti ti-trash"></i> Excluir</button></div></div>';
-  }).join('');
-}
-
-// ── DASHBOARD ──
-async function updateDash(){
-  var results=await Promise.all([dbAll('pressao'),dbAll('glicemia'),dbAll('peso'),dbAll('remedios')]);
-  var bps=results[0], gls=results[1], wts=results[2], meds=results[3];
-  if(bps.length){var l=bps[0];document.getElementById('d-sis').textContent=l.sis;document.getElementById('d-dia').textContent=l.dia;document.getElementById('d-bp-sub').textContent=(l.moment||'')+' · '+fdt(l.dt);}
-  if(gls.length){var l=gls[0];document.getElementById('d-gl').textContent=l.val;document.getElementById('d-gl-sub').textContent=(l.moment||'')+' · '+fdt(l.dt);}
-  if(wts.length){
-    var l=wts[0];document.getElementById('d-wt').textContent=l.val;document.getElementById('d-imc').textContent=l.imc||'—';
-    if(l.imc){var ci=clIMC(l.imc);document.getElementById('d-imc-cls').textContent=ci[0];}
-    if(wts.length>=2){var diff=l.val-wts[1].val,dA=Math.abs(diff),k=Math.floor(dA),g=Math.round((dA-k)*1000);var txt;if(dA<0.05)txt='⚖️ Estável';else if(diff>0)txt='📈 +'+(k>0?k+' kg':'')+(g>0?' '+g+'g':'')+' desde '+wts[1].val+' kg';else txt='📉 -'+(k>0?k+' kg':'')+(g>0?' '+g+'g':'')+' desde '+wts[1].val+' kg';document.getElementById('d-wt-sub').textContent=txt;}
-    else document.getElementById('d-wt-sub').textContent=fdt(l.dt);
-  }
-  document.getElementById('s-bp').textContent=bps.length;document.getElementById('s-gl').textContent=gls.length;document.getElementById('s-wt').textContent=wts.length;document.getElementById('s-med').textContent=meds.length;
-  var allT=[];meds.forEach(function(m){(m.times||[]).forEach(function(t){allT.push({time:t,name:m.name,dose:m.dose});});});allT.sort(function(a,b){return a.time.localeCompare(b.time);});
-  document.getElementById('d-meds').innerHTML=allT.length?allT.map(function(t){return'<div class="med-row"><div><div style="font-size:15px;font-weight:700">⏱ '+t.time+' — '+t.name+'</div><div style="font-size:12px;color:var(--c3)">'+( t.dose||'Dose não informada')+'</div></div><button class="take-btn" onclick="registrar(\''+t.name+'\',\''+t.dose+'\')"><i class="ti ti-check"></i> Tomar</button></div>';}).join(''):'<div class="empty" style="padding:10px"><p>Nenhum horário cadastrado</p></div>';
-  drawBP(document.getElementById('chart-bp'),bps);
-  drawLine(document.getElementById('chart-gl'),gls,function(r){return r.val;},'#10b981');
-  drawLine(document.getElementById('chart-wt'),wts,function(r){return r.val;},'#0ea5e9');
-}
-
-// ── HISTÓRICO ──
-async function renderHist(){
-  var results=await Promise.all([dbAll('pressao'),dbAll('glicemia'),dbAll('peso'),dbAll('historico_tomadas')]);
-  var bps=results[0], gls=results[1], wts=results[2], ints=results[3];
-
-  document.getElementById('h-bp').innerHTML=bps.length?'<div class="card">'+bps.map(function(r){var cb=clBP(r.sis,r.dia);return'<div class="li"><div class="li-icon bp"><i class="ti ti-heart"></i></div><div class="li-body"><div class="li-val">'+r.sis+'/'+r.dia+' mmHg'+(r.pulse?' · '+r.pulse+' bpm':'')+'</div><div class="li-meta">'+(r.moment||'')+' · '+fdt(r.dt)+'</div>'+(r.note?'<span class="li-tag">'+r.note+'</span>':'')+'</div><div class="li-right"><span class="badge '+cb[1]+'">'+cb[0]+'</span><button class="del-btn" onclick="delBP(\''+r.id+'\')"><i class="ti ti-trash"></i></button></div></div>';}).join('')+'</div>':'<div class="card"><div class="empty"><i class="ti ti-heart-off"></i><p>Nenhum registro</p></div></div>';
-
-  document.getElementById('h-gl').innerHTML=gls.length?'<div class="card">'+gls.map(function(r){var cg=clGL(r.val,r.moment);return'<div class="li"><div class="li-icon gl"><i class="ti ti-droplet"></i></div><div class="li-body"><div class="li-val">'+r.val+' mg/dL</div><div class="li-meta">'+(r.moment||'')+' · '+fdt(r.dt)+'</div>'+(r.note?'<span class="li-tag">'+r.note+'</span>':'')+'</div><div class="li-right"><span class="badge '+cg[1]+'">'+cg[0]+'</span><button class="del-btn" onclick="delGL(\''+r.id+'\')"><i class="ti ti-trash"></i></button></div></div>';}).join('')+'</div>':'<div class="card"><div class="empty"><i class="ti ti-droplet-off"></i><p>Nenhum registro</p></div></div>';
-
-  if(!wts.length){document.getElementById('h-wt').innerHTML='<div class="card"><div class="empty"><i class="ti ti-scale"></i><p>Nenhum registro</p></div></div>';}
-  else{
-    var cmp='';
-    if(wts.length>=2){var a=wts[0].val,b=wts[1].val,d=a-b,dA=Math.abs(d),k=Math.floor(dA),g=Math.round((dA-k)*1000);var cls,icon,tit,sub;if(dA<0.05){cls='eq';icon='⚖️';tit='Peso estável';sub='Sem variação';}else if(d>0){cls='up';icon='📈';tit='+'+(k>0?k+' kg':'')+(g>0?' e '+g+' g':'');sub='Aumentou de '+b+' kg para '+a+' kg';}else{cls='down';icon='📉';tit='-'+(k>0?k+' kg':'')+(g>0?' e '+g+' g':'');sub='Diminuiu de '+b+' kg para '+a+' kg';}cmp='<div class="wt-cmp '+cls+'" style="margin-bottom:14px"><span class="wt-cmp-icon">'+icon+'</span><div class="wt-cmp-val">'+tit+'</div><div class="wt-cmp-sub">'+sub+'</div></div>';}
-    document.getElementById('h-wt').innerHTML=cmp+'<div class="card">'+wts.map(function(r,i){var dt2='';if(i<wts.length-1){var d=r.val-wts[i+1].val,dA=Math.abs(d),k=Math.floor(dA),g=Math.round((dA-k)*1000);var s=d>0?'▲':d<0?'▼':'=';var c=d>0?'var(--r)':d<0?'var(--g)':'var(--c3)';var t=dA<0.05?'estável':s+' '+(k>0?k+' kg':'')+(g>0?' '+g+'g':'');dt2='<span style="font-size:11px;font-weight:700;color:'+c+';margin-left:6px">'+t+'</span>';}return'<div class="li"><div class="li-icon wt"><i class="ti ti-scale"></i></div><div class="li-body"><div class="li-val">'+r.val+' kg'+dt2+'</div><div class="li-meta">'+(r.moment?r.moment+' · ':'')+fdt(r.dt)+'</div>'+(r.imc?'<div class="li-meta">IMC: '+r.imc+' · '+clIMC(r.imc)[0]+'</div>':'')+'</div><div class="li-right"><button class="del-btn" onclick="delWT(\''+r.id+'\')"><i class="ti ti-trash"></i></button></div></div>';}).join('')+'</div>';
-  }
-
-  document.getElementById('h-in').innerHTML=ints.length?'<div class="card">'+ints.map(function(r){return'<div class="li"><div class="li-icon med"><i class="ti ti-pill"></i></div><div class="li-body"><div class="li-val" style="color:var(--g)">✓ '+r.nome+'</div><div class="li-meta">'+(r.dose||'')+' · '+fdt(r.dt)+'</div></div><div class="li-right"><button class="del-btn" onclick="delInt(\''+r.id+'\')"><i class="ti ti-trash"></i></button></div></div>';}).join('')+'</div>':'<div class="card"><div class="empty"><i class="ti ti-pill-off"></i><p>Nenhum registro</p></div></div>';
-}
-
-// ── TOMADAS ──
-async function registrar(nome,dose){try{await dbAdd('historico_tomadas',{nome:nome,dose:dose,dt:now()});toast('✓ '+nome+' registrado!');}catch(e){toast('Erro: '+e.message,true);}}
-function delInt(id){confirm2('Excluir?','Remover registro?',async function(){await dbDel('historico_tomadas',id);toast('✓ Removido');renderHist();});}
-
-// ── IMAGEM ──
-function openImg(src){document.getElementById('img-src').src=src;document.getElementById('img-viewer').classList.add('on');}
-function closeImg(){document.getElementById('img-viewer').classList.remove('on');}
-
-// ── SETUP CHIPS & INPUTS ──
-chips('[data-bpm]',function(v){bpM=v;});
-chips('[data-bpp]',function(v){bpP=v;});
-chips('[data-glm]',function(v){glM=v;});
-chips('[data-glt]',function(v){glT=v;});
-chips('[data-wtm]',function(v){wtM=v;});
-
-['wt-v','wt-a'].forEach(function(id){
-  var el=document.getElementById(id);
-  if(el)el.addEventListener('input',function(){
-    var p=parseFloat(document.getElementById('wt-v').value), a=parseFloat(document.getElementById('wt-a').value);
-    var prev=document.getElementById('imc-prev');
-    if(p&&a>=100){var imc=calcIMC(p,a);var ci=clIMC(imc);document.getElementById('imc-val').textContent=imc;document.getElementById('imc-lbl').textContent=ci[0];prev.style.display='block';}
-    else prev.style.display='none';
-  });
-});
-
-document.getElementById('l-pass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
-document.getElementById('l-email').addEventListener('keydown',function(e){if(e.key==='Enter')document.getElementById('l-pass').focus();});
-document.getElementById('r-pass2').addEventListener('keydown',function(e){if(e.key==='Enter')doRegister();});
-
-// ── MONITORAMENTO AUTH ──
-AUTH.onAuthStateChanged(function(user){
-  document.getElementById('splash').style.display='none';
-  if(user){
-    UID=user.uid;
-    document.getElementById('auth-wrap').style.display='none';
-    document.getElementById('app').style.display='block';
-    document.getElementById('hdr-nome').textContent=user.displayName||user.email;
-    document.getElementById('db-dot').classList.add('on');
-    document.getElementById('db-txt').textContent='☁️ Conectado — '+user.email;
-    document.getElementById('bp-dt').value=now();
-    document.getElementById('gl-dt').value=now();
-    document.getElementById('wt-dt').value=now();
-    migrar().then(function(){updateDash();}).catch(function(e){console.error(e);});
-  }else{
-    UID=null;
-    document.getElementById('auth-wrap').style.display='flex';
-    document.getElementById('app').style.display='none';
-  }
 });
 </script>
 </body>
