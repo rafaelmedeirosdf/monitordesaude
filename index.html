@@ -646,6 +646,25 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
   <!-- ══ EXAMES LABORATORIAIS ══ -->
   <div id="pg-lab" class="pg">
     <div class="page-title">Exames Laboratoriais</div>
+
+    <!-- Leitura por IA -->
+    <div class="card" style="border:1.5px solid #ddd6fe;background:linear-gradient(135deg,#faf5ff,#fff)">
+      <div class="card-title" style="color:#7c3aed"><i class="ti ti-sparkles"></i> Ler exame com IA</div>
+      <div style="font-size:13px;color:var(--c2);margin-bottom:12px;line-height:1.5">Envie o PDF ou foto do seu exame de sangue. A IA lê e preenche os campos abaixo automaticamente — você confere antes de salvar.</div>
+      <div id="ia-key-area" style="display:none">
+        <div class="f"><label>Chave da API Anthropic</label><input class="fi" id="ia-key" type="password" placeholder="sk-ant-..."><div style="font-size:11px;color:var(--c3);margin-top:4px;line-height:1.4">Guardada só neste aparelho. Use repositório privado e limite de gasto no console.anthropic.com.</div></div>
+        <button class="btn ghost" onclick="salvarChave()" style="margin-bottom:10px"><i class="ti ti-key"></i> Salvar chave</button>
+      </div>
+      <div id="ia-upload-area">
+        <div class="photos-btns">
+          <button class="btn purple" onclick="document.getElementById('ia-file').click()"><i class="ti ti-upload"></i> Enviar exame</button>
+          <button class="btn ghost" onclick="trocarChave()"><i class="ti ti-key"></i> Chave API</button>
+        </div>
+        <input type="file" id="ia-file" accept="image/*,application/pdf" style="display:none" onchange="lerExameIA(this)">
+        <div id="ia-status" style="display:none;margin-top:10px;padding:11px;border-radius:11px;font-size:13px;text-align:center;font-weight:600"></div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-title"><i class="ti ti-flask" style="color:#8b5cf6"></i> Novo exame de sangue</div>
       <div class="f"><label>Data da coleta</label><input class="fi" id="lab-dt" type="date"></div>
@@ -1046,7 +1065,7 @@ function goPage(name,btn){
   if(name==='hist')renderHist();
   if(name==='med')renderMeds();
   if(name==='rx')renderRx();
-  if(name==='lab')renderLabs();
+  if(name==='lab'){renderLabs();var hasKey=getChave();document.getElementById('ia-key-area').style.display=hasKey?'none':'block';document.getElementById('ia-upload-area').style.display=hasKey?'block':'none';}
   if(name==='sym')renderEpworth();
   if(name==='cpap')renderPoli();
   if(name==='wt')document.getElementById('wt-cmp').style.display='none';
@@ -1349,6 +1368,68 @@ function closeImg(){document.getElementById('img-viewer').classList.remove('on')
 function clHbA1c(v){if(v==null)return['—','b-gray'];if(v<5.7)return['Normal','b-ok'];if(v<6.5)return['Pré-diabetes','b-warn'];return['Diabetes','b-bad'];}
 function clLDL(v){if(v==null)return['—','b-gray'];if(v<100)return['Ótimo','b-ok'];if(v<130)return['Limítrofe','b-warn'];return['Alto','b-bad'];}
 function clTG(v){if(v==null)return['—','b-gray'];if(v<150)return['Normal','b-ok'];if(v<200)return['Limítrofe','b-warn'];return['Alto','b-bad'];}
+/* ══ LEITURA DE EXAME POR IA (chave própria, localStorage) ══ */
+function getChave(){return localStorage.getItem('anthropic-key')||'';}
+function salvarChave(){
+  var k=document.getElementById('ia-key').value.trim();
+  if(!k){toast('⚠️ Cole a chave da API',true);return;}
+  localStorage.setItem('anthropic-key',k);
+  document.getElementById('ia-key-area').style.display='none';
+  document.getElementById('ia-upload-area').style.display='block';
+  toast('✓ Chave salva neste aparelho');
+}
+function trocarChave(){
+  document.getElementById('ia-key').value=getChave();
+  document.getElementById('ia-key-area').style.display='block';
+  document.getElementById('ia-upload-area').style.display='none';
+}
+function statusIA(msg,tipo){
+  var el=document.getElementById('ia-status');
+  el.style.display='block';
+  el.textContent=msg;
+  var c={load:['#ede9fe','#6d28d9'],ok:['#d1fae5','#065f46'],err:['#fee2e2','#991b1b']}[tipo]||['#f1f5f9','#475569'];
+  el.style.background=c[0];el.style.color=c[1];
+}
+function lerExameIA(inp){
+  var f=inp.files[0];inp.value='';
+  if(!f)return;
+  var chave=getChave();
+  if(!chave){trocarChave();toast('⚠️ Configure a chave da API primeiro',true);return;}
+  statusIA('⏳ Lendo o exame com IA...','load');
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var b64=e.target.result.split(',')[1];
+    var isPdf=f.type==='application/pdf';
+    var sourceBlock=isPdf
+      ? {type:'document',source:{type:'base64',media_type:'application/pdf',data:b64}}
+      : {type:'image',source:{type:'base64',media_type:f.type||'image/jpeg',data:b64}};
+    var prompt='Você é um assistente que extrai dados de exames laboratoriais. Analise este exame de sangue e retorne APENAS um objeto JSON (sem markdown, sem texto extra) com os valores numéricos encontrados, usando exatamente estas chaves (null se não encontrar): {"data":"AAAA-MM-DD ou null","local":"nome do laboratório ou null","hba1c":number,"glicose":number,"insulina":number,"ct":number,"ldl":number,"hdl":number,"tg":number,"creat":number,"tsh":number,"au":number}. hba1c em %, glicose/ct/ldl/hdl/tg em mg/dL, insulina em uU/mL, creat em mg/dL, tsh em uUI/mL, au (ácido úrico) em mg/dL.';
+    fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':chave,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,messages:[{role:'user',content:[sourceBlock,{type:'text',text:prompt}]}]})
+    }).then(function(r){return r.json();}).then(function(data){
+      if(data.error){statusIA('Erro: '+(data.error.message||'falha na API'),'err');return;}
+      var txt='';
+      (data.content||[]).forEach(function(b){if(b.type==='text')txt+=b.text;});
+      txt=txt.replace(/```json|```/g,'').trim();
+      var vals;
+      try{vals=JSON.parse(txt);}catch(err){statusIA('Não consegui interpretar o exame. Tente uma foto mais nítida.','err');return;}
+      // Preenche os campos
+      var map={data:'lab-dt',local:'lab-local',hba1c:'lab-hba1c',glicose:'lab-gli',insulina:'lab-ins',ct:'lab-ct',ldl:'lab-ldl',hdl:'lab-hdl',tg:'lab-tg',creat:'lab-creat',tsh:'lab-tsh',au:'lab-au'};
+      var n=0;
+      Object.keys(map).forEach(function(k){
+        if(vals[k]!=null&&vals[k]!==''){var el=document.getElementById(map[k]);if(el){el.value=vals[k];n++;}}
+      });
+      statusIA('✓ '+n+' valores extraídos! Confira abaixo e salve.','ok');
+      toast('✓ Exame lido pela IA — confira os valores');
+    }).catch(function(err){
+      statusIA('Erro de conexão: '+err.message,'err');
+    });
+  };
+  reader.readAsDataURL(f);
+}
+
 async function saveLab(){
   var dt=document.getElementById('lab-dt').value||today();
   var rec={dt:dt+'T08:00',data:dt,local:document.getElementById('lab-local').value.trim(),
@@ -1703,7 +1784,59 @@ function gerarAnaliseIA(kpi){
   // Monta HTML
   function lista(arr,icon){return '<ul style="margin:0;padding-left:18px">'+arr.map(function(x){return '<li style="margin-bottom:5px;line-height:1.5">'+x+'</li>';}).join('')+'</ul>';}
 
-  var resumoSituacao='Paciente de 46 anos com hipertensão arterial, obesidade grau 1, resistência à insulina/pré-diabetes e apneia obstrutiva do sono em uso de CPAP. A análise abaixo organiza os padrões observados nos dados registrados no período para apoiar a conversa com o médico assistente.';
+  // ── AVALIAÇÃO POR CONDIÇÃO CLÍNICA ──
+  function statusBadge(cor,txt){var c={ok:['#d1fae5','#065f46'],warn:['#fef3c7','#92400e'],bad:['#fee2e2','#991b1b'],gray:['#f1f5f9','#475569']}[cor];return '<span style="display:inline-block;padding:2px 9px;border-radius:10px;font-size:8pt;font-weight:700;background:'+c[0]+';color:'+c[1]+'">'+txt+'</span>';}
+
+  var condicoes=[];
+  // 1. Hipertensão
+  var hasStatus,hasTxt,hasObs;
+  if(kpi.avgSis==null){hasStatus='gray';hasTxt='Sem dados';hasObs='Sem medições de PA no período.';}
+  else if(kpi.avgSis<130&&kpi.avgDia<80){hasStatus='ok';hasTxt='Controlada';hasObs='PA média '+kpi.avgSis+'/'+kpi.avgDia+' mmHg dentro do alvo.';}
+  else if(kpi.avgSis<140&&kpi.avgDia<90){hasStatus='warn';hasTxt='Limítrofe';hasObs='PA média '+kpi.avgSis+'/'+kpi.avgDia+' mmHg, discretamente acima do alvo de 130/80.';}
+  else{hasStatus='bad';hasTxt='Acima do alvo';hasObs='PA média '+kpi.avgSis+'/'+kpi.avgDia+' mmHg'+(kpi.cargaPAS!=null?', carga pressórica de '+kpi.cargaPAS+'%':'')+'. Meta 130/80 não atingida.';}
+  condicoes.push({nome:'Hipertensão Arterial Sistêmica',cid:'I10',status:hasStatus,txt:hasTxt,obs:hasObs});
+
+  // 2. Obesidade
+  var obStatus,obTxt,obObs;
+  if(kpi.imcAtual==null){obStatus='gray';obTxt='Sem dados';obObs='Sem registro de peso/altura no período.';}
+  else if(kpi.imcAtual<25){obStatus='ok';obTxt='IMC normal';obObs='IMC '+kpi.imcAtual+' kg/m².';}
+  else if(kpi.imcAtual<30){obStatus='warn';obTxt='Sobrepeso';obObs='IMC '+kpi.imcAtual+' kg/m²'+(kpi.circAtual!=null?', circunferência '+kpi.circAtual+' cm':'')+'.';}
+  else{obStatus='bad';obTxt='Obesidade';obObs='IMC '+kpi.imcAtual+' kg/m²'+(kpi.circAtual!=null?', circunferência abdominal '+kpi.circAtual+' cm':'')+'. Fator que amplifica HAS, resistência insulínica e apneia.';}
+  condicoes.push({nome:'Obesidade Grau 1',cid:'E66.0',status:obStatus,txt:obTxt,obs:obObs});
+
+  // 3. Resistência à insulina / pré-diabetes
+  var glStatus,glTxt,glObs;
+  var hba1c=kpi.ultLab&&kpi.ultLab.hba1c!=null?kpi.ultLab.hba1c:null;
+  if(kpi.avgGlJej==null&&hba1c==null){glStatus='gray';glTxt='Sem dados';glObs='Sem glicemia de jejum nem HbA1c no período.';}
+  else if((kpi.avgGlJej!=null&&kpi.avgGlJej>=126)||(hba1c!=null&&hba1c>=6.5)){glStatus='bad';glTxt='Atenção: faixa de diabetes';glObs='Glicemia jejum média '+(kpi.avgGlJej||'—')+' mg/dL'+(hba1c!=null?' · HbA1c '+hba1c+'%':'')+'. Valores excedem a faixa de pré-diabetes — requer confirmação diagnóstica.';}
+  else if((kpi.avgGlJej!=null&&kpi.avgGlJej>=100)||(hba1c!=null&&hba1c>=5.7)){glStatus='warn';glTxt='Pré-diabetes';glObs='Glicemia jejum média '+(kpi.avgGlJej||'—')+' mg/dL'+(hba1c!=null?' · HbA1c '+hba1c+'%':'')+'.';}
+  else{glStatus='ok';glTxt='Controlada';glObs='Glicemia jejum média '+(kpi.avgGlJej||'—')+' mg/dL'+(hba1c!=null?' · HbA1c '+hba1c+'%':'')+'.';}
+  condicoes.push({nome:'Resistência à Insulina / Pré-Diabetes',cid:'E11',status:glStatus,txt:glTxt,obs:glObs});
+
+  // 4. Apneia / CPAP
+  var apStatus,apTxt,apObs;
+  var iah=kpi.ultPoli&&kpi.ultPoli.iah!=null?kpi.ultPoli.iah:null;
+  if(kpi.nCPAP===0&&iah==null){apStatus='gray';apTxt='Sem dados';apObs='Sem registros de uso de CPAP nem dados de polissonografia.';}
+  else{
+    var partes=[];
+    if(iah!=null)partes.push('IAH do exame '+iah+'/h ('+(iah<5?'normal':iah<15?'leve':iah<30?'moderada':'grave')+')');
+    if(kpi.adesaoCpap!=null)partes.push('adesão '+kpi.adesaoCpap+'% das noites');
+    if(kpi.horasMedia!=null)partes.push('uso médio '+kpi.horasMedia+'h');
+    apObs=partes.join(' · ')+'.';
+    if(kpi.nCPAP>0&&kpi.adesaoCpap!=null){
+      if(kpi.adesaoCpap>=70){apStatus='ok';apTxt='Boa adesão ao CPAP';}
+      else{apStatus='warn';apTxt='Adesão a melhorar';}
+    }else{apStatus='gray';apTxt='Em acompanhamento';}
+  }
+  condicoes.push({nome:'Apneia Obstrutiva do Sono (CPAP)',cid:'G47.3',status:apStatus,txt:apTxt,obs:apObs});
+
+  var condRows=condicoes.map(function(c){
+    return '<tr><td style="padding:8px 10px;border-bottom:1px solid #ede9fe;vertical-align:top"><b>'+c.nome+'</b><div style="font-size:8pt;color:#94a3b8">CID '+c.cid+'</div></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid #ede9fe;vertical-align:top;white-space:nowrap">'+statusBadge(c.status,c.txt)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid #ede9fe;vertical-align:top;font-size:9pt;color:#334155">'+c.obs+'</td></tr>';
+  }).join('');
+
+  var resumoSituacao='Paciente de 46 anos com quatro condições crônicas inter-relacionadas: hipertensão arterial, obesidade grau 1, resistência à insulina/pré-diabetes e apneia obstrutiva do sono em uso de CPAP. Estas condições compõem um quadro de síndrome cardiometabólica, em que cada uma agrava as demais. A análise abaixo avalia o estado de cada condição segundo os dados registrados, para apoiar a conversa com o médico assistente.';
 
   return '<div class="pdf-section" style="page-break-before:always">'+
     '<div class="pdf-section-title" style="color:#7c3aed;border-color:#ddd6fe">⚕ Análise Assistida por IA — Material para Discussão Clínica</div>'+
@@ -1712,7 +1845,13 @@ function gerarAnaliseIA(kpi){
     '</div>'+
     '<div style="font-size:9.5pt;color:#334155;margin-bottom:12px;line-height:1.6">'+resumoSituacao+'</div>'+
 
-    '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px">📊 Achados objetivos observados</div>'+
+    '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px">🩺 Estado de cada condição clínica</div>'+
+    '<table style="width:100%;border-collapse:collapse;font-size:9pt;background:#faf5ff;border-radius:8px;overflow:hidden">'+
+      '<thead><tr><th style="background:#7c3aed;color:#fff;padding:7px 10px;text-align:left;font-size:8.5pt;text-transform:uppercase">Condição</th><th style="background:#7c3aed;color:#fff;padding:7px 10px;text-align:left;font-size:8.5pt;text-transform:uppercase">Estado atual</th><th style="background:#7c3aed;color:#fff;padding:7px 10px;text-align:left;font-size:8.5pt;text-transform:uppercase">Observação dos dados</th></tr></thead>'+
+      '<tbody>'+condRows+'</tbody>'+
+    '</table>'+
+
+    '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px">📊 Achados objetivos observados</div>'+
     '<div style="font-size:9.5pt;color:#334155">'+lista(achados)+'</div>'+
 
     '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px">🔍 Hipóteses a investigar (não confirmadas)</div>'+
