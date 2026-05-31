@@ -589,12 +589,19 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
         </div>
       </div>
       <div id="cpap-fields">
-        <div class="f"><label>Horas DESTA noite</label><input class="fi" id="cpap-h" type="number" inputmode="decimal" placeholder="Ex.: 6.5" step="0.1" max="16">
-          <div style="font-size:11px;color:var(--c3);margin-top:4px;line-height:1.4">⚠️ Digite apenas as horas <b>desta noite</b> (ex.: 6.5), <b>não</b> o total acumulado do horímetro do aparelho.</div>
+        <div class="f"><label>📟 Horímetro do aparelho (número no visor)</label><input class="fi" id="cpap-horim" type="number" inputmode="decimal" placeholder="Ex.: 2517" step="1" style="font-size:17px;font-weight:700">
+          <div style="font-size:11px;color:var(--c3);margin-top:4px;line-height:1.4">Digite o número total de horas que aparece no visor do Tango toda manhã. O app calcula sozinho quantas horas você usou nesta noite. 👍</div>
         </div>
-        <div class="f"><label>Horímetro total do aparelho <span style="font-weight:400;text-transform:none">(opcional)</span></label><input class="fi" id="cpap-horim" type="number" inputmode="decimal" placeholder="Ex.: 2517" step="1">
-          <div style="font-size:11px;color:var(--c3);margin-top:4px;line-height:1.4">Se preencher em 2 noites seguidas, o app calcula as horas da noite pela diferença automaticamente.</div>
+        <div id="cpap-calc" style="display:none;background:var(--g3);border-radius:11px;padding:11px;text-align:center;margin-bottom:11px;border:1.5px solid var(--g)">
+          <div style="font-size:11px;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.04em">Horas calculadas desta noite</div>
+          <div style="font-size:24px;font-weight:800;color:var(--g2)" id="cpap-calc-val">—</div>
         </div>
+        <details style="margin-bottom:11px">
+          <summary style="font-size:12px;color:var(--c2);cursor:pointer;font-weight:600;padding:4px 0">Prefiro digitar as horas manualmente</summary>
+          <div class="f" style="margin-top:8px"><label>Horas desta noite (manual)</label><input class="fi" id="cpap-h" type="number" inputmode="decimal" placeholder="Ex.: 6.5" step="0.1" max="16">
+            <div style="font-size:11px;color:var(--c3);margin-top:4px;line-height:1.4">Use só se já souber as horas exatas da noite. Deixe vazio se preencheu o horímetro acima.</div>
+          </div>
+        </details>
         <div class="f"><label>Qualidade do sono</label>
           <div class="chips">
             <button class="chip on g" data-sono="Boa">😴 Boa</button>
@@ -1140,10 +1147,43 @@ async function saveCPAP(){
     await dbAdd('cpap',{uso:cpapUso,horas:cpapUso==='Sim'?horas:0,horimetro:horim,sono:sonoQ,descanso:descanso,note:note,dt:dt});
     ['cpap-h','cpap-horim','cpap-n'].forEach(function(id){document.getElementById(id).value='';});
     document.getElementById('cpap-dt').value=today();
+    var cc=document.getElementById('cpap-calc');if(cc)cc.style.display='none';
     toast('✓ CPAP registrado'+(horas>0?': '+horas+'h':'')+'!');updateDash();
   }catch(e){toast('Erro: '+e.message,true);}
 }
 function delCPAP(id){confirm2('Excluir registro CPAP','Remover?',async function(){await dbDel('cpap',id);toast('✓ Excluído');renderHist();updateDash();});}
+
+/* ── Preview ao vivo das horas calculadas pelo horímetro ── */
+async function previewHorimetro(){
+  var horim=parseFloat(document.getElementById('cpap-horim').value);
+  var box=document.getElementById('cpap-calc'), val=document.getElementById('cpap-calc-val');
+  if(!box||!val)return;
+  if(isNaN(horim)){box.style.display='none';return;}
+  var anteriores=await dbAll('cpap');
+  var comHorim=anteriores.filter(function(c){return c.horimetro!=null;});
+  if(!comHorim.length){
+    val.textContent='1ª leitura';
+    box.style.display='block';
+    box.style.background='var(--t3)';box.style.borderColor='var(--t)';
+    val.style.color='var(--t2)';
+    box.querySelector('div').textContent='Primeira leitura registrada';
+    return;
+  }
+  var diff=horim-comHorim[0].horimetro;
+  box.querySelector('div').textContent='Horas calculadas desta noite';
+  if(diff>0&&diff<=16){
+    val.textContent=Math.round(diff*10)/10+'h';
+    box.style.display='block';box.style.background='var(--g3)';box.style.borderColor='var(--g)';val.style.color='var(--g2)';
+  }else if(diff>16){
+    val.textContent='⚠️ '+Math.round(diff*10)/10+'h';
+    box.style.display='block';box.style.background='var(--a3)';box.style.borderColor='var(--a)';val.style.color='var(--a2)';
+    box.querySelector('div').textContent='Diferença muito alta — verifique o número';
+  }else{
+    val.textContent='⚠️ valor menor';
+    box.style.display='block';box.style.background='var(--r3)';box.style.borderColor='var(--r)';val.style.color='var(--r2)';
+    box.querySelector('div').textContent='Menor que a leitura anterior ('+comHorim[0].horimetro+')';
+  }
+}
 
 /* ══ POLISSONOGRAFIA (dados fixos do exame) ══ */
 async function savePoli(){
@@ -1563,6 +1603,131 @@ function pdfChartGL(rows){
 function openPdfModal(){document.getElementById('pdf-modal').classList.add('on');}
 function closePdfModal(){document.getElementById('pdf-modal').classList.remove('on');}
 
+/* ══════════════════════════════════════
+   ANÁLISE ASSISTIDA — MATERIAL PARA DISCUSSÃO CLÍNICA
+   Gera achados objetivos, hipóteses a investigar e perguntas
+   para levar ao médico. NÃO é laudo nem prescrição.
+══════════════════════════════════════ */
+function gerarAnaliseIA(kpi){
+  var achados=[];      // observações objetivas
+  var hipoteses=[];    // pontos a investigar (formulados como dúvidas)
+  var perguntas=[];    // perguntas para o médico
+  var temas=[];        // temas de tratamento a discutir
+
+  // ── PRESSÃO ARTERIAL ──
+  if(kpi.avgSis!=null){
+    if(kpi.avgSis>=140||kpi.avgDia>=90){
+      achados.push('PA média de '+kpi.avgSis+'/'+kpi.avgDia+' mmHg, acima do alvo de 130/80 mmHg para o perfil de risco do paciente.');
+      hipoteses.push('Controle pressórico possivelmente insuficiente com o esquema anti-hipertensivo atual.');
+      perguntas.push('O esquema anti-hipertensivo atual precisa de ajuste para atingir a meta de 130/80?');
+      temas.push('Revisão da terapia anti-hipertensiva e da meta pressórica individualizada.');
+    }else if(kpi.avgSis>=130||kpi.avgDia>=80){
+      achados.push('PA média de '+kpi.avgSis+'/'+kpi.avgDia+' mmHg, discretamente acima do alvo de 130/80 mmHg.');
+      perguntas.push('A PA está próxima da meta — vale otimizar algo ou manter e reavaliar?');
+    }else{
+      achados.push('PA média de '+kpi.avgSis+'/'+kpi.avgDia+' mmHg, dentro do alvo de 130/80 mmHg.');
+    }
+  }
+  if(kpi.cargaPAS!=null&&kpi.cargaPAS>40){
+    achados.push('Carga pressórica sistólica elevada ('+kpi.cargaPAS+'% das medições acima de 130 mmHg; alvo ≤20%).');
+    hipoteses.push('Exposição pressórica sustentada, relevante para risco de lesão de órgão-alvo.');
+  }
+  if(kpi.cargaPAD!=null&&kpi.cargaPAD>40){
+    achados.push('Carga pressórica diastólica elevada ('+kpi.cargaPAD+'% acima de 80 mmHg).');
+  }
+
+  // ── DESCENSO / METILFENIDATO ──
+  if(kpi.padPosMetil!=null&&kpi.padForaMetil!=null&&(kpi.padPosMetil-kpi.padForaMetil)>=5){
+    achados.push('PAD média '+r2(kpi.padPosMetil-kpi.padForaMetil)+' mmHg mais alta na janela de 15h–18h (pico do metilfenidato das 14h) vs. demais horários.');
+    hipoteses.push('Possível contribuição do efeito adrenérgico do metilfenidato sobre a pressão diastólica vespertina — a confirmar com mais medições nesse horário.');
+    perguntas.push('O horário ou a dose do metilfenidato podem estar influenciando minha PAD à tarde?');
+  }
+  if(kpi.avgSisManha!=null&&kpi.avgSisNoite!=null&&kpi.avgSisManha>kpi.avgSisNoite){
+    achados.push('PAS matinal ('+kpi.avgSisManha+') superior à noturna ('+kpi.avgSisNoite+'), padrão a investigar quanto a controle pressórico ao despertar.');
+  }
+
+  // ── GLICEMIA ──
+  if(kpi.avgGlJej!=null){
+    if(kpi.avgGlJej>=126){
+      achados.push('Glicemia de jejum média de '+kpi.avgGlJej+' mg/dL, em faixa que excede o limiar de 126 mg/dL.');
+      hipoteses.push('Os valores de jejum ultrapassam a faixa habitual de pré-diabetes — merece confirmação diagnóstica formal.');
+      perguntas.push('Meus valores de glicemia de jejum indicam necessidade de reclassificar o diagnóstico (de pré-diabetes para diabetes)?');
+      perguntas.push('Vale solicitar/repetir a HbA1c para confirmar a média glicêmica dos últimos 3 meses?');
+      temas.push('Confirmação diagnóstica do status glicêmico e revisão da estratégia de controle metabólico.');
+    }else if(kpi.avgGlJej>=100){
+      achados.push('Glicemia de jejum média de '+kpi.avgGlJej+' mg/dL, em faixa de pré-diabetes (100–125).');
+      temas.push('Acompanhamento do controle glicêmico e medidas de estilo de vida.');
+    }else{
+      achados.push('Glicemia de jejum média de '+kpi.avgGlJej+' mg/dL, dentro da faixa normal.');
+    }
+  }
+  if(kpi.ultLab&&kpi.ultLab.hba1c!=null){
+    if(kpi.ultLab.hba1c>=6.5){achados.push('HbA1c de '+kpi.ultLab.hba1c+'%, acima de 6,5%.');perguntas.push('Minha HbA1c de '+kpi.ultLab.hba1c+'% confirma diabetes? Qual a meta para o meu caso?');}
+    else if(kpi.ultLab.hba1c>=5.7){achados.push('HbA1c de '+kpi.ultLab.hba1c+'%, em faixa de pré-diabetes.');}
+  }
+  if(kpi.ultLab&&kpi.ultLab.ldl!=null&&kpi.ultLab.ldl>=100){
+    achados.push('LDL-colesterol de '+kpi.ultLab.ldl+' mg/dL.');
+    perguntas.push('Considerando meu risco cardiovascular, qual deveria ser minha meta de LDL?');
+    temas.push('Adequação da meta lipídica ao risco cardiovascular global.');
+  }
+
+  // ── PESO / ANTROPOMETRIA ──
+  if(kpi.imcAtual!=null&&kpi.imcAtual>=30){
+    achados.push('IMC de '+kpi.imcAtual+' kg/m² (faixa de obesidade), fator que amplifica hipertensão, resistência insulínica e apneia.');
+    hipoteses.push('A obesidade pode ser denominador comum das quatro condições — abordá-la tende a beneficiar todas simultaneamente.');
+    temas.push('Estratégia estruturada de manejo de peso (nutricional, atividade física e, se indicado pelo médico, farmacológico).');
+  }
+  if(kpi.circAtual==null){
+    perguntas.push('A circunferência abdominal ainda não foi registrada — vale medir para avaliar risco cardiovascular.');
+  }else if(kpi.circAtual>=102){
+    achados.push('Circunferência abdominal de '+kpi.circAtual+' cm, em faixa de risco cardiovascular muito alto (≥102 cm).');
+  }
+
+  // ── APNEIA / CPAP ──
+  if(kpi.ultPoli&&kpi.ultPoli.iah!=null&&kpi.ultPoli.iah>=15){
+    achados.push('IAH de '+kpi.ultPoli.iah+'/h na polissonografia ('+(kpi.ultPoli.iah>=30?'apneia grave':'apneia moderada')+').');
+  }
+  if(kpi.nCPAP>0&&kpi.adesaoCpap!=null&&kpi.adesaoCpap<70){
+    achados.push('Adesão ao CPAP em '+kpi.adesaoCpap+'% das noites (meta ≥70% das noites com ≥4h).');
+    hipoteses.push('Adesão subótima ao CPAP pode manter o estímulo adrenérgico noturno e contribuir para a PA matinal.');
+    temas.push('Revisão de barreiras à adesão ao CPAP (conforto da máscara, rotina de uso).');
+  }
+  if(kpi.avgSisBom!=null&&kpi.avgSisRuim!=null&&kpi.avgSisRuim>kpi.avgSisBom){
+    achados.push('PAS média '+r2(kpi.avgSisRuim-kpi.avgSisBom)+' mmHg menor nas noites de uso adequado do CPAP, sugerindo associação entre adesão e controle pressórico.');
+  }
+
+  // Perguntas e temas gerais sempre úteis
+  perguntas.push('Diante destes dados, há exames complementares que eu deveria fazer agora?');
+  if(!temas.length)temas.push('Manutenção do acompanhamento atual e reforço de medidas de estilo de vida.');
+
+  // Monta HTML
+  function lista(arr,icon){return '<ul style="margin:0;padding-left:18px">'+arr.map(function(x){return '<li style="margin-bottom:5px;line-height:1.5">'+x+'</li>';}).join('')+'</ul>';}
+
+  var resumoSituacao='Paciente de 46 anos com hipertensão arterial, obesidade grau 1, resistência à insulina/pré-diabetes e apneia obstrutiva do sono em uso de CPAP. A análise abaixo organiza os padrões observados nos dados registrados no período para apoiar a conversa com o médico assistente.';
+
+  return '<div class="pdf-section" style="page-break-before:always">'+
+    '<div class="pdf-section-title" style="color:#7c3aed;border-color:#ddd6fe">⚕ Análise Assistida por IA — Material para Discussão Clínica</div>'+
+    '<div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:9pt;color:#6b21a8;line-height:1.5">'+
+      '<b>⚠ Importante:</b> Este texto é gerado automaticamente a partir dos dados que você mesmo registrou. Ele <b>não é um laudo médico, não fecha diagnóstico e não prescreve tratamento</b>. Serve para organizar suas informações e preparar a conversa com seu médico, que é quem pode avaliar, diagnosticar e prescrever.'+
+    '</div>'+
+    '<div style="font-size:9.5pt;color:#334155;margin-bottom:12px;line-height:1.6">'+resumoSituacao+'</div>'+
+
+    '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:12px 0 6px">📊 Achados objetivos observados</div>'+
+    '<div style="font-size:9.5pt;color:#334155">'+lista(achados)+'</div>'+
+
+    '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px">🔍 Hipóteses a investigar (não confirmadas)</div>'+
+    '<div style="font-size:9.5pt;color:#334155">'+(hipoteses.length?lista(hipoteses):'<span style="color:#94a3b8;font-style:italic">Sem hipóteses destacáveis no período.</span>')+'</div>'+
+
+    '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px">❓ Perguntas para levar ao médico</div>'+
+    '<div style="font-size:9.5pt;color:#334155">'+lista(perguntas)+'</div>'+
+
+    '<div style="font-size:9pt;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px">💬 Temas de tratamento a discutir (não são prescrições)</div>'+
+    '<div style="font-size:9.5pt;color:#334155">'+lista(temas)+'</div>'+
+
+    '<div style="margin-top:14px;padding-top:8px;border-top:1px solid #e9d5ff;font-size:8pt;color:#94a3b8;font-style:italic;line-height:1.5">Análise gerada por algoritmo a partir de dados auto-relatados, sem exame físico nem validação laboratorial completa. Decisões sobre diagnóstico, medicação e conduta são exclusivas do médico assistente. Em caso de sintomas graves (dor torácica, falta de ar intensa, alteração neurológica), procure atendimento de urgência.</div>'+
+  '</div>';
+}
+
 async function gerarPDF(){
   closePdfModal();
   toast('⏳ Gerando relatório...');
@@ -1664,49 +1829,54 @@ async function gerarPDF(){
     '</div>'+
   '</div>'+
 
-  // CORRELAÇÃO CPAP
+  // CPAP — só mostra dados que existem
   '<div class="pdf-section">'+
-    '<div class="pdf-section-title">Apneia do Sono — CPAP ResMed C-Series Tango (pressão fixa)</div>'+
-    '<div class="pdf-cpap-grid">'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Adesão (noites ≥4h)</div><div class="pdf-cpap-val">'+(kpi.adesaoCpap!=null?kpi.adesaoCpap+'%':'—')+'</div><div class="pdf-cpap-sub">'+(kpi.adesaoCpap!=null?(kpi.adesaoCpap>=70?'Boa adesão':'Adesão a melhorar'):'meta ≥ 70%')+'</div></div>'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Uso médio/noite</div><div class="pdf-cpap-val">'+(kpi.horasMedia!=null?kpi.horasMedia+'h':'—')+'</div><div class="pdf-cpap-sub">meta ≥ 6h</div></div>'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">IAH (polissonografia)</div><div class="pdf-cpap-val">'+(kpi.ultPoli&&kpi.ultPoli.iah!=null?kpi.ultPoli.iah:'—')+'</div><div class="pdf-cpap-sub">'+(kpi.ultPoli&&kpi.ultPoli.iah!=null?(kpi.ultPoli.iah<5?'Normal':kpi.ultPoli.iah<15?'Leve':kpi.ultPoli.iah<30?'Moderada':'Grave'):'exame de sono')+'</div></div>'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Pressão configurada</div><div class="pdf-cpap-val">'+(kpi.ultPoli&&kpi.ultPoli.pressao!=null?kpi.ultPoli.pressao+'':'—')+'</div><div class="pdf-cpap-sub">cmH₂O (fixa)</div></div>'+
-    '</div>'+
-    '<table class="pdf-corr-table" style="margin-top:10px">'+
-      '<thead><tr><th>Cenário de uso</th><th>Noites</th><th>PAS média</th><th>PAD média</th><th>Diferença</th></tr></thead>'+
-      '<tbody>'+
-        '<tr><td><span class="pdf-badge pdf-badge-ok">✓ Uso adequado (≥6h)</span></td><td>'+kpi.nCpapBons+'</td><td>'+(kpi.avgSisBom?'<b>'+kpi.avgSisBom+'</b>':'Sem dados')+'</td><td>'+(kpi.avgDiaBom?'<b>'+kpi.avgDiaBom+'</b>':'Sem dados')+'</td><td>'+(kpi.avgSisBom&&kpi.avgSisRuim?'<span class="pdf-ok">Δ '+(r2(kpi.avgSisRuim-kpi.avgSisBom))+'↓ PAS</span>':'—')+'</td></tr>'+
-        '<tr><td><span class="pdf-badge pdf-badge-bad">✗ Uso insuficiente / não uso</span></td><td>'+kpi.nCpapRuins+'</td><td>'+(kpi.avgSisRuim?'<b>'+kpi.avgSisRuim+'</b>':'Sem dados')+'</td><td>'+(kpi.avgDiaRuim?'<b>'+kpi.avgDiaRuim+'</b>':'Sem dados')+'</td><td>—</td></tr>'+
-      '</tbody>'+
-    '</table>'+
-    '<div style="margin-top:7px;font-size:8pt;color:#64748b;font-style:italic">* O Tango é CPAP de pressão fixa e registra apenas horas de uso. O IAH provém da polissonografia. Correlação baseada nas datas coincidentes entre PA e uso do CPAP.</div>'+
+    '<div class="pdf-section-title">Apneia do Sono — CPAP ResMed C-Series Tango</div>'+
+    (kpi.nCPAP>0||kpi.ultPoli?
+      '<div class="pdf-cpap-grid">'+
+        (kpi.nCPAP>0?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Adesão (noites ≥4h)</div><div class="pdf-cpap-val">'+(kpi.adesaoCpap!=null?kpi.adesaoCpap+'%':'—')+'</div><div class="pdf-cpap-sub">'+kpi.nCPAP+' noites registradas</div></div>':'')+
+        (kpi.horasMedia!=null?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Uso médio/noite</div><div class="pdf-cpap-val">'+kpi.horasMedia+'h</div><div class="pdf-cpap-sub">meta ≥ 6h</div></div>':'')+
+        (kpi.ultPoli&&kpi.ultPoli.iah!=null?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">IAH (polissonografia)</div><div class="pdf-cpap-val">'+kpi.ultPoli.iah+'</div><div class="pdf-cpap-sub">'+(kpi.ultPoli.iah<5?'Normal':kpi.ultPoli.iah<15?'Leve':kpi.ultPoli.iah<30?'Moderada':'Grave')+'</div></div>':'')+
+        (kpi.ultPoli&&kpi.ultPoli.pressao!=null?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">Pressão configurada</div><div class="pdf-cpap-val">'+kpi.ultPoli.pressao+'</div><div class="pdf-cpap-sub">cmH₂O (fixa)</div></div>':'')+
+      '</div>'+
+      // Tabela de correlação só quando há noites com PA cruzada
+      ((kpi.avgSisBom!=null||kpi.avgSisRuim!=null)?
+        '<table class="pdf-corr-table" style="margin-top:10px">'+
+          '<thead><tr><th>Cenário de uso do CPAP</th><th>Noites</th><th>PAS média</th><th>PAD média</th></tr></thead>'+
+          '<tbody>'+
+            (kpi.avgSisBom!=null?'<tr><td><span class="pdf-badge pdf-badge-ok">Uso adequado (≥6h)</span></td><td>'+kpi.nCpapBons+'</td><td><b>'+kpi.avgSisBom+'</b></td><td><b>'+(kpi.avgDiaBom||'—')+'</b></td></tr>':'')+
+            (kpi.avgSisRuim!=null?'<tr><td><span class="pdf-badge pdf-badge-bad">Uso insuficiente / não uso</span></td><td>'+kpi.nCpapRuins+'</td><td><b>'+kpi.avgSisRuim+'</b></td><td><b>'+(kpi.avgDiaRuim||'—')+'</b></td></tr>':'')+
+          '</tbody>'+
+        '</table>'+
+        ((kpi.avgSisBom!=null&&kpi.avgSisRuim!=null)?'<div style="margin-top:6px;font-size:9pt;color:#475569;background:#f8fafc;border-radius:7px;padding:8px 10px"><b>Observação:</b> a PAS média foi '+(kpi.avgSisRuim>kpi.avgSisBom?'<span class="pdf-bad">'+r2(kpi.avgSisRuim-kpi.avgSisBom)+' mmHg mais alta</span> nas noites de uso insuficiente':'semelhante entre os cenários')+'.</div>':'')
+        :'<div style="margin-top:8px;font-size:9pt;color:#64748b;font-style:italic">Ainda não há noites com registro de CPAP e pressão arterial no mesmo dia para correlacionar. Continue registrando para gerar esta análise.</div>')+
+      '<div style="margin-top:7px;font-size:8pt;color:#94a3b8;font-style:italic">O Tango é CPAP de pressão fixa e registra apenas horas de uso; o IAH provém da polissonografia.</div>'
+      :'<div style="padding:12px;background:#f8fafc;border-radius:8px;text-align:center;color:#64748b;font-style:italic">Nenhum registro de CPAP no período selecionado.</div>')+
   '</div>'+
 
-  // ANÁLISE DE PADRÃO TEMPORAL — DESCENSO + METILFENIDATO
+  // ANÁLISE DE PADRÃO TEMPORAL — só mostra se houver dados de manhã/noite ou metilfenidato
+  ((kpi.avgSisManha!=null||kpi.avgSisNoite!=null||kpi.padPosMetil!=null)?
   '<div class="pdf-section">'+
     '<div class="pdf-section-title">Análise de Padrão Temporal da Pressão</div>'+
     '<div class="pdf-cpap-grid">'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAS média — Manhã ('+kpi.nManha+')</div><div class="pdf-cpap-val">'+(kpi.avgSisManha!=null?kpi.avgSisManha:'—')+'</div><div class="pdf-cpap-sub">ao acordar</div></div>'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAS média — Noite ('+kpi.nNoite+')</div><div class="pdf-cpap-val">'+(kpi.avgSisNoite!=null?kpi.avgSisNoite:'—')+'</div><div class="pdf-cpap-sub">antes de dormir</div></div>'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAD pós-metilfenidato 14h ('+kpi.nPosMetil+')</div><div class="pdf-cpap-val">'+(kpi.padPosMetil!=null?kpi.padPosMetil:'—')+'</div><div class="pdf-cpap-sub">medições 15h–18h</div></div>'+
-      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAD fora do pico ('+kpi.nForaMetil+')</div><div class="pdf-cpap-val">'+(kpi.padForaMetil!=null?kpi.padForaMetil:'—')+'</div><div class="pdf-cpap-sub">demais horários</div></div>'+
+      (kpi.avgSisManha!=null?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAS média — Manhã</div><div class="pdf-cpap-val">'+kpi.avgSisManha+'</div><div class="pdf-cpap-sub">ao acordar ('+kpi.nManha+' medições)</div></div>':'')+
+      (kpi.avgSisNoite!=null?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAS média — Noite</div><div class="pdf-cpap-val">'+kpi.avgSisNoite+'</div><div class="pdf-cpap-sub">antes de dormir ('+kpi.nNoite+' medições)</div></div>':'')+
+      (kpi.padPosMetil!=null?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAD pico metilfenidato</div><div class="pdf-cpap-val">'+kpi.padPosMetil+'</div><div class="pdf-cpap-sub">15h–18h ('+kpi.nPosMetil+' medições)</div></div>':'')+
+      (kpi.padForaMetil!=null?'<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAD demais horários</div><div class="pdf-cpap-val">'+kpi.padForaMetil+'</div><div class="pdf-cpap-sub">fora do pico ('+kpi.nForaMetil+' medições)</div></div>':'')+
     '</div>'+
     ((kpi.padPosMetil!=null&&kpi.padForaMetil!=null)?
       '<div style="margin-top:8px;font-size:9pt;color:#475569;background:#f8fafc;border-radius:7px;padding:8px 10px">'+
-      '<b>Δ PAD pós-estimulante:</b> '+(kpi.padPosMetil>kpi.padForaMetil?'<span class="pdf-bad">+'+r2(kpi.padPosMetil-kpi.padForaMetil)+' mmHg</span> mais alta no pico do metilfenidato (15h–18h)':'<span class="pdf-ok">'+r2(kpi.padPosMetil-kpi.padForaMetil)+' mmHg</span> — sem elevação relevante no pico')+
+      '<b>PAD no pico do metilfenidato:</b> '+(kpi.padPosMetil>kpi.padForaMetil?'<span class="pdf-bad">+'+r2(kpi.padPosMetil-kpi.padForaMetil)+' mmHg mais alta</span> entre 15h–18h':'<span class="pdf-ok">sem elevação relevante</span>')+'. <span style="color:#94a3b8;font-style:italic">O metilfenidato das 14h atinge pico ~1–3h depois.</span>'+
       '</div>':'')+
-    '<div style="margin-top:6px;font-size:8pt;color:#64748b;font-style:italic">* O metilfenidato das 14h atinge pico plasmático ~1–3h depois. Comparamos a PAD nessa janela vs. demais horários para investigar influência adrenérgica.</div>'+
-  '</div>'+
+  '</div>':'')+
 
-  // GRÁFICOS DE TENDÊNCIA
+  // GRÁFICOS DE TENDÊNCIA — só se houver pelo menos 2 pontos
+  ((kpi.trendBP.length>=2||kpi.trendGL.length>=2)?
   '<div class="pdf-section">'+
     '<div class="pdf-section-title">Gráficos de Tendência</div>'+
-    '<div style="font-size:8.5pt;font-weight:700;color:#475569;margin-bottom:3px">Pressão arterial (linha tracejada = alvo 130/80) — <span style="color:#6366f1">PAS</span> / <span style="color:#ef4444">PAD</span></div>'+
-    pdfChartBP(kpi.trendBP)+
-    '<div style="font-size:8.5pt;font-weight:700;color:#475569;margin:8px 0 3px">Glicemia (tracejado: laranja 100 / vermelho 126)</div>'+
-    pdfChartGL(kpi.trendGL)+
-  '</div>'+
+    (kpi.trendBP.length>=2?'<div style="font-size:8.5pt;font-weight:700;color:#475569;margin-bottom:3px">Pressão arterial (tracejado = alvo 130/80) — <span style="color:#6366f1">PAS</span> / <span style="color:#ef4444">PAD</span></div>'+pdfChartBP(kpi.trendBP):'')+
+    (kpi.trendGL.length>=2?'<div style="font-size:8.5pt;font-weight:700;color:#475569;margin:8px 0 3px">Glicemia (tracejado: laranja 100 / vermelho 126)</div>'+pdfChartGL(kpi.trendGL):'')+
+  '</div>':'')+
 
   // BLOCO C — EXCEÇÕES
   '<div class="pdf-section">'+
@@ -1718,6 +1888,9 @@ async function gerarPDF(){
       '</table>'
       :'<div style="padding:12px;background:#f8fafc;border-radius:8px;text-align:center;color:#64748b;font-style:italic">Nenhuma exceção detectada no período. Excelente controle!</div>')+
   '</div>'+
+
+  // ANÁLISE ASSISTIDA POR IA
+  gerarAnaliseIA(kpi)+
 
   // RODAPÉ
   '<div class="pdf-footer">'+
@@ -1762,6 +1935,9 @@ chips('[data-cpap-uso]',function(v){cpapUso=v;var f=document.getElementById('cpa
 chips('[data-sono]',function(v){sonoQ=v;});
 chips('[data-descanso]',function(v){descanso=v;});
 chips('[data-pdfper]',function(v){pdfPeriodo=parseInt(v);});
+
+var horimInput=document.getElementById('cpap-horim');
+if(horimInput)horimInput.addEventListener('input',previewHorimetro);
 chips('[data-intens]',function(v){symIntens=v;});
 
 // Sintomas — multi-seleção (toggle)
