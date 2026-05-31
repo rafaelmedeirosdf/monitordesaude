@@ -390,7 +390,7 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
     <div class="db-bar"><div class="db-dot" id="db-dot"></div><span id="db-txt">Conectando...</span></div>
 
     <!-- Botão PDF -->
-    <button class="btn pdf-btn" onclick="gerarPDF()" style="margin-bottom:10px">
+    <button class="btn pdf-btn" onclick="openPdfModal()" style="margin-bottom:10px">
       <i class="ti ti-file-type-pdf"></i> Gerar Relatório PDF para Médico
     </button>
     <button class="btn ghost" id="btn-instalar-home" onclick="instalarApp()" style="margin-bottom:14px;display:none">
@@ -589,7 +589,12 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
         </div>
       </div>
       <div id="cpap-fields">
-        <div class="f"><label>Horas de uso (visor do aparelho)</label><input class="fi" id="cpap-h" type="number" inputmode="decimal" placeholder="6.5" step="0.5"></div>
+        <div class="f"><label>Horas DESTA noite</label><input class="fi" id="cpap-h" type="number" inputmode="decimal" placeholder="Ex.: 6.5" step="0.1" max="16">
+          <div style="font-size:11px;color:var(--c3);margin-top:4px;line-height:1.4">⚠️ Digite apenas as horas <b>desta noite</b> (ex.: 6.5), <b>não</b> o total acumulado do horímetro do aparelho.</div>
+        </div>
+        <div class="f"><label>Horímetro total do aparelho <span style="font-weight:400;text-transform:none">(opcional)</span></label><input class="fi" id="cpap-horim" type="number" inputmode="decimal" placeholder="Ex.: 2517" step="1">
+          <div style="font-size:11px;color:var(--c3);margin-top:4px;line-height:1.4">Se preencher em 2 noites seguidas, o app calcula as horas da noite pela diferença automaticamente.</div>
+        </div>
         <div class="f"><label>Qualidade do sono</label>
           <div class="chips">
             <button class="chip on g" data-sono="Boa">😴 Boa</button>
@@ -821,6 +826,24 @@ html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sa
   </div>
 </div>
 
+<!-- ══ MODAL PERÍODO PDF ══ -->
+<div class="overlay" id="pdf-modal" onclick="if(event.target===this)closePdfModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-hdr"><div class="modal-title">Relatório PDF</div><button class="modal-close" onclick="closePdfModal()"><i class="ti ti-x"></i></button></div>
+    <div style="font-size:13px;color:var(--c2);margin-bottom:16px">Escolha o período de dados que deseja incluir no relatório para o médico:</div>
+    <div class="f"><label>Período</label>
+      <div class="chips">
+        <button class="chip" data-pdfper="7">Últimos 7 dias</button>
+        <button class="chip on" data-pdfper="30">Últimos 30 dias</button>
+        <button class="chip" data-pdfper="90">Últimos 90 dias</button>
+        <button class="chip" data-pdfper="0">Tudo</button>
+      </div>
+    </div>
+    <button class="btn pdf-btn" onclick="gerarPDF()" style="margin-top:8px"><i class="ti ti-download"></i> Gerar e baixar PDF</button>
+  </div>
+</div>
+
 <div class="confirm-wrap" id="confirm-wrap">
   <div class="confirm-box">
     <h3 id="c-title">Confirmar</h3><p id="c-msg">Tem certeza?</p>
@@ -900,6 +923,7 @@ var wtM='Manhã em jejum';
 var cpapUso='Sim', sonoQ='Boa', descanso='Sim';
 var medTimes=[], medPics=[], rxPics=[];
 var confirmCb=null;
+var pdfPeriodo=30;
 
 /* ══ UTILS ══ */
 function now(){var d=new Date(),p=function(x){return String(x).padStart(2,'0');};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes());}
@@ -1087,14 +1111,36 @@ function delWT(id){confirm2('Excluir peso','Remover?',async function(){await dbD
 
 /* ══ CPAP ══ */
 async function saveCPAP(){
-  var horas=parseFloat(document.getElementById('cpap-h').value)||0;
+  var horas=parseFloat(document.getElementById('cpap-h').value);
+  var horim=parseFloat(document.getElementById('cpap-horim').value)||null;
   var note=document.getElementById('cpap-n').value.trim();
   var dt=document.getElementById('cpap-dt').value||today();
+
+  if(cpapUso==='Sim'){
+    // Se não digitou horas da noite mas digitou horímetro, calcula pela diferença
+    if((isNaN(horas)||horas<=0) && horim!=null){
+      var anteriores=await dbAll('cpap');
+      var comHorim=anteriores.filter(function(c){return c.horimetro!=null;});
+      if(comHorim.length){
+        var diff=horim-comHorim[0].horimetro;
+        if(diff>0 && diff<=16){horas=Math.round(diff*10)/10;}
+        else if(diff>16){toast('⚠️ Diferença do horímetro >16h. Digite as horas da noite manualmente.',true);return;}
+        else{toast('⚠️ Horímetro menor que o anterior. Verifique o valor.',true);return;}
+      }else{
+        toast('✓ Horímetro salvo. Na próxima noite calculo as horas pela diferença.');
+        horas=0;
+      }
+    }
+    // Validação: uma noite não pode ter mais de 16h
+    if(horas>16){toast('⚠️ '+horas+'h é o horímetro total, não as horas da noite. Digite só as horas desta noite.',true);return;}
+    if(isNaN(horas))horas=0;
+  }else{horas=0;}
+
   try{
-    await dbAdd('cpap',{uso:cpapUso,horas:cpapUso==='Sim'?horas:0,sono:sonoQ,descanso:descanso,note:note,dt:dt});
-    ['cpap-h','cpap-n'].forEach(function(id){document.getElementById(id).value='';});
+    await dbAdd('cpap',{uso:cpapUso,horas:cpapUso==='Sim'?horas:0,horimetro:horim,sono:sonoQ,descanso:descanso,note:note,dt:dt});
+    ['cpap-h','cpap-horim','cpap-n'].forEach(function(id){document.getElementById(id).value='';});
     document.getElementById('cpap-dt').value=today();
-    toast('✓ CPAP registrado!');updateDash();
+    toast('✓ CPAP registrado'+(horas>0?': '+horas+'h':'')+'!');updateDash();
   }catch(e){toast('Erro: '+e.message,true);}
 }
 function delCPAP(id){confirm2('Excluir registro CPAP','Remover?',async function(){await dbDel('cpap',id);toast('✓ Excluído');renderHist();updateDash();});}
@@ -1359,7 +1405,7 @@ async function saveEpworth(){
 /* ══════════════════════════════════════
    ENGINE DE KPIs E CORRELAÇÃO CLÍNICA
 ══════════════════════════════════════ */
-async function calcKPIs(){
+async function calcKPIs(periodoDias){
   var bps=await dbAll('pressao');
   var gls=await dbAll('glicemia');
   var wts=await dbAll('peso');
@@ -1367,6 +1413,23 @@ async function calcKPIs(){
   var labs=await dbAll('exames');
   var epws=await dbAll('epworth');
   var polis=await dbAll('polissono');
+  var syms=await dbAll('sintomas');
+
+  // Filtro de período
+  var limite=null;
+  if(periodoDias&&periodoDias>0){
+    var d=new Date();d.setDate(d.getDate()-periodoDias);
+    limite=d.toISOString().slice(0,10);
+  }
+  function noPeriodo(r){
+    if(!limite)return true;
+    var dd=(r.dt||r.data||'').slice(0,10);
+    return dd>=limite;
+  }
+  bps=bps.filter(noPeriodo);
+  gls=gls.filter(noPeriodo);
+  cpaps=cpaps.filter(noPeriodo);
+  syms=syms.filter(noPeriodo);
 
   var sisArr=bps.map(function(r){return r.sis;});
   var diaArr=bps.map(function(r){return r.dia;});
@@ -1375,38 +1438,58 @@ async function calcKPIs(){
   var cargaPAS=bps.length?Math.round(bps.filter(function(r){return r.sis>130;}).length/bps.length*100):null;
   var cargaPAD=bps.length?Math.round(bps.filter(function(r){return r.dia>80;}).length/bps.length*100):null;
 
-  // Correlação CPAP
-  var cpapBons=cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>=6;}).map(function(c){return c.dt;});
-  var cpapRuins=cpaps.filter(function(c){return c.uso==='Não'||(c.uso==='Sim'&&c.horas<4);}).map(function(c){return c.dt;});
+  // ── DESCENSO NOTURNO: PA manhã vs antes de dormir ──
+  var bpManha=bps.filter(function(r){return r.moment==='Acordar/Manhã';});
+  var bpNoite=bps.filter(function(r){return r.moment==='Antes de Dormir';});
+  var avgSisManha=avg(bpManha.map(function(r){return r.sis;}));
+  var avgSisNoite=avg(bpNoite.map(function(r){return r.sis;}));
+  var descensoSis=(avgSisManha!=null&&avgSisNoite!=null)?r2(((avgSisNoite-avgSisManha)/avgSisNoite)*100):null;
+  // Em fisiologia normal a PA cai à noite (dipper). Aqui medimos manhã vs noite registrada.
 
-  function bpsOnDays(days){
-    return bps.filter(function(b){return days.some(function(d){return b.dt&&b.dt.startsWith(d);});});
-  }
-  var bpBons=bpsOnDays(cpapBons);
-  var bpRuins=bpsOnDays(cpapRuins);
+  // ── TIMING METILFENIDATO (14:00) vs PAD ──
+  // Classifica cada PA em janela pós-dose das 14h (pico ~1-3h depois = 15h-17h)
+  function horaDe(dt){try{return parseInt(dt.split('T')[1].split(':')[0]);}catch(e){return null;}}
+  var bpPosMetil=bps.filter(function(r){var h=horaDe(r.dt);return h!=null&&h>=15&&h<=18;});
+  var bpForaMetil=bps.filter(function(r){var h=horaDe(r.dt);return h!=null&&(h<15||h>18);});
+  var padPosMetil=avg(bpPosMetil.map(function(r){return r.dia;}));
+  var padForaMetil=avg(bpForaMetil.map(function(r){return r.dia;}));
+
+  // Correlação CPAP
+  var cpapBons=cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>=6&&c.horas<=16;}).map(function(c){return c.dt;});
+  var cpapRuins=cpaps.filter(function(c){return c.uso==='Não'||(c.uso==='Sim'&&c.horas<4);}).map(function(c){return c.dt;});
+  function bpsOnDays(days){return bps.filter(function(b){return days.some(function(d){return b.dt&&b.dt.startsWith(d);});});}
+  var bpBons=bpsOnDays(cpapBons), bpRuins=bpsOnDays(cpapRuins);
   var avgSisBom=avg(bpBons.map(function(r){return r.sis;}));
   var avgSisRuim=avg(bpRuins.map(function(r){return r.sis;}));
   var avgDiaBom=avg(bpBons.map(function(r){return r.dia;}));
   var avgDiaRuim=avg(bpRuins.map(function(r){return r.dia;}));
 
-  // Exceções
+  // Exceções (com sintomas do dia)
   var excecoes=[];
   bps.forEach(function(r){
     if(r.sis>=140||r.dia>=90){
-      var glDia=gls.filter(function(g){return g.dt&&g.dt.startsWith(r.dt.split('T')[0])&&g.moment==='Jejum';});
-      var cpapDia=cpaps.filter(function(c){return c.dt&&(c.dt===r.dt.split('T')[0]||(r.dt&&r.dt.startsWith(c.dt)));});
-      excecoes.push({tipo:'PA',data:r.dt,val:r.sis+'/'+r.dia,cafe:r.cafe||'—',treino:r.treino||'—',adesao:r.adesao||'—',cpap:cpapDia.length?(cpapDia[0].uso==='Sim'?cpapDia[0].horas+'h':'Não usou'):'—',gl:glDia.length?glDia[0].val+' mg/dL':'—'});
+      var dia=r.dt.split('T')[0];
+      var glDia=gls.filter(function(g){return g.dt&&g.dt.startsWith(dia)&&g.moment==='Jejum';});
+      var cpapDia=cpaps.filter(function(c){return c.dt&&(c.dt===dia||(r.dt&&r.dt.startsWith(c.dt)));});
+      var symDia=syms.filter(function(s){return s.dt&&s.dt.startsWith(dia);});
+      var symTxt=symDia.length?(symDia[0].sintomas||[]).slice(0,2).join(', '):'—';
+      excecoes.push({tipo:'PA',data:r.dt,val:r.sis+'/'+r.dia,cafe:r.cafe||'—',treino:r.treino||'—',adesao:r.adesao||'—',cpap:cpapDia.length?(cpapDia[0].uso==='Sim'?cpapDia[0].horas+'h':'Não usou'):'—',gl:glDia.length?glDia[0].val+' mg/dL':'—',sintomas:symTxt});
     }
   });
   gls.filter(function(r){return r.moment==='Jejum'&&r.val>=126;}).forEach(function(r){
-    excecoes.push({tipo:'GL',data:r.dt,val:r.val+' mg/dL',cafe:'—',treino:'—',adesao:'—',cpap:'—',gl:r.val+' mg/dL'});
+    excecoes.push({tipo:'GL',data:r.dt,val:r.val+' mg/dL',cafe:'—',treino:'—',adesao:'—',cpap:'—',gl:r.val+' mg/dL',sintomas:'—'});
   });
   cpaps.filter(function(c){return c.uso==='Não'||(c.uso==='Sim'&&c.horas<4);}).forEach(function(c){
-    excecoes.push({tipo:'CPAP',data:c.dt+'T00:00',val:c.uso==='Não'?'Não usou':c.horas+'h (<4h)',cafe:'—',treino:'—',adesao:'—',cpap:c.uso==='Não'?'Não usou':c.horas+'h',gl:'—'});
+    excecoes.push({tipo:'CPAP',data:c.dt+'T00:00',val:c.uso==='Não'?'Não usou':c.horas+'h (<4h)',cafe:'—',treino:'—',adesao:'—',cpap:c.uso==='Não'?'Não usou':c.horas+'h',gl:'—',sintomas:'—'});
   });
   excecoes.sort(function(a,b){return b.data.localeCompare(a.data);});
 
+  // Séries de tendência (ordem cronológica crescente)
+  var bpsCron=bps.slice().sort(function(a,b){return(a.dt||'').localeCompare(b.dt||'');});
+  var glsCron=gls.slice().sort(function(a,b){return(a.dt||'').localeCompare(b.dt||'');});
+
   return{
+    periodoDias:periodoDias||0,
     nBP:bps.length, nGL:gls.length, nWT:wts.length, nCPAP:cpaps.length,
     avgSis:r2(avg(sisArr)), sdSis:r2(stdDev(sisArr)),
     avgDia:r2(avg(diaArr)), sdDia:r2(stdDev(diaArr)),
@@ -1420,23 +1503,73 @@ async function calcKPIs(){
     circAtual:(function(){for(var i=0;i<wts.length;i++){if(wts[i].circ!=null)return wts[i].circ;}return null;})(),
     pulsoMedio:r2(avg(bps.filter(function(r){return r.pulse;}).map(function(r){return r.pulse;}))),
     ppMedio:r2(avg(bps.map(function(r){return r.sis-r.dia;}))),
+    avgSisManha:r2(avgSisManha), avgSisNoite:r2(avgSisNoite), descensoSis:descensoSis,
+    nManha:bpManha.length, nNoite:bpNoite.length,
+    padPosMetil:r2(padPosMetil), padForaMetil:r2(padForaMetil),
+    nPosMetil:bpPosMetil.length, nForaMetil:bpForaMetil.length,
     ultLab:labs.length?labs[0]:null,
     ultEpworth:epws.length?epws[0]:null,
     ultPoli:polis.length?polis[0]:null,
-    horasMedia:r2(avg(cpaps.filter(function(c){return c.uso==='Sim';}).map(function(c){return c.horas;}))),
-    adesaoCpap:cpaps.length?Math.round(cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>=4;}).length/cpaps.length*100):null,
+    horasMedia:r2(avg(cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>0&&c.horas<=16;}).map(function(c){return c.horas;}))),
+    adesaoCpap:cpaps.length?Math.round(cpaps.filter(function(c){return c.uso==='Sim'&&c.horas>=4&&c.horas<=16;}).length/cpaps.length*100):null,
+    trendBP:bpsCron, trendGL:glsCron,
     excecoes:excecoes.slice(0,20)
   };
+}
+
+/* ── Gera mini-gráfico SVG inline para o PDF ── */
+function pdfChartBP(rows){
+  if(!rows||rows.length<2)return'<div style="font-size:9pt;color:#94a3b8;font-style:italic;padding:8px">Dados insuficientes para gráfico de tendência.</div>';
+  var pts=rows.slice(-20), n=pts.length;
+  var W=540,H=150,pL=34,pR=10,pT=16,pB=24,cW=W-pL-pR,cH=H-pT-pB;
+  var all=pts.flatMap(function(r){return[r.sis,r.dia];});
+  var mn=Math.floor(Math.min.apply(null,all)/10)*10-5, mx=Math.ceil(Math.max.apply(null,all)/10)*10+5, rng=mx-mn||1;
+  var X=function(i){return pL+(n>1?i/(n-1):0.5)*cW;};
+  var Y=function(v){return pT+cH-((v-mn)/rng)*cH;};
+  var grid='';
+  for(var v=mn;v<=mx;v+=20){var y=Y(v).toFixed(1);grid+='<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="#e2e8f0" stroke-width="1"/><text x="'+(pL-4)+'" y="'+(parseFloat(y)+3)+'" text-anchor="end" font-size="8" fill="#94a3b8">'+v+'</text>';}
+  // linha alvo 130/80
+  var y130=Y(130).toFixed(1), y80=Y(80).toFixed(1);
+  grid+='<line x1="'+pL+'" y1="'+y130+'" x2="'+(W-pR)+'" y2="'+y130+'" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2"/>';
+  grid+='<line x1="'+pL+'" y1="'+y80+'" x2="'+(W-pR)+'" y2="'+y80+'" stroke="#f59e0b" stroke-width="0.7" stroke-dasharray="3,2"/>';
+  var ps=pts.map(function(r,i){return(i===0?'M':'L')+X(i).toFixed(1)+','+Y(r.sis).toFixed(1);}).join(' ');
+  var pd=pts.map(function(r,i){return(i===0?'M':'L')+X(i).toFixed(1)+','+Y(r.dia).toFixed(1);}).join(' ');
+  var dots='';
+  pts.forEach(function(r,i){var x=X(i).toFixed(1);dots+='<circle cx="'+x+'" cy="'+Y(r.sis).toFixed(1)+'" r="2.5" fill="'+(r.sis>=140?'#dc2626':'#6366f1')+'"/><circle cx="'+x+'" cy="'+Y(r.dia).toFixed(1)+'" r="2.5" fill="'+(r.dia>=90?'#991b1b':'#ef4444')+'"/>';});
+  return'<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="display:block">'+grid+'<path d="'+ps+'" fill="none" stroke="#6366f1" stroke-width="1.8"/><path d="'+pd+'" fill="none" stroke="#ef4444" stroke-width="1.8"/>'+dots+'</svg>';
+}
+function pdfChartGL(rows){
+  if(!rows||rows.length<2)return'<div style="font-size:9pt;color:#94a3b8;font-style:italic;padding:8px">Dados insuficientes para gráfico de tendência.</div>';
+  var pts=rows.slice(-20), n=pts.length;
+  var W=540,H=130,pL=34,pR=10,pT=16,pB=24,cW=W-pL-pR,cH=H-pT-pB;
+  var vals=pts.map(function(r){return r.val;});
+  var mn=Math.floor(Math.min.apply(null,vals)/10)*10-5, mx=Math.ceil(Math.max.apply(null,vals)/10)*10+5, rng=mx-mn||1;
+  var X=function(i){return pL+(n>1?i/(n-1):0.5)*cW;};
+  var Y=function(v){return pT+cH-((v-mn)/rng)*cH;};
+  var grid='';
+  for(var v=Math.ceil(mn/20)*20;v<=mx;v+=20){var y=Y(v).toFixed(1);grid+='<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="#e2e8f0" stroke-width="1"/><text x="'+(pL-4)+'" y="'+(parseFloat(y)+3)+'" text-anchor="end" font-size="8" fill="#94a3b8">'+v+'</text>';}
+  var y126=Y(126).toFixed(1), y100=Y(100).toFixed(1);
+  grid+='<line x1="'+pL+'" y1="'+y126+'" x2="'+(W-pR)+'" y2="'+y126+'" stroke="#dc2626" stroke-width="0.8" stroke-dasharray="3,2"/>';
+  grid+='<line x1="'+pL+'" y1="'+y100+'" x2="'+(W-pR)+'" y2="'+y100+'" stroke="#f59e0b" stroke-width="0.7" stroke-dasharray="3,2"/>';
+  var path=pts.map(function(r,i){return(i===0?'M':'L')+X(i).toFixed(1)+','+Y(r.val).toFixed(1);}).join(' ');
+  var dots='';
+  pts.forEach(function(r,i){dots+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(r.val).toFixed(1)+'" r="2.5" fill="'+(r.val>=126?'#dc2626':r.val>=100?'#f59e0b':'#10b981')+'"/>';});
+  return'<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="display:block">'+grid+'<path d="'+path+'" fill="none" stroke="#10b981" stroke-width="1.8"/>'+dots+'</svg>';
 }
 
 /* ══════════════════════════════════════
    GERADOR DE PDF
 ══════════════════════════════════════ */
+function openPdfModal(){document.getElementById('pdf-modal').classList.add('on');}
+function closePdfModal(){document.getElementById('pdf-modal').classList.remove('on');}
+
 async function gerarPDF(){
+  closePdfModal();
   toast('⏳ Gerando relatório...');
-  var kpi=await calcKPIs();
+  var kpi=await calcKPIs(pdfPeriodo);
   var dataHoje=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
-  var periodoStr=kpi.nBP>0?'('+kpi.nBP+' medições BP / '+kpi.nGL+' GL / '+kpi.nCPAP+' CPAP)':'(sem dados suficientes)';
+  var periodoLabel=pdfPeriodo===0?'Todo o histórico':'Últimos '+pdfPeriodo+' dias';
+  var periodoStr='· '+periodoLabel+' · '+kpi.nBP+' PA / '+kpi.nGL+' GL / '+kpi.nCPAP+' CPAP';
 
   function badge(val,ok,warn){
     if(val==null)return'<span class="pdf-badge pdf-badge-warn">Sem dados</span>';
@@ -1453,7 +1586,7 @@ async function gerarPDF(){
   var excRows=kpi.excecoes.map(function(e){
     var tipoBadge=e.tipo==='PA'?'<span class="pdf-badge pdf-badge-bad">PA Alta</span>':e.tipo==='GL'?'<span class="pdf-badge pdf-badge-warn">Glicemia</span>':'<span class="pdf-badge pdf-badge-warn">CPAP</span>';
     var cafeBadge=e.cafe==='Sim'?'<span style="color:#d97706;font-weight:700">☕ Sim</span>':'Não';
-    return'<tr><td>'+fdate(e.data)+'</td><td>'+tipoBadge+'</td><td><b>'+e.val+'</b></td><td>'+cafeBadge+'</td><td>'+e.cpap+'</td><td>'+e.gl+'</td><td>'+e.adesao+'</td></tr>';
+    return'<tr><td>'+fdate(e.data)+'</td><td>'+tipoBadge+'</td><td><b>'+e.val+'</b></td><td>'+cafeBadge+'</td><td>'+(e.sintomas||'—')+'</td><td>'+e.cpap+'</td><td>'+e.adesao+'</td></tr>';
   }).join('');
 
   var html='<div id="pdf-report" style="display:block">'+
@@ -1550,12 +1683,37 @@ async function gerarPDF(){
     '<div style="margin-top:7px;font-size:8pt;color:#64748b;font-style:italic">* O Tango é CPAP de pressão fixa e registra apenas horas de uso. O IAH provém da polissonografia. Correlação baseada nas datas coincidentes entre PA e uso do CPAP.</div>'+
   '</div>'+
 
+  // ANÁLISE DE PADRÃO TEMPORAL — DESCENSO + METILFENIDATO
+  '<div class="pdf-section">'+
+    '<div class="pdf-section-title">Análise de Padrão Temporal da Pressão</div>'+
+    '<div class="pdf-cpap-grid">'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAS média — Manhã ('+kpi.nManha+')</div><div class="pdf-cpap-val">'+(kpi.avgSisManha!=null?kpi.avgSisManha:'—')+'</div><div class="pdf-cpap-sub">ao acordar</div></div>'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAS média — Noite ('+kpi.nNoite+')</div><div class="pdf-cpap-val">'+(kpi.avgSisNoite!=null?kpi.avgSisNoite:'—')+'</div><div class="pdf-cpap-sub">antes de dormir</div></div>'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAD pós-metilfenidato 14h ('+kpi.nPosMetil+')</div><div class="pdf-cpap-val">'+(kpi.padPosMetil!=null?kpi.padPosMetil:'—')+'</div><div class="pdf-cpap-sub">medições 15h–18h</div></div>'+
+      '<div class="pdf-cpap-box"><div class="pdf-cpap-lbl">PAD fora do pico ('+kpi.nForaMetil+')</div><div class="pdf-cpap-val">'+(kpi.padForaMetil!=null?kpi.padForaMetil:'—')+'</div><div class="pdf-cpap-sub">demais horários</div></div>'+
+    '</div>'+
+    ((kpi.padPosMetil!=null&&kpi.padForaMetil!=null)?
+      '<div style="margin-top:8px;font-size:9pt;color:#475569;background:#f8fafc;border-radius:7px;padding:8px 10px">'+
+      '<b>Δ PAD pós-estimulante:</b> '+(kpi.padPosMetil>kpi.padForaMetil?'<span class="pdf-bad">+'+r2(kpi.padPosMetil-kpi.padForaMetil)+' mmHg</span> mais alta no pico do metilfenidato (15h–18h)':'<span class="pdf-ok">'+r2(kpi.padPosMetil-kpi.padForaMetil)+' mmHg</span> — sem elevação relevante no pico')+
+      '</div>':'')+
+    '<div style="margin-top:6px;font-size:8pt;color:#64748b;font-style:italic">* O metilfenidato das 14h atinge pico plasmático ~1–3h depois. Comparamos a PAD nessa janela vs. demais horários para investigar influência adrenérgica.</div>'+
+  '</div>'+
+
+  // GRÁFICOS DE TENDÊNCIA
+  '<div class="pdf-section">'+
+    '<div class="pdf-section-title">Gráficos de Tendência</div>'+
+    '<div style="font-size:8.5pt;font-weight:700;color:#475569;margin-bottom:3px">Pressão arterial (linha tracejada = alvo 130/80) — <span style="color:#6366f1">PAS</span> / <span style="color:#ef4444">PAD</span></div>'+
+    pdfChartBP(kpi.trendBP)+
+    '<div style="font-size:8.5pt;font-weight:700;color:#475569;margin:8px 0 3px">Glicemia (tracejado: laranja 100 / vermelho 126)</div>'+
+    pdfChartGL(kpi.trendGL)+
+  '</div>'+
+
   // BLOCO C — EXCEÇÕES
   '<div class="pdf-section">'+
     '<div class="pdf-section-title">Bloco C — Tabela de Exceções (Ordem Cronológica Decrescente)</div>'+
     (kpi.excecoes.length?
       '<table class="pdf-exc-table">'+
-        '<thead><tr><th>Data</th><th>Tipo</th><th>Valor</th><th>Café?</th><th>CPAP noite ant.</th><th>GL Jejum</th><th>Adesão Med.</th></tr></thead>'+
+        '<thead><tr><th>Data</th><th>Tipo</th><th>Valor</th><th>Café?</th><th>Sintomas</th><th>CPAP</th><th>Adesão Med.</th></tr></thead>'+
         '<tbody>'+excRows+'</tbody>'+
       '</table>'
       :'<div style="padding:12px;background:#f8fafc;border-radius:8px;text-align:center;color:#64748b;font-style:italic">Nenhuma exceção detectada no período. Excelente controle!</div>')+
@@ -1603,6 +1761,7 @@ chips('[data-wtm]',function(v){wtM=v;});
 chips('[data-cpap-uso]',function(v){cpapUso=v;var f=document.getElementById('cpap-fields');if(f)f.style.display=v==='Sim'?'block':'none';});
 chips('[data-sono]',function(v){sonoQ=v;});
 chips('[data-descanso]',function(v){descanso=v;});
+chips('[data-pdfper]',function(v){pdfPeriodo=parseInt(v);});
 chips('[data-intens]',function(v){symIntens=v;});
 
 // Sintomas — multi-seleção (toggle)
